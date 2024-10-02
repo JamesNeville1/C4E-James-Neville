@@ -15,6 +15,11 @@ void APC_Debug::SetupInputComponent()
 	{
 		EIP->BindAction(_DebugAction, ETriggerEvent::Triggered, this, &APC_Debug::Debug);
 		EIP->BindAction(_JumpAction, ETriggerEvent::Started, this, &APC_Debug::Jump);
+		EIP->BindAction(_MoveXAction, ETriggerEvent::Started, this, &APC_Debug::MoveX);
+		EIP->BindAction(_MoveYAction, ETriggerEvent::Started, this, &APC_Debug::MoveY);
+		EIP->BindAction(_SprintAction, ETriggerEvent::Started, this, &APC_Debug::Sprint);
+		EIP->BindAction(_SpecialAction, ETriggerEvent::Started, this, &APC_Debug::Special);
+		EIP->BindAction(_LookAction, ETriggerEvent::Started, this, &APC_Debug::Look);
 	}
 
 	
@@ -22,36 +27,37 @@ void APC_Debug::SetupInputComponent()
 
 void APC_Debug::Debug(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("I Work!"));
+	UE_LOG(LogTemp, Display, TEXT("I Work!"));
 }
 
 void APC_Debug::Jump(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("Beans!"));
+	UE_LOG(LogTemp, Display, TEXT("Beans!"));
 }
 
 void APC_Debug::MoveX(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("X: ", Value.ToString()));
+	UE_LOG(LogTemp, Display, TEXT("X: %f"), Value[0]);
 }
 
 void APC_Debug::MoveY(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("Y: ", Value.ToString()));
+	UE_LOG(LogTemp, Display, TEXT("Y: %f"), Value[0]);
 }
 
 void APC_Debug::Sprint(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("Cheese!"));
+	UE_LOG(LogTemp, Display, TEXT("Cheese!"));
 }
 
 void APC_Debug::Special(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("KABOOM!"));
+	UE_LOG(LogTemp, Display, TEXT("KABOOM!"));
 }
 
 void APC_Debug::Look(const FInputActionValue& Value)
 {
-	//FString LookDebug = "X: " + std::to_string(Value[0]) + "Y: " + std::to_string(Value[1]);
-	//UE_LOG(LogTemp, Display, TEXT(LookDebug));
+	//Learn how to merge?
+	UE_LOG(LogTemp, Display, TEXT("Look X: %f"), Value[0]);
+	UE_LOG(LogTemp, Display, TEXT("Look Y: %f"), Value[1]);
 }
