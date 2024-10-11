@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthComponentDeadSignature, AController*, causer);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthComponentDamageSignature, float, newHealth, float, maxHealth, float, change);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C4E_NEVILLE_API UHealthComponent : public UActorComponent
@@ -14,6 +16,11 @@ class C4E_NEVILLE_API UHealthComponent : public UActorComponent
 
 public:
 	UHealthComponent();
+
+	UPROPERTY(BlueprintAssignable)
+	FHealthComponentDeadSignature OnDead;
+	UPROPERTY(BlueprintAssignable)
+	FHealthComponentDamageSignature OnDamaged;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -27,11 +27,13 @@ void UHealthComponent::DamageTaken(AActor* damagedActor, float damage, const UDa
 	const float changeBy = FMath::Min(_CurrentHealth, damage);
 	_CurrentHealth -= changeBy;
 
-	UE_LOG(LogTemp, Display, TEXT("Damage for %f, %f health remaing"), changeBy, _CurrentHealth);
+	OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, changeBy);
+	//UE_LOG(LogTemp, Display, TEXT("Damage for %f, %f health remaing"), changeBy, _CurrentHealth);
 
 	if(_CurrentHealth <= 0.0f)
 	{
-		UE_LOG(LogTemp, Display, TEXT("DEADED"));
+		//UE_LOG(LogTemp, Display, TEXT("DEADED"));
+		OnDead.Broadcast(instigator);
 	}
 }
 

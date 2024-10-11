@@ -24,7 +24,9 @@ AP_FPS::AP_FPS()
 void AP_FPS::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDead);
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDamaged );
 }
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
@@ -70,5 +72,15 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	//return IInputable::GetMappingContext_Implementation();
 	return  _InputMapping;
+}
+
+void AP_FPS::Handle_HealthComponentDead(AController* causer)
+{
+	
+}
+
+void AP_FPS::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
+{
+	
 }
 

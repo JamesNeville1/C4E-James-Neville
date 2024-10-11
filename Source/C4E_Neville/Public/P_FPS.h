@@ -47,4 +47,10 @@ protected:
 
 	// Called to bind functionality to input
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	UFUNCTION()
+	void Handle_HealthComponentDead(AController* causer);
+	UFUNCTION()
+	void Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change);
 };
