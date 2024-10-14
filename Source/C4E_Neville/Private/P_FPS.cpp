@@ -32,8 +32,9 @@ void AP_FPS::BeginPlay()
 void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
 	//IInputable::Input_Look_Implementation(value);
-
-	AddActorWorldRotation(FRotator(0, value.X, 0));
+	UE_LOG(LogTemp, Display, TEXT("X: %f, Y: %f"), value.X, value.Y);
+	
+	AddActorWorldRotation(FRotator(0, value.X * 100, 0));
 	_Camera->AddLocalRotation(FRotator(value.Y, 0, 0));
 }
 
