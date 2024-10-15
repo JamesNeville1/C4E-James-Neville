@@ -4,6 +4,7 @@
 #include "P_FPS.h"
 
 #include "HealthComponent.h"
+#include "Weapon_Base.h"
 #include "Camera/CameraComponent.h"
 
 
@@ -17,7 +18,8 @@ AP_FPS::AP_FPS()
 	_Camera->SetupAttachment(RootComponent);
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 
-	
+	_WeaponAttachPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Weapon Attach"));
+	_WeaponAttachPoint->SetupAttachment(_Camera);
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +29,15 @@ void AP_FPS::BeginPlay()
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDamaged );
+
+	if (_DefaultWeapon)
+	{
+		FActorSpawnParameters spawnParams;
+		spawnParams.Owner = this;
+		spawnParams.Instigator = this;
+		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
 }
 
 void AP_FPS::Input_Look_Implementation(FVector2D value)
@@ -62,12 +73,18 @@ void AP_FPS::Input_JumpReleased_Implementation()
 
 void AP_FPS::Input_FirePressed_Implementation()
 {
-	IInputable::Input_FirePressed_Implementation();
+	if (_WeaponRef)
+	{
+		_WeaponRef->StartFire();
+	}
 }
 
 void AP_FPS::Input_FireReleased_Implementation()
 {
-	IInputable::Input_FireReleased_Implementation();
+	if (_WeaponRef)
+	{
+		_WeaponRef->StopFire();
+	}
 }
 
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()

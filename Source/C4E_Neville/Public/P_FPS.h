@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "P_FPS.generated.h"
 
+class AWeapon_Base;
 class UHealthComponent;
 class UCameraComponent;
 class UCharacterMovementComponent;
@@ -41,6 +42,13 @@ protected:
 	TObjectPtr<UHealthComponent> _Health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<USceneComponent> _WeaponAttachPoint;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AWeapon_Base> _DefaultWeapon;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<AWeapon_Base> _WeaponRef;
 	
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
