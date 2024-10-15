@@ -34,7 +34,7 @@ void AP_FPS::Input_Look_Implementation(FVector2D value)
 	//IInputable::Input_Look_Implementation(value);
 	UE_LOG(LogTemp, Display, TEXT("X: %f, Y: %f"), value.X, value.Y);
 	
-	AddActorWorldRotation(FRotator(0, value.X * 100, 0));
+	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
 	_Camera->AddLocalRotation(FRotator(value.Y, 0, 0));
 }
 
@@ -43,14 +43,15 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 	//IInputable::Input_Move_Implementation(value);
 
 	AddMovementInput(FVector::VectorPlaneProject(_Camera->GetForwardVector(),
-		FVector::UpVector).GetSafeNormal(), value.Y);
-	AddMovementInput(_Camera->GetRightVector(), value.X);
+		FVector::UpVector).GetSafeNormal(), value.X);
+	AddMovementInput(_Camera->GetRightVector(), value.Y);
 }
 
 void AP_FPS::Input_JumpPressed_Implementation()
 {
 	//IInputable::Input_JumpPressed_Implementation();
 	ACharacter::Jump();
+	UE_LOG(LogTemp, Display, TEXT("AAAAAAAAAAAAAAAAA"));
 }
 
 void AP_FPS::Input_JumpReleased_Implementation()
