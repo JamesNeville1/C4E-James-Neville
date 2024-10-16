@@ -10,6 +10,7 @@ class UCameraComponent;
 class UCharacterMovementComponent;
 class UCapsuleComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable
@@ -28,6 +29,8 @@ public:
 	virtual void Input_CharacterSwapPressed_Implementation() override;
 	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
+
+	FSwapGuySignature OnSwapGuy;
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

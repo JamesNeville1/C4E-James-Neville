@@ -1,4 +1,4 @@
-﻿#include "GameRule_Target.h"
+﻿ #include "GameRule_Target.h"
  
 #include "TargetComponent.h"
  

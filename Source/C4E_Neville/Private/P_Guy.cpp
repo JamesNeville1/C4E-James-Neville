@@ -1,5 +1,8 @@
 ﻿#include "P_Guy.h"
+
+#include "GM_Puzzle.h"
 #include "HealthComponent.h"
+#include "ToolBuilderUtil.h"
 #include "Camera/CameraComponent.h"
 
 AP_Guy::AP_Guy()
@@ -22,7 +25,9 @@ void AP_Guy::BeginPlay()
 	Super::BeginPlay();
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
-	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged );
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
+
+	//OnSwapGuy.Add(ToolBuilderUtil::FindFirstActor(AGM_Puzzle))
 }
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)
@@ -61,6 +66,7 @@ void AP_Guy::Input_CharacterSwapPressed_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Swap Logic Here!"));
 	//ToDo: Swap Logic
+	OnSwapGuy.Broadcast();
 }
 
 UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
