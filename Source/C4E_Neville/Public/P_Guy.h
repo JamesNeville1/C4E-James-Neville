@@ -11,7 +11,7 @@ class UCharacterMovementComponent;
 class UCapsuleComponent;
 
 
-UCLASS()
+UCLASS(Abstract)
 class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable
 {
 	GENERATED_BODY()
@@ -26,7 +26,7 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_SpecialPressed_Implementation() override;
 	virtual void Input_CharacterSwapPressed_Implementation() override;
-
+	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 	
 protected:
@@ -37,6 +37,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
 
+	UFUNCTION()
+	virtual void SpecialLogic();
 private:
 	UFUNCTION()
 	void Handle_HealthComponentDead(AController* causer);

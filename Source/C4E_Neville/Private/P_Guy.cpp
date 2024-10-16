@@ -8,10 +8,13 @@ AP_Guy::AP_Guy()
 
 	_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	_Camera->SetupAttachment(RootComponent);
+	
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
-
+	
 	//So we can actually look left and right, your welcome designers ;-;
-	//bUseControllerRotationYaw = false; //Doesn't work?
+	bUseControllerRotationYaw = false; //Doesn't work?
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AP_Guy::BeginPlay()
@@ -50,6 +53,7 @@ void AP_Guy::Input_JumpReleased_Implementation()
 void AP_Guy::Input_SpecialPressed_Implementation()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Special Logic Here!"));
+	SpecialLogic();
 	//ToDo: Special Logic
 }
 
@@ -62,6 +66,11 @@ void AP_Guy::Input_CharacterSwapPressed_Implementation()
 UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 {
 	return  _InputMapping;
+}
+
+void AP_Guy::SpecialLogic() //?
+{
+	
 }
 
 void AP_Guy::Handle_HealthComponentDead(AController* causer)
