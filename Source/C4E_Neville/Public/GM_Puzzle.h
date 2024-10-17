@@ -5,6 +5,7 @@
 #include "GM_Puzzle.generated.h"
 
 
+class APC_Guy;
 class AP_Guy;
 
 UCLASS()
@@ -14,14 +15,16 @@ class C4E_NEVILLE_API AGM_Puzzle : public AGameMode
 
 public:
 	AGM_Puzzle();
-	
-	//virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
-	//TArray<TObjectPtr<AActor>> _PlayerStarts;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TArray<AActor*> SwapList;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<AP_Guy*> _SwapList;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APC_Guy* _ControllerRef;
 	
+	UFUNCTION()
 	void SwapCharacter();
-
 	
+	AP_Guy* FindCurrentCharacter();
+	
+	virtual void BeginPlay() override;
 };

@@ -91,7 +91,7 @@ void APC_Guy::CharacterSwapPressed()
 }
 
 void APC_Guy::OnPossess(APawn* InPawn)
-{
+{	
 	Super::OnPossess(InPawn);
 	
 	if(UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))

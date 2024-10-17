@@ -1,26 +1,57 @@
 ﻿#include "GM_Puzzle.h"
 
+#include "PC_Guy.h"
 #include "P_Guy.h"
+#include "ToolBuilderUtil.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 
 
-AGM_Puzzle::AGM_Puzzle()
-{
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("TEST"));
-
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AP_Guy::StaticClass(), SwapList);
-}
+AGM_Puzzle::AGM_Puzzle() { }
 
 void AGM_Puzzle::SwapCharacter()
 {
-	for (AActor* guy : SwapList)
+	AP_Guy* guy = FindCurrentCharacter();
+	if(FindCurrentCharacter() == nullptr) { return; }
+
+	int nextGuyInt;
+	int currentGuyInt = _SwapList.Find(guy);
+	if(currentGuyInt == _SwapList.Num() -1)
 	{
-		AP_Guy* castedGuy = Cast<AP_Guy>(guy);
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, castedGuy->Controller.GetName());
-		if(castedGuy->Controller != nullptr)
+		nextGuyInt = 0;
+	}
+	else
+	{
+		nextGuyInt = currentGuyInt + 1;
+	}
+
+	_ControllerRef->Possess(_SwapList[nextGuyInt]);
+}
+
+AP_Guy* AGM_Puzzle::FindCurrentCharacter()
+{
+	for (AP_Guy* guy : _SwapList)
+	{
+		if(guy->Controller != nullptr)
 		{
-			break;
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, guy->Controller.GetName());
+			return guy;
 		}
 	}
+	return nullptr;
+}
+
+void AGM_Puzzle::BeginPlay()
+{
+	TArray<AActor*> uncastedGuys;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AP_Guy::StaticClass(), uncastedGuys);
+	for (AActor* guy : uncastedGuys)
+	{
+		_SwapList.Add(Cast<AP_Guy>(guy));
+	}
+
+	AActor* uncastController = UGameplayStatics::GetActorOfClass(GetWorld(), APC_Guy::StaticClass());
+	_ControllerRef = Cast<APC_Guy>(uncastController);
+	
+	Super::BeginPlay();
 }
