@@ -17,7 +17,7 @@ public:
 	AGM_Puzzle();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TArray<AP_Guy*> _SwapList;
+	TArray<AP_Guy*> _SwapList; //Maybe turn into map of class ref and class object
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APC_Guy* _ControllerRef;
 	

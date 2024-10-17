@@ -28,7 +28,7 @@ void AP_Guy::BeginPlay()
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
 
-	OnSwapGuy.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::SwapCharacter);
+	OnSwapGuy.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::SwapCharacter); //ToDo: Why multi
 }
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)
@@ -65,7 +65,7 @@ void AP_Guy::Input_SpecialPressed_Implementation()
 
 void AP_Guy::Input_CharacterSwapPressed_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Swap Logic Here!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Swap Logic Here!"));
 	OnSwapGuy.Broadcast();
 }
 
@@ -74,7 +74,7 @@ UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 	return  _InputMapping;
 }
 
-void AP_Guy::SpecialLogic() //?
+void AP_Guy::SpecialLogic() //ToDo:?
 {
 	
 }

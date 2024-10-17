@@ -34,7 +34,7 @@ AP_Guy* AGM_Puzzle::FindCurrentCharacter()
 	{
 		if(guy->Controller != nullptr)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, guy->Controller.GetName());
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, guy->Controller.GetName());
 			return guy;
 		}
 	}
@@ -43,6 +43,7 @@ AP_Guy* AGM_Puzzle::FindCurrentCharacter()
 
 void AGM_Puzzle::BeginPlay()
 {
+	//ToDo: ?a
 	TArray<AActor*> uncastedGuys;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AP_Guy::StaticClass(), uncastedGuys);
 	for (AActor* guy : uncastedGuys)
