@@ -28,8 +28,6 @@ void AP_Guy::BeginPlay()
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)
 {
-	//UE_LOG(LogTemp, Display, TEXT("X: %f, Y: %f"), value.X, value.Y);
-	
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
 	_Camera->AddLocalRotation(FRotator(value.Y, 0, 0));
 }
@@ -67,6 +65,11 @@ void AP_Guy::Input_CharacterSwapPressed_Implementation()
 UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 {
 	return  _InputMapping;
+}
+
+AP_Guy* AP_Guy::Return_Self_Implementation()
+{
+	return this;
 }
 
 void AP_Guy::Handle_HealthComponentDead(AController* causer)

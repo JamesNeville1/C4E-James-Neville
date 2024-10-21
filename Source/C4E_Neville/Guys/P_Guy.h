@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "C4E_Neville/Controller/GuyInputable.h"
+#include "C4E_Neville/Controller/GuyReturns.h"
 #include "GameFramework/Character.h"
 #include "P_Guy.generated.h"
 
@@ -13,7 +14,7 @@ class UCapsuleComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable
+class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGuyReturns
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,8 @@ public:
 	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
+	virtual AP_Guy* Return_Self_Implementation() override;
+	
 	FSwapGuySignature OnSwapGuy;
 	
 protected:

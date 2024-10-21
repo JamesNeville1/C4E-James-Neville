@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "C4E_Neville/Guys/P_Guy.h"
 #include "GameFramework/GameMode.h"
 #include "GM_Puzzle.generated.h"
 
@@ -17,14 +18,14 @@ public:
 	AGM_Puzzle();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TArray<AP_Guy*> _SwapList; //Maybe turn into map of class ref and class object
+	TMap<AP_Guy*, AP_Guy*> _SwapList;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APC_Guy* _ControllerRef;
 	
 	UFUNCTION()
 	void SwapCharacter();
-	
-	AP_Guy* FindCurrentCharacter();
 	
 	virtual void BeginPlay() override;
 };
