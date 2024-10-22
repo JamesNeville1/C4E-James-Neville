@@ -42,8 +42,7 @@ void AGM_Puzzle::BeginPlay()
 	}
 
 	//Controller Ref
-	AActor* uncastController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	_ControllerRef = Cast<APC_Guy>(uncastController);
+	_ControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	
 	//Other
 	Super::BeginPlay();

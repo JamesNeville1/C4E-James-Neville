@@ -93,6 +93,16 @@ UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 	return  _InputMapping;
 }
 
+int AP_FPS::GetHealth()
+{
+	return _Health->_CurrentHealth;
+}
+
+void AP_FPS::DamageTest()
+{
+	Handle_HealthComponentDamaged(_Health->_CurrentHealth, 100, 10);
+}
+
 void AP_FPS::Handle_HealthComponentDead(AController* causer)
 {
 	
@@ -100,6 +110,6 @@ void AP_FPS::Handle_HealthComponentDead(AController* causer)
 
 void AP_FPS::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
 {
-	
+	//_OnPlayerDamage.Execute();
 }
 

@@ -13,6 +13,7 @@ class UCameraComponent;
 class UCharacterMovementComponent;
 class UCapsuleComponent;
 
+DECLARE_DYNAMIC_DELEGATE_RetVal(int, FOnPlayerDamageSignature);
 
 UCLASS()
 class C4E_NEVILLE_API AP_FPS : public ACharacter, public  IInputable
@@ -34,6 +35,15 @@ public:
 	virtual void Input_FireReleased_Implementation() override;
 
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
+
+	int GetHealth();
+	
+	int _Points;
+
+	FOnPlayerDamageSignature _OnPlayerDamage;
+
+	UFUNCTION()
+	void DamageTest();
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -43,6 +53,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
 
+	
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

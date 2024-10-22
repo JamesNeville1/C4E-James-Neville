@@ -17,6 +17,7 @@ class C4E_NEVILLE_API UWidget_Hud : public UUserWidget
 	
 public:
 	virtual void NativeConstruct() override;
+
 	void UpdateHealth(float newHealthRatio);
 	void UpdateScore(int newScore);
 private:

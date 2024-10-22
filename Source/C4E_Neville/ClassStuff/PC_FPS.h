@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_FPS.generated.h"
 
+class AP_FPS;
 class UWidget_Hud;
 struct FInputActionValue;
 class UInputAction;
@@ -41,5 +42,7 @@ protected: //Hud
 	TSubclassOf<UWidget_Hud> _HudWidgetClass;
 	TObjectPtr<UWidget_Hud> _HudWidget;
 
+	TObjectPtr<AP_FPS> _player;
+	
 	virtual void BeginPlay() override;
 };

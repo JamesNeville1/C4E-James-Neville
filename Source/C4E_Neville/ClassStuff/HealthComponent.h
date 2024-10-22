@@ -22,11 +22,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FHealthComponentDamageSignature OnDamaged;
 
-protected:
+	//Moved from protected
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float _CurrentHealth;
+	
+protected:
 	
 	virtual void BeginPlay() override;
 

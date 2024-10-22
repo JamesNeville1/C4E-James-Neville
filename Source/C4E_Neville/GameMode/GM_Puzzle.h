@@ -22,7 +22,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	APC_Guy* _ControllerRef;
+	APlayerController* _ControllerRef;
 	
 	UFUNCTION()
 	void SwapCharacter();

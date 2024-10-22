@@ -6,9 +6,12 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
+#include "HealthComponent.h"
 #include "Inputable.h"
+#include "P_FPS.h"
 #include "Widget_Hud.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void APC_FPS::SetupInputComponent()
 {
@@ -96,6 +99,21 @@ void APC_FPS::FireReleased()
 	}
 }
 
+void APC_FPS::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(_HudWidgetClass)
+	{
+		_HudWidget = CreateWidget<UWidget_Hud, APC_FPS*>(this, _HudWidgetClass.Get());
+		_HudWidget->AddToViewport();
+
+		_player = Cast<AP_FPS>(GetCharacter());
+		_HudWidget->UpdateHealth(1.0f);
+		_HudWidget->UpdateScore(_player->_Points);
+	}
+}
+
 void APC_FPS::OnPossess(APawn* InPawn)
 {
 	
@@ -105,19 +123,17 @@ void APC_FPS::OnPossess(APawn* InPawn)
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UInputable::StaticClass()))
 		{
-			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);	
-			UE_LOG(LogTemp, Display, TEXT("BEANSBEANSadadadadadfBEANS"));
+			subsystem->AddMappingContext(IInputable::Execute_GetMappingContext(InPawn), 0);
+
+			//UI Test
+			if(_HudWidget)
+			{
+				_player = Cast<AP_FPS>(GetCharacter());
+				_HudWidget->UpdateHealth(.01f);
+				_HudWidget->UpdateScore(_player->_Points);
+
+				//_player->_OnPlayerDamage.AddUniqueDynamic(_HudWidget, UWidget_Hud::UpdateHealth())
+			}
 		}
-	}
-}
-
-void APC_FPS::BeginPlay()
-{
-	Super::BeginPlay();
-
-	if(_HudWidgetClass)
-	{
-		_HudWidget = CreateWidget<UWidget_Hud, APC_FPS*>(this, _HudWidgetClass.Get());
-		_HudWidget->AddToViewport();
 	}
 }
