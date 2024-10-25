@@ -9,9 +9,18 @@
 
 AGM_Puzzle::AGM_Puzzle()
 {
-	
 }
 
+void AGM_Puzzle::PostLogin(APlayerController* NewPlayer)
+{
+	_ControllerRef = NewPlayer;
+	Super::PostLogin(NewPlayer);
+}
+
+void AGM_Puzzle::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
+}
 
 void AGM_Puzzle::SwapCharacter()
 {
@@ -32,7 +41,8 @@ void AGM_Puzzle::BeginPlay()
 		AP_Guy* key;
 		AP_Guy* value;
 		key = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), guyClass));
-		value = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), _SwapListOrder[guyClass]));
+		value = IGuyReturns::Execute_Return_Self(
+			UGameplayStatics::GetActorOfClass(GetWorld(), _SwapListOrder[guyClass]));
 
 		//Add to map
 		_SwapList.Add(
@@ -43,7 +53,7 @@ void AGM_Puzzle::BeginPlay()
 
 	//Controller Ref
 	_ControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	
+
 	//Other
 	Super::BeginPlay();
 }

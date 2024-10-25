@@ -23,9 +23,12 @@ public:
 	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APlayerController* _ControllerRef;
-	
+
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
+
 	UFUNCTION()
 	void SwapCharacter();
-	
+
 	virtual void BeginPlay() override;
 };
