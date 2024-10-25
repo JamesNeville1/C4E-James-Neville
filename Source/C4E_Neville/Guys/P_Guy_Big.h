@@ -12,5 +12,10 @@ class C4E_NEVILLE_API AP_Guy_Big : public AP_Guy
 	GENERATED_BODY()
 
 public:
+	AP_Guy_Big();
+	
 	virtual void SpecialLogic() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UChildActorComponent> _LilGuyAttachPoint;
 };

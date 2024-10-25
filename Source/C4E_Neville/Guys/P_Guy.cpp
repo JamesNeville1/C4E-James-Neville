@@ -51,9 +51,7 @@ void AP_Guy::Input_JumpReleased_Implementation()
 
 void AP_Guy::Input_SpecialPressed_Implementation()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Special Logic Here!"));
 	SpecialLogic();
-	//ToDo: Special Logic
 }
 
 void AP_Guy::Input_CharacterSwapPressed_Implementation()

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
-#include "C4E_Neville/Controller/GuyInputable.h"
-#include "C4E_Neville/Controller/GuyReturns.h"
+#include "C4E_Neville/Interface/GuyInputable.h"
+#include "C4E_Neville/Interface/GuyReturns.h"
 #include "GameFramework/Character.h"
 #include "P_Guy.generated.h"
 

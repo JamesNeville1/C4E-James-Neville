@@ -5,7 +5,6 @@
 #include "GameFramework/GameMode.h"
 #include "GM_Puzzle.generated.h"
 
-
 class APC_Guy;
 class AP_Guy;
 

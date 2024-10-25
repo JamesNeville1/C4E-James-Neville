@@ -13,4 +13,7 @@ class C4E_NEVILLE_API AP_Guy_Lil : public AP_Guy
 
 public:
 	virtual void SpecialLogic() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _SpecialRange;
 };

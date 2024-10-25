@@ -51,9 +51,6 @@ void AGM_Puzzle::BeginPlay()
 		);
 	}
 
-	//Controller Ref
-	_ControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
 	//Other
 	Super::BeginPlay();
 }

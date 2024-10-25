@@ -3,7 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
-#include "GuyInputable.h"
+#include "C4E_Neville/Interface/GuyInputable.h"
 
 void APC_Guy::SetupInputComponent()
 {
