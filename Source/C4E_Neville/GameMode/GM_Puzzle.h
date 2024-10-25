@@ -15,19 +15,12 @@ class C4E_NEVILLE_API AGM_Puzzle : public AGameMode
 
 public:
 	AGM_Puzzle();
-
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TMap<AP_Guy*, AP_Guy*> _SwapList;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	APlayerController* _ControllerRef;
+	APC_Guy* _ControllerRef;
 
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
-
-	UFUNCTION()
-	void SwapCharacter();
-
+	
 	virtual void BeginPlay() override;
 };

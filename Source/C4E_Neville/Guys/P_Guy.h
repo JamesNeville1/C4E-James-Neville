@@ -10,6 +10,7 @@ class UHealthComponent;
 class UCameraComponent;
 class UCharacterMovementComponent;
 class UCapsuleComponent;
+class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
 
@@ -34,6 +35,7 @@ public:
 	virtual AP_Guy* Return_Self_Implementation() override;
 	
 	FSwapGuySignature OnSwapGuy;
+	void OnSwapGuyInit(APC_Guy* controller);
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

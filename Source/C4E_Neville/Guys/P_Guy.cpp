@@ -2,6 +2,7 @@
 
 #include "ToolBuilderUtil.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
+#include "C4E_Neville/Controller/PC_Guy.h"
 #include "C4E_Neville/GameMode/GM_Puzzle.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,12 +19,11 @@ AP_Guy::AP_Guy()
 
 void AP_Guy::BeginPlay()
 {
-	Super::BeginPlay();
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
-
-	OnSwapGuy.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::SwapCharacter);
+	
+	Super::BeginPlay();
 }
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)
@@ -68,6 +68,12 @@ UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 AP_Guy* AP_Guy::Return_Self_Implementation()
 {
 	return this;
+}
+
+void AP_Guy::OnSwapGuyInit(APC_Guy* controller)
+{
+	OnSwapGuy.AddUniqueDynamic(controller, &APC_Guy::SwapCharacter);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
 }
 
 void AP_Guy::Handle_HealthComponentDead(AController* causer)

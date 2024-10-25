@@ -6,14 +6,19 @@
 
 struct FInputActionValue;
 class UInputAction;
-/**
- * 
- */
+class AP_Guy;
+
 UCLASS(Abstract)
 class C4E_NEVILLE_API APC_Guy : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION()
+	void SwapCharacter();
+	UFUNCTION(BlueprintCallable)
+	void SwapCharacterSetup();
+	
 protected:
 	UPROPERTY(EditAnywhere, category = "Input")
 	TObjectPtr<UInputAction> _LookAction;
@@ -35,4 +40,11 @@ protected:
 	void SpecialPressed();
 	void CharacterSwapPressed();
 	virtual void OnPossess(APawn* InPawn) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TMap<AP_Guy*, AP_Guy*> _SwapList;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
+	
+	void AlertBigGuyOfSmallGuySpecial();
 };

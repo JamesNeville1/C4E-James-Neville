@@ -3,7 +3,11 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
+#include "C4E_Neville/Guys/P_Guy.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
+#include "C4E_Neville/Interface/GuyReturns.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 void APC_Guy::SetupInputComponent()
 {
@@ -101,4 +105,40 @@ void APC_Guy::OnPossess(APawn* InPawn)
 			subsystem->AddMappingContext(IGuyInputable::Execute_GetMappingContext(InPawn), 0);	
 		}
 	}
+}
+
+
+void APC_Guy::SwapCharacter()
+{
+	AP_Guy* player = IGuyReturns::Execute_Return_Self(GetCharacter());
+	Possess(_SwapList[player]);
+}
+
+void APC_Guy::SwapCharacterSetup()
+{
+	//Swap Setup
+	TArray<TSubclassOf<AP_Guy>> swapListOrderKeys;
+	_SwapListOrder.GenerateKeyArray(swapListOrderKeys);
+
+	//Setup Swap Order
+	for (TSubclassOf<AP_Guy> guyClass : swapListOrderKeys)
+	{
+		//Get object reference from class reference map
+		AP_Guy* key;
+		AP_Guy* value;
+		key = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), guyClass));
+		value = IGuyReturns::Execute_Return_Self(
+			UGameplayStatics::GetActorOfClass(GetWorld(), _SwapListOrder[guyClass]));
+		value->OnSwapGuyInit(this);
+		//Add to map
+		_SwapList.Add(
+			key,
+			value
+		);
+	}
+}
+
+void APC_Guy::AlertBigGuyOfSmallGuySpecial()
+{
+	
 }

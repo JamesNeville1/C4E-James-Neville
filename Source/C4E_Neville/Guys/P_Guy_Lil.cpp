@@ -22,8 +22,11 @@ void AP_Guy_Lil::SpecialLogic()
 		GetWorld(), start, end, "Pawn",
 		false, actorsToIgnore, EDrawDebugTrace::Persistent, hitResult, true);
 
-	if(hitResult.HitObjectHandle == nullptr) return;
-
-	//if(!UKismetMathLibrary::ClassIsChildOf(hitResult.HitObjectHandle.FetchActor()->StaticClass(), AP_Guy_Big::StaticClass())) return; //Make interface to return type
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, hitResult.HitObjectHandle.FetchActor()->StaticClass()->GetName());	
+	bool guard =
+		(hitResult.HitObjectHandle == nullptr) ||
+		(!UKismetMathLibrary::ClassIsChildOf(hitResult.HitObjectHandle.FetchActor()->GetClass(), AP_Guy_Big::StaticClass()));
+	if (guard) return;
+	
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, hitResult.HitObjectHandle.FetchActor()->StaticClass()->GetName());
+	AlertBigGuyOfSpecial.Broadcast();
 }
