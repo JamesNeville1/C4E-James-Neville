@@ -19,7 +19,6 @@ AP_Guy::AP_Guy()
 
 void AP_Guy::BeginPlay()
 {
-
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
 	

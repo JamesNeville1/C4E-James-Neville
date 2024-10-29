@@ -14,4 +14,7 @@ class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
 
 public:
 	UGR_Candy();
+
+	static int _CurrentCandy;
+	static void ReigesterCandy();
 };
