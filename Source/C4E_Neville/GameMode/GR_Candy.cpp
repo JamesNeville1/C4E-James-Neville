@@ -2,9 +2,10 @@
 
 UGR_Candy::UGR_Candy()
 {
+	//UGR_Candy::_CurrentCandy = 0;
 }
 
 void UGR_Candy::ReigesterCandy()
 {
-	_CurrentCandy += 1;
+	 //UGR_Candy::_CurrentCandy = UGR_Candy::_CurrentCandy + 1;
 }
