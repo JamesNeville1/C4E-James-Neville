@@ -3,6 +3,7 @@
 #include "ToolBuilderUtil.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
+#include "C4E_Neville/GameMode/CandyComponent.h"
 #include "C4E_Neville/GameMode/GM_Puzzle.h"
 #include "C4E_Neville/Interface/UseOnOverlap.h"
 #include "Camera/CameraComponent.h"
@@ -23,7 +24,7 @@ void AP_Guy::BeginPlay()
 {
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
-	//GetCapsuleComponent()->OnComponentBeginOverlap(this, &AP_Guy::Handle_OnOverlap);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
 	
 	Super::BeginPlay();
 }
@@ -89,6 +90,13 @@ void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, flo
 void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	IUseOnOverlap::Execute_Interact(OtherActor);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Overlap Hit Something"));
+	UActorComponent* candyComponent = OtherActor->GetComponentByClass(UCandyComponent::StaticClass());
+
+	if(IsValid(candyComponent))
+	{
+		IUseOnOverlap::Execute_Interact(candyComponent);
+	}
+	
 }
 

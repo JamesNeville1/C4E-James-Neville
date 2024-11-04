@@ -20,7 +20,7 @@ public:
 	
 	int _CurrentCandy;
 	UFUNCTION()
-	void RegisterCandies();
+	void RegisterCandy(UCandyComponent* candyComponent);
 	UFUNCTION()
 	void CandyEatenAlert();
 };

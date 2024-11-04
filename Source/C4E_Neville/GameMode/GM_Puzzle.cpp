@@ -20,9 +20,16 @@ void AGM_Puzzle::PostLogin(APlayerController* NewPlayer)
 	Super::PostLogin(NewPlayer);
 }
 
+
+
 void AGM_Puzzle::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
+}
+
+void AGM_Puzzle::CandyGameRuleComplete()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
 }
 
 void AGM_Puzzle::BeginPlay()
