@@ -5,13 +5,15 @@
 UCandyComponent::UCandyComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-
-	
 }
 
 void UCandyComponent::BeginPlay()
 {
-	UGR_Candy::ReigesterCandy();
-	
 	Super::BeginPlay();
+}
+
+void UCandyComponent::Interact_Implementation()
+{
+	_OnCandyEaten.Broadcast();
+	GetOwner()->Destroy();
 }

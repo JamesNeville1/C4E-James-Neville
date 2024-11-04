@@ -4,7 +4,9 @@
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
 #include "C4E_Neville/GameMode/GM_Puzzle.h"
+#include "C4E_Neville/Interface/UseOnOverlap.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 AP_Guy::AP_Guy()
@@ -21,6 +23,7 @@ void AP_Guy::BeginPlay()
 {
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
+	//GetCapsuleComponent()->OnComponentBeginOverlap(this, &AP_Guy::Handle_OnOverlap);
 	
 	Super::BeginPlay();
 }
@@ -81,5 +84,11 @@ void AP_Guy::Handle_HealthComponentDead(AController* causer)
 
 void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
 {
+}
+
+void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	IUseOnOverlap::Execute_Interact(OtherActor);
 }
 

@@ -18,14 +18,5 @@ ACandy::ACandy()
 
 void ACandy::BeginPlay()
 {
-	_Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &ACandy::OnOverlap);
-	
 	Super::BeginPlay();
-}
-
-void ACandy::OnOverlap(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	const FHitResult& SweepResult)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
 }

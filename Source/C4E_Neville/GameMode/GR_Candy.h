@@ -7,6 +7,8 @@
 #include "GR_Candy.generated.h"
 
 
+class UCandyComponent;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
 {
@@ -14,8 +16,11 @@ class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
 
 public:
 	UGR_Candy();
+	virtual void BeginPlay() override;
 	
-	//static int _CurrentCandy;
+	int _CurrentCandy;
 	UFUNCTION()
-	static void ReigesterCandy();
+	void RegisterCandies();
+	UFUNCTION()
+	void CandyEatenAlert();
 };
