@@ -1,5 +1,6 @@
 ﻿#include "../GameMode/GM_Puzzle.h"
 
+#include "GR_Candy.h"
 #include "../Guys/P_Guy.h"
 #include "../Guys/P_Guy.h"
 #include "ToolBuilderUtil.h"
@@ -32,7 +33,20 @@ void AGM_Puzzle::CandyGameRuleComplete()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
 }
 
+void AGM_Puzzle::TimerGameRuleComplete()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player ran out of time"));
+}
+
+
 void AGM_Puzzle::BeginPlay()
 {
+	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
+	
 	Super::BeginPlay();
+}
+
+UGR_Candy* AGM_Puzzle::GR_Candy_Ref_Implementation()
+{
+	return _CandyGRRef;
 }

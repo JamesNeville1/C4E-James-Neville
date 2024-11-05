@@ -3,9 +3,7 @@
 #include "CandyComponent.h"
 #include "GM_Puzzle.h"
 #include "C4E_Neville/Interface/CandyReturns.h"
-#include "C4E_Neville/Interface/InfoReturns.h"
 #include "C4E_Neville/Level/Candy.h"
-#include "C4E_Neville/Static Data/GI_Info.h"
 #include "Kismet/GameplayStatics.h"
 
 UGR_Candy::UGR_Candy()
@@ -14,8 +12,6 @@ UGR_Candy::UGR_Candy()
 
 void UGR_Candy::BeginPlay()
 {
-	IInfoReturns::Execute_ReturnInstance(GetWorld()->GetGameInstance())->_CandyGR = this;
-
 	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::CandyGameRuleComplete);
 	
 	Super::BeginPlay();
