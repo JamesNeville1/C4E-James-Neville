@@ -6,16 +6,20 @@
 
 void AP_Guy_Strong::SpecialLogic()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Smash >:("));
 
-	FHitResult hitResult = SpecialLineTraceLogic("Pawn", _SpecialRange);
+	FHitResult hitResult = SpecialLineTraceLogic("WorldDynamic", _SpecialRange);
 	
 	bool guard =
-		(hitResult.HitObjectHandle == nullptr) ||
-		(hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()));
+		(hitResult.GetActor() == nullptr) ||
+		(hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()) == nullptr);
+
+
+	//FString test = hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()) == nullptr ? "T" : "F";
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, test);
+	
 	if (guard) return;
 
-	UGameplayStatics::ApplyDamage(hitResult.GetActor(), 10, GetController(), this, UDamageType::StaticClass());
+	UGameplayStatics::ApplyDamage(hitResult.GetActor(), 1, GetController(), this, UDamageType::StaticClass());
 	
 	//Super::SpecialLogic();
 }

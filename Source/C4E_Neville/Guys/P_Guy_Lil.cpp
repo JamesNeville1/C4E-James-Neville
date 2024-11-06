@@ -2,22 +2,31 @@
 
 #include "P_Guy_Big.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Physics/ImmediatePhysics/ImmediatePhysicsShared/ImmediatePhysicsCore.h"
 
 void AP_Guy_Lil::SpecialLogic()
 {
-	FHitResult hitResult = SpecialLineTraceLogic("Pawn", _SpecialRange);
-
-	bool guard =
-		(hitResult.HitObjectHandle == nullptr) ||
-		(!UKismetMathLibrary::ClassIsChildOf(hitResult.HitObjectHandle.FetchActor()->GetClass(), AP_Guy_Big::StaticClass()));
-
-	FString test = hitResult.HitObjectHandle == nullptr ? "t" : "f";
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, test);
 	
-	if (guard) return;
-	
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, hitResult.HitObjectHandle.FetchActor()->StaticClass()->GetName());
-	AlertBigGuyOfSpecial.Broadcast();
+}
+
+void AP_Guy_Lil::PickupAlert_Implementation(AP_Guy_Big* bigGuyRef)
+{
+	FVector goTo = bigGuyRef->_LilGuyAttachPoint->GetComponentLocation();
+	FHitResult* test = new FHitResult(); //ToDo: Delete
+	GetCharacterMovement()->bRunPhysicsWithNoController = false;
+	SetActorLocation(goTo, false, test);
+	SetActorRotation(bigGuyRef->GetCapsuleComponent()->GetComponentRotation());
+	AttachToActor(bigGuyRef, FAttachmentTransformRules::KeepWorldTransform);
+}
+
+void AP_Guy_Lil::ThrowAlert_Implementation(AP_Guy_Big* bigGuyRef, float throwSpeed)
+{
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	GetCharacterMovement()->bRunPhysicsWithNoController = true;
+	FVector dir = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetActorForwardVector();
+	LaunchCharacter( dir * throwSpeed, false, false);
 }

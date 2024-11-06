@@ -1,5 +1,8 @@
 ﻿#include "P_Guy_Big.h"
 
+#include "P_Guy_Lil.h"
+#include "Kismet/KismetMathLibrary.h"
+
 AP_Guy_Big::AP_Guy_Big()
 {
 	_LilGuyAttachPoint = CreateDefaultSubobject<UChildActorComponent>(TEXT("Lil Guy Attach Point"));
@@ -8,5 +11,26 @@ AP_Guy_Big::AP_Guy_Big()
 
 void AP_Guy_Big::SpecialLogic()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Stetchhhhhhh :)"));
+	if(holdingLilGuy)
+	{
+		ILilGuyPickupAlert::Execute_ThrowAlert(_LilGuyRef, this, launchSpeed);
+		
+		holdingLilGuy = false;
+	}
+	else
+	{
+		FHitResult hitResult = SpecialLineTraceLogic("WorldDynamic", _SpecialRange);
+
+		bool guard =
+			(hitResult.GetActor() == nullptr) ||
+			(!UKismetMathLibrary::ClassIsChildOf(hitResult.GetActor()->GetClass(), AP_Guy_Lil::StaticClass()));
+		if (guard) return;
+
+		ILilGuyPickupAlert::Execute_PickupAlert(hitResult.GetActor(), this);
+
+		_LilGuyRef = hitResult.GetActor();
+		
+		holdingLilGuy = true;
+	}
+
 }
