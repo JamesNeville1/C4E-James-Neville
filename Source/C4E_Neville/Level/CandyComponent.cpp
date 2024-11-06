@@ -1,6 +1,6 @@
 ﻿#include "CandyComponent.h"
 
-#include "GR_Candy.h"
+#include "../GameMode/GR_Candy.h"
 #include "C4E_Neville/Interface/GameRuleReturns.h"
 #include "GameFramework/GameMode.h"
 #include "Kismet/GameplayStatics.h"

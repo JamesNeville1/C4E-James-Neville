@@ -13,6 +13,7 @@ class UCapsuleComponent;
 class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGuyDeathSignature);
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGuyReturns
@@ -23,6 +24,8 @@ public:
 	AP_Guy();
 	
 	virtual void BeginPlay() override;
+	void LateBeginPlay(bool played);
+	
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 	virtual void Input_JumpPressed_Implementation() override;
@@ -35,6 +38,8 @@ public:
 	virtual AP_Guy* Return_Self_Implementation() override;
 	
 	FSwapGuySignature OnSwapGuy;
+	FOnGuyDeathSignature OnGuyDeath;
+	
 	void OnSwapGuyInit(APC_Guy* controller);
 	
 protected:
@@ -45,6 +50,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
 
+	FHitResult SpecialLineTraceLogic(FName profile, float range);
+	
 	UFUNCTION()
 	virtual void SpecialLogic() {};
 private:

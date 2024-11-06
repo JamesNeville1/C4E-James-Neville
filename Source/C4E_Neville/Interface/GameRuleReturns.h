@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "GameRuleReturns.generated.h"
 
+class UGR_PlayerDeath;
+class UGR_Pumpkin;
 class UGR_Candy;
 // This class does not need to be modified.
 UINTERFACE()
@@ -25,4 +27,8 @@ class C4E_NEVILLE_API IGameRuleReturns
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UGR_Candy* GR_Candy_Ref();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UGR_Pumpkin* GR_Pumpkin_Ref();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UGR_PlayerDeath* GR_PlayerDeath_Ref();
 };

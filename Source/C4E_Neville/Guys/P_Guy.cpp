@@ -3,12 +3,14 @@
 #include "ToolBuilderUtil.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
-#include "C4E_Neville/GameMode/CandyComponent.h"
+#include "../Level/CandyComponent.h"
 #include "C4E_Neville/GameMode/GM_Puzzle.h"
+#include "C4E_Neville/GameMode/GR_PlayerDeath.h"
 #include "C4E_Neville/Interface/UseOnOverlap.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AP_Guy::AP_Guy()
 {
@@ -25,9 +27,27 @@ void AP_Guy::BeginPlay()
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
+
+	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
 	
 	Super::BeginPlay();
 }
+
+void AP_Guy::LateBeginPlay(bool played)
+{
+	UGR_PlayerDeath* playerDeathGR = IGameRuleReturns::Execute_GR_PlayerDeath_Ref(UGameplayStatics::GetGameMode(GetWorld()));
+	//This logic should be in the controller? Ask tutor
+
+	if(playerDeathGR)
+	{
+		//OnGuyDeath.AddUniqueDynamic(playerDeathGR, &UGR_PlayerDeath::AlertPlayerDeath);
+	}
+	else
+	{
+		//OnGuyDeath.AddUniqueDynamic(GetController(),);
+	}
+}
+
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)
 {
@@ -79,8 +99,29 @@ void AP_Guy::OnSwapGuyInit(APC_Guy* controller)
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
 }
 
+FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)
+{
+	FVector start = _Camera->GetComponentLocation();
+
+	FVector	end = UKismetMathLibrary::GetForwardVector(_Camera->GetComponentRotation());
+	end *= range;
+	end += start;
+
+
+	TArray<AActor*> actorsToIgnore;
+	actorsToIgnore.Add(this);
+	FHitResult hitResult;
+
+	UKismetSystemLibrary::LineTraceSingleByProfile(
+		GetWorld(), start, end, profile,
+		false, actorsToIgnore, EDrawDebugTrace::Persistent, hitResult, true);
+
+	return  hitResult;
+}
+
 void AP_Guy::Handle_HealthComponentDead(AController* causer)
 {
+	OnGuyDeath.Broadcast();
 }
 
 void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)

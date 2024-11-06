@@ -1,9 +1,10 @@
 ﻿#include "GR_Candy.h"
 
-#include "CandyComponent.h"
+#include "../Level/Candy.h"
 #include "GM_Puzzle.h"
 #include "C4E_Neville/Interface/CandyReturns.h"
 #include "C4E_Neville/Level/Candy.h"
+#include "C4E_Neville/Level/CandyComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 UGR_Candy::UGR_Candy()
