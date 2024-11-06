@@ -21,8 +21,6 @@ void AGM_Puzzle::PostLogin(APlayerController* NewPlayer)
 	Super::PostLogin(NewPlayer);
 }
 
-
-
 void AGM_Puzzle::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);

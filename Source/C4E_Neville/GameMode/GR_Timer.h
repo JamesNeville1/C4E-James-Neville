@@ -19,9 +19,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _length; 
+private:
+	FTimerHandle _StopWatchHandle;
 
 	
 };

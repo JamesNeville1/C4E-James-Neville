@@ -18,7 +18,7 @@ void UCandyComponent::BeginPlay()
 
 void UCandyComponent::LateBeginPlay(bool played)
 {
-	IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->RegisterCandy(this); //ToDo: Consider making reference to gamemode with interface of every gamerule (can be null)
+	IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->RegisterCandy(this);
 }
 
 void UCandyComponent::Interact_Implementation()
