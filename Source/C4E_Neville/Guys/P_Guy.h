@@ -43,6 +43,8 @@ public:
 	void OnSwapGuyInit(APC_Guy* controller);
 	
 protected:
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	//TObjectPtr<UCameraComponent> _Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

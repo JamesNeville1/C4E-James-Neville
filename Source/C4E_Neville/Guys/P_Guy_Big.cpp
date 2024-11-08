@@ -34,3 +34,9 @@ void AP_Guy_Big::SpecialLogic()
 	}
 
 }
+
+void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
+{
+	SpecialLogic();
+	Super::Input_CharacterSwapPressed_Implementation();
+}

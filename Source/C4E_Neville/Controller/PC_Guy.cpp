@@ -102,7 +102,7 @@ void APC_Guy::OnPossess(APawn* InPawn)
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UGuyInputable::StaticClass()))
 		{
-			subsystem->AddMappingContext(IGuyInputable::Execute_GetMappingContext(InPawn), 0);	
+			subsystem->AddMappingContext(IGuyInputable::Execute_GetMappingContext(InPawn), 0);
 		}
 	}
 }

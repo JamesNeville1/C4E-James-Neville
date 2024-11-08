@@ -17,7 +17,8 @@ public:
 	AP_Guy_Big();
 	
 	virtual void SpecialLogic() override;
-
+	virtual void Input_CharacterSwapPressed_Implementation() override;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UChildActorComponent> _LilGuyAttachPoint;
 	

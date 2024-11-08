@@ -5,7 +5,6 @@
 #include "C4E_Neville/Controller/PC_Guy.h"
 #include "../Level/CandyComponent.h"
 #include "C4E_Neville/GameMode/GM_Puzzle.h"
-#include "C4E_Neville/GameMode/GR_PlayerDeath.h"
 #include "C4E_Neville/Interface/UseOnOverlap.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -35,17 +34,7 @@ void AP_Guy::BeginPlay()
 
 void AP_Guy::LateBeginPlay(bool played)
 {
-	UGR_PlayerDeath* playerDeathGR = IGameRuleReturns::Execute_GR_PlayerDeath_Ref(UGameplayStatics::GetGameMode(GetWorld()));
-	//This logic should be in the controller? Ask tutor
-
-	if(playerDeathGR)
-	{
-		//OnGuyDeath.AddUniqueDynamic(playerDeathGR, &UGR_PlayerDeath::AlertPlayerDeath);
-	}
-	else
-	{
-		//OnGuyDeath.AddUniqueDynamic(GetController(),);
-	}
+	
 }
 
 

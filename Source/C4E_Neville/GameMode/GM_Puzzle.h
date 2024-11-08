@@ -23,12 +23,16 @@ public:
 	UGR_Candy* _CandyGRRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UGR_Pumpkin* _PumpkinGRRef;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UGR_PlayerDeath* _PlayerDeathGRRef;
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
 
+	TArray<TObjectPtr<AActor>> _GuyStarts;
+	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
+	void MyStartMatch(); //Used to spawn multiple characters used by player
+
+	virtual void HandleMatchIsWaitingToStart() override;
+	
 	UFUNCTION()
 	void CandyGameRuleComplete();
 	UFUNCTION()
@@ -43,5 +47,4 @@ public:
 	UFUNCTION()
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
 	virtual UGR_Pumpkin* GR_Pumpkin_Ref_Implementation() override;
-	virtual UGR_PlayerDeath* GR_PlayerDeath_Ref_Implementation() override;
 };

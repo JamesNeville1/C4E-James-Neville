@@ -4,14 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "GameRuleReturns.generated.h"
+#include "GuyStartReturns.generated.h"
 
-class UGR_PlayerDeath;
-class UGR_Pumpkin;
-class UGR_Candy;
+class AP_Guy;
 // This class does not need to be modified.
 UINTERFACE()
-class UGameRuleReturns : public UInterface
+class UGuyStartReturns : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -19,14 +17,12 @@ class UGameRuleReturns : public UInterface
 /**
  * 
  */
-class C4E_NEVILLE_API IGameRuleReturns
+class C4E_NEVILLE_API IGuyStartReturns
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	UGR_Candy* GR_Candy_Ref();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	UGR_Pumpkin* GR_Pumpkin_Ref();
+	TSubclassOf<AP_Guy> Return_GuyClass();
 };

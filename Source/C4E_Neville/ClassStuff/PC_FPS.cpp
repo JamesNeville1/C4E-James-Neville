@@ -110,7 +110,7 @@ void APC_FPS::BeginPlay()
 
 		_player = Cast<AP_FPS>(GetCharacter());
 		_HudWidget->UpdateHealth(1.0f);
-		_HudWidget->UpdateScore(_player->_Points);
+		_HudWidget->UpdateScore(0);
 	}
 }
 
