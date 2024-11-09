@@ -40,7 +40,7 @@ public:
 	FSwapGuySignature OnSwapGuy;
 	FOnGuyDeathSignature OnGuyDeath;
 	
-	void OnSwapGuyInit(APC_Guy* controller);
+	void GuySetup(APC_Guy* controller);
 	
 protected:
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)

@@ -48,6 +48,7 @@ AActor* AGM_Puzzle::FindPlayerStart_Implementation(AController* Player, const FS
 
 void AGM_Puzzle::MyStartMatch()
 {
+	TArray<AP_Guy*> guys;
 	for (AActor* start : _GuyStarts)
 	{
 		FActorSpawnParameters spawnParams;
@@ -58,15 +59,16 @@ void AGM_Puzzle::MyStartMatch()
 
 		TSubclassOf<AP_Guy> myGuy = IGuyStartReturns::Execute_Return_GuyClass(start);
 		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(myGuy, start->GetActorLocation(), start->GetActorRotation(), spawnParams);
-		//guy->SetActorLocation(start->GetActorLocation());
+
+		guys.Add(IGuyReturns::Execute_Return_Self(guy));
 	}
+
+	_ControllerRef->ControllerSetup(guys);
 }
 
 void AGM_Puzzle::HandleMatchIsWaitingToStart()
 {
 	MyStartMatch();
-
-	_ControllerRef->SwapCharacterSetup();
 }
 
 void AGM_Puzzle::CandyGameRuleComplete()

@@ -82,10 +82,19 @@ AP_Guy* AP_Guy::Return_Self_Implementation()
 	return this;
 }
 
-void AP_Guy::OnSwapGuyInit(APC_Guy* controller)
+void AP_Guy::GuySetup(APC_Guy* controller)
 {
 	OnSwapGuy.AddUniqueDynamic(controller, &APC_Guy::SwapCharacter);
+	OnGuyDeath.AddUniqueDynamic(controller, &APC_Guy::RespawnCheck);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
+
+	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
+
+	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
+	
+	Super::BeginPlay();
 }
 
 FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)

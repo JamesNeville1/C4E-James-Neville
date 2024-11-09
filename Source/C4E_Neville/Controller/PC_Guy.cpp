@@ -114,7 +114,24 @@ void APC_Guy::SwapCharacter()
 	Possess(_SwapList[player]);
 }
 
-void APC_Guy::SwapCharacterSetup()
+void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys) //ToDo: Use Guy Array Param
+{
+	GuyAlertSetup(guys);
+}
+
+void APC_Guy::RespawnCheck()
+{
+	if(_CurrentRespawns > 0)
+	{
+		
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("AAAAAAAAA"));
+	}
+}
+
+void APC_Guy::GuyAlertSetup(TArray<AP_Guy*> guys)
 {
 	//Swap Setup
 	TArray<TSubclassOf<AP_Guy>> swapListOrderKeys;
@@ -129,16 +146,14 @@ void APC_Guy::SwapCharacterSetup()
 		key = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), guyClass));
 		value = IGuyReturns::Execute_Return_Self(
 			UGameplayStatics::GetActorOfClass(GetWorld(), _SwapListOrder[guyClass]));
-		value->OnSwapGuyInit(this);
+
+		//Setup
+		value->GuySetup(this);
+		
 		//Add to map
 		_SwapList.Add(
 			key,
 			value
 		);
 	}
-}
-
-void APC_Guy::AlertBigGuyOfSmallGuySpecial()
-{
-	
 }
