@@ -5,11 +5,12 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_Guy.generated.h"
 
+class AGuyStart;
 struct FInputActionValue;
 class UInputAction;
 class AP_Guy;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOutOfLivesAlertSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOutOfLivesAlertSignature, AP_Guy*, guy);
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API APC_Guy : public APlayerController
@@ -20,11 +21,11 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<AP_Guy*> guys);
+	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal);
 	UFUNCTION()
-	void RespawnCheck();
+	void RespawnCheck(AP_Guy* guy);
 
-	int _CurrentRespawns;
+	int _SharedLivesCurrent;
 
 	FOutOfLivesAlertSignature OnOutOfLives;
 
@@ -57,6 +58,5 @@ protected:
 	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 
 private:
-
-	void GuyAlertSetup(TArray<AP_Guy*> guys);
+	void GuySwapSetup(TArray<AP_Guy*> guys);
 };

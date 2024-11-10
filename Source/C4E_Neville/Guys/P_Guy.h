@@ -13,7 +13,7 @@ class UCapsuleComponent;
 class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGuyDeathSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP_Guy*, guy);
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGuyReturns
@@ -38,17 +38,20 @@ public:
 	virtual AP_Guy* Return_Self_Implementation() override;
 	
 	FSwapGuySignature OnSwapGuy;
-	FOnGuyDeathSignature OnGuyDeath;
+	FOnGuyRespawnCheckAlertSignature OnRespawnAlertCheck;
 	
 	void GuySetup(APC_Guy* controller);
+
+	UFUNCTION()
+	void EyeBallFramesStart();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UHealthComponent> _Health;
 protected:
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	//TObjectPtr<UCameraComponent> _Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UHealthComponent> _Health;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
 
@@ -56,6 +59,10 @@ protected:
 	
 	UFUNCTION()
 	virtual void SpecialLogic() {};
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _EyeBallFrameLength;
+	
 private:
 	UFUNCTION()
 	void Handle_HealthComponentDead(AController* causer);
@@ -64,4 +71,8 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	FTimerHandle _EyeBallTimerHandle;
+
+	void EyeBallFramesStop();
 };

@@ -3,6 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
+#include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/Guys/P_Guy.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
@@ -114,24 +115,28 @@ void APC_Guy::SwapCharacter()
 	Possess(_SwapList[player]);
 }
 
-void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys) //ToDo: Use Guy Array Param
+void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal) //ToDo: Use Guy Array Param
 {
-	GuyAlertSetup(guys);
+	GuySwapSetup(guys);
+
+	_SharedLivesCurrent = sharedLivesTotal;
 }
 
-void APC_Guy::RespawnCheck()
+void APC_Guy::RespawnCheck(AP_Guy* guy)
 {
-	if(_CurrentRespawns > 0)
+	if(_SharedLivesCurrent > 0)
 	{
-		
+		guy->EyeBallFramesStart();
+		guy->_Health->Reset();
+		_SharedLivesCurrent = _SharedLivesCurrent - 1;
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("AAAAAAAAA"));
+		OnOutOfLives.Broadcast(guy);
 	}
 }
 
-void APC_Guy::GuyAlertSetup(TArray<AP_Guy*> guys)
+void APC_Guy::GuySwapSetup(TArray<AP_Guy*> guys)
 {
 	//Swap Setup
 	TArray<TSubclassOf<AP_Guy>> swapListOrderKeys;

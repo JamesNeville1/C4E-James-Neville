@@ -23,13 +23,13 @@ AP_Guy::AP_Guy()
 
 void AP_Guy::BeginPlay()
 {
-	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
-	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
-
-	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
-	
-	Super::BeginPlay();
+	// _Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
+	// _Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
+	// GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
+	//
+	// GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
+	//
+	// Super::BeginPlay();
 }
 
 void AP_Guy::LateBeginPlay(bool played)
@@ -85,7 +85,7 @@ AP_Guy* AP_Guy::Return_Self_Implementation()
 void AP_Guy::GuySetup(APC_Guy* controller)
 {
 	OnSwapGuy.AddUniqueDynamic(controller, &APC_Guy::SwapCharacter);
-	OnGuyDeath.AddUniqueDynamic(controller, &APC_Guy::RespawnCheck);
+	OnRespawnAlertCheck.AddUniqueDynamic(controller, &APC_Guy::RespawnCheck);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
@@ -96,6 +96,7 @@ void AP_Guy::GuySetup(APC_Guy* controller)
 	
 	Super::BeginPlay();
 }
+
 
 FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)
 {
@@ -119,7 +120,7 @@ FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)
 
 void AP_Guy::Handle_HealthComponentDead(AController* causer)
 {
-	OnGuyDeath.Broadcast();
+	OnRespawnAlertCheck.Broadcast(this);
 }
 
 void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
@@ -137,5 +138,17 @@ void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		IUseOnOverlap::Execute_Interact(candyComponent);
 	}
 	
+}
+
+void AP_Guy::EyeBallFramesStart()
+{
+	_Health->_Invincible = true;
+
+	GetWorld()->GetTimerManager().SetTimer(_EyeBallTimerHandle, this, &AP_Guy::EyeBallFramesStop, _EyeBallFrameLength, false);
+}
+
+void AP_Guy::EyeBallFramesStop()
+{
+	_Health->_Invincible = false;
 }
 

@@ -26,7 +26,7 @@ public:
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
-
+	
 	TArray<TObjectPtr<AActor>> _GuyStarts;
 	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
 	void MyStartMatch(); //Used to spawn multiple characters used by player
@@ -40,11 +40,15 @@ public:
 	UFUNCTION()
 	void PumpkinGameRuleComplete();
 	UFUNCTION()
-	void PlayerDeathGameRuleComplete();
+	void PlayerOutOfLives(AP_Guy* guyThatDied);
 	
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
 	virtual UGR_Pumpkin* GR_Pumpkin_Ref_Implementation() override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int sharedLivesTotal;
 };

@@ -7,6 +7,8 @@
 #include "../Guys/P_Guy.h"
 #include "ToolBuilderUtil.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
+#include "C4E_Neville/Guys/P_Guy_Lil.h"
+#include "C4E_Neville/Guys/P_Guy_Strong.h"
 #include "C4E_Neville/Level/GuyStart.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
@@ -48,6 +50,10 @@ AActor* AGM_Puzzle::FindPlayerStart_Implementation(AController* Player, const FS
 
 void AGM_Puzzle::MyStartMatch()
 {
+	//TArray<AActor*> foundActors;
+	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGuyStart::StaticClass(), foundActors);
+	//_GuyStarts = foundActors;
+	
 	TArray<AP_Guy*> guys;
 	for (AActor* start : _GuyStarts)
 	{
@@ -63,7 +69,8 @@ void AGM_Puzzle::MyStartMatch()
 		guys.Add(IGuyReturns::Execute_Return_Self(guy));
 	}
 
-	_ControllerRef->ControllerSetup(guys);
+	_ControllerRef->ControllerSetup(guys, sharedLivesTotal);
+	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 }
 
 void AGM_Puzzle::HandleMatchIsWaitingToStart()
@@ -86,9 +93,11 @@ void AGM_Puzzle::PumpkinGameRuleComplete()
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Pumpkin Complete, check other GRs"));
 }
 
-void AGM_Puzzle::PlayerDeathGameRuleComplete()
+void AGM_Puzzle::PlayerOutOfLives(AP_Guy* guyThatDied)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Guys are dead!"));
+	FString output = guyThatDied->GetName() + " Died!";
+				
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, output);
 }
 
 

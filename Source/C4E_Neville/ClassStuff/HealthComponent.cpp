@@ -13,6 +13,11 @@ UHealthComponent::UHealthComponent()
 }
 
 
+void UHealthComponent::Reset()
+{
+	_CurrentHealth = _MaxHealth;
+}
+
 // Called when the game starts
 void UHealthComponent::BeginPlay()
 {
@@ -24,16 +29,19 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::DamageTaken(AActor* damagedActor, float damage, const UDamageType* damageType,
 	AController* instigator, AActor* causer)
 {
-	const float changeBy = FMath::Min(_CurrentHealth, damage);
-	_CurrentHealth -= changeBy;
-
-	OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, changeBy);
-	//UE_LOG(LogTemp, Display, TEXT("Damage for %f, %f health remaing"), changeBy, _CurrentHealth);
-
-	if(_CurrentHealth <= 0.0f)
+	if(!_Invincible)
 	{
-		//UE_LOG(LogTemp, Display, TEXT("DEADED"));
-		OnDead.Broadcast(instigator);
+		const float changeBy = FMath::Min(_CurrentHealth, damage);
+		_CurrentHealth -= changeBy;
+
+		OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, changeBy);
+		//UE_LOG(LogTemp, Display, TEXT("Damage for %f, %f health remaing"), changeBy, _CurrentHealth);
+
+		if(_CurrentHealth <= 0.0f)
+		{
+			//UE_LOG(LogTemp, Display, TEXT("DEADED"));
+			OnDead.Broadcast(instigator);
+		}
 	}
 }
 

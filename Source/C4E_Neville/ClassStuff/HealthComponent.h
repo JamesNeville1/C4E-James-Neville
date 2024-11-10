@@ -17,6 +17,9 @@ class C4E_NEVILLE_API UHealthComponent : public UActorComponent
 public:
 	UHealthComponent();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool _Invincible;
+
 	UPROPERTY(BlueprintAssignable)
 	FHealthComponentDeadSignature OnDead;
 	UPROPERTY(BlueprintAssignable)
@@ -27,6 +30,9 @@ public:
 	float _MaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float _CurrentHealth;
+
+	UFUNCTION()
+	void Reset();
 	
 protected:
 	
