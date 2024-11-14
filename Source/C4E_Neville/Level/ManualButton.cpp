@@ -20,8 +20,17 @@ AManualButton::AManualButton()
 void AManualButton::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	_Pressed ? _ButtonComponent->Press() : _ButtonComponent->UnPress();
-
+	if (_Pressed)
+	{
+		_ButtonComponent->Press();
+		_Mesh->SetMaterial(0, _ButtonComponent->_OnMaterial);
+	}
+	else
+	{
+		_ButtonComponent->UnPress();
+		_Mesh->SetMaterial(0, _ButtonComponent->_OffMaterial);
+	}
+	
 	_Pressed = !_Pressed;
 }
 

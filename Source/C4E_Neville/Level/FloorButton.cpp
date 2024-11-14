@@ -25,6 +25,7 @@ void AFloorButton::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		_UseCount++;
 		if(_UseCount == 1)
 		{
+			_Mesh->SetMaterial(0, _ButtonComponent->_OnMaterial);
 			_ButtonComponent->Press();
 		}
 	}
@@ -38,6 +39,7 @@ void AFloorButton::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		_UseCount--;
 		if(_UseCount == 0)
 		{
+			_Mesh->SetMaterial(0, _ButtonComponent->_OffMaterial);
 			_ButtonComponent->UnPress();
 		}
 	}

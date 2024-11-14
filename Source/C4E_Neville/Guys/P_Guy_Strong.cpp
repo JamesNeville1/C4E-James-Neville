@@ -10,8 +10,7 @@ void AP_Guy_Strong::SpecialLogic()
 	FHitResult hitResult = SpecialLineTraceLogic("WorldDynamic", _SpecialRange);
 	
 	bool guard =
-		(hitResult.GetActor() == nullptr) ||
-		(hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()) == nullptr);
+		(hitResult.GetActor() == nullptr);
 
 
 	//FString test = hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()) == nullptr ? "T" : "F";
