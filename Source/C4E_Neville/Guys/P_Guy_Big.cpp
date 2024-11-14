@@ -40,3 +40,11 @@ void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 	SpecialLogic();
 	Super::Input_CharacterSwapPressed_Implementation();
 }
+
+void AP_Guy_Big::Input_JumpPressed_Implementation()
+{
+	if(!holdingLilGuy)
+	{
+		Super::Input_JumpPressed_Implementation();
+	}
+}
