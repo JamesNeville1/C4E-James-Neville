@@ -21,7 +21,7 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder);
+	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder, bool bigGuyCanThrow);
 	UFUNCTION()
 	void RespawnCheck(AP_Guy* guy);
 

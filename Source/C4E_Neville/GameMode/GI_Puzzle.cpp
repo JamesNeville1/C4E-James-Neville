@@ -7,7 +7,7 @@ FName UGI_Puzzle::GetNextLevel_Implementation()
 {
 	_CurrentLevel++;
 
-	if(_CurrentLevel >= _Levels.Num() -1)
+	if(_CurrentLevel >= _Levels.Num())
 	{
 		return "";
 	}

@@ -33,6 +33,9 @@ public:
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool _BigGuyCanThrow = true;
 	
 	TArray<TObjectPtr<AActor>> _GuyStarts;
 	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;

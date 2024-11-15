@@ -5,6 +5,7 @@
 #include  "EnhancedInputSubsystems.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/Guys/P_Guy.h"
+#include "C4E_Neville/Guys/P_Guy_Big.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
 #include "GameFramework/Character.h"
@@ -115,11 +116,26 @@ void APC_Guy::SwapCharacter()
 	Possess(_SwapList[player]);
 }
 
-void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder) //ToDo: Use Guy Array Param
+void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>,
+	TSubclassOf<AP_Guy>> swapListOrder, bool bigGuyCanThrow) //ToDo: Use Guy Array Param
 {
+	if(!bigGuyCanThrow)
+	{
+		for (AP_Guy* guy : guys)
+		{
+			if (guy->GetClass() == AP_Guy_Big::StaticClass())
+			{
+				Cast<AP_Guy_Big>(guy)->_CanThrow = false;
+				
+				break;
+			}
+		}
+	}
+	
 	GuySwapSetup(guys, swapListOrder);
-
+	
 	_SharedLivesCurrent = sharedLivesTotal;
+	
 }
 
 void APC_Guy::RespawnCheck(AP_Guy* guy)

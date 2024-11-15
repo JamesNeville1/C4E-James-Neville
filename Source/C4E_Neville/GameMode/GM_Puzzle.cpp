@@ -74,7 +74,7 @@ void AGM_Puzzle::MyStartMatch()
 	}
 
 	//Setup Controller
-	_ControllerRef->ControllerSetup(guys, sharedLivesTotal, _SwapListOrder);
+	_ControllerRef->ControllerSetup(guys, sharedLivesTotal, _SwapListOrder, _BigGuyCanThrow);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 
 	//Setup Level Manager

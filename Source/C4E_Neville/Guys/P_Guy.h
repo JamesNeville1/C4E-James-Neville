@@ -24,9 +24,6 @@ class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public 
 public:
 	AP_Guy();
 	
-	virtual void BeginPlay() override;
-	void LateBeginPlay(bool played);
-	
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 	virtual void Input_JumpPressed_Implementation() override;
@@ -40,8 +37,8 @@ public:
 	
 	FSwapGuySignature OnSwapGuy;
 	FOnGuyRespawnCheckAlertSignature OnRespawnAlertCheck;
-	
-	void GuySetup(APC_Guy* controller);
+
+	virtual void GuySetup(APC_Guy* controller);
 
 	UFUNCTION()
 	void EyeBallFramesStart();

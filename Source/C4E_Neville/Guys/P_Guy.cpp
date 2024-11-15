@@ -21,23 +21,6 @@ AP_Guy::AP_Guy()
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
-void AP_Guy::BeginPlay()
-{
-	// _Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
-	// _Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
-	// GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
-	//
-	// GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
-	//
-	// Super::BeginPlay();
-}
-
-void AP_Guy::LateBeginPlay(bool played)
-{
-	
-}
-
-
 void AP_Guy::Input_Look_Implementation(FVector2D value)
 {
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
@@ -92,9 +75,9 @@ void AP_Guy::GuySetup(APC_Guy* controller)
 	_Health->OnDamaged.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDamaged);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddUniqueDynamic(this, &AP_Guy::Handle_OnOverlap);
 
-	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
+	//GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AP_Guy::LateBeginPlay);
 	
-	Super::BeginPlay();
+	//Super::BeginPlay();
 }
 
 

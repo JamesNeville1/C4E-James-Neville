@@ -17,15 +17,14 @@ public:
 	AP_Guy_Big();
 	virtual void Input_CharacterSwapPressed_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
+
+	bool _CanThrow = true;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UChildActorComponent> _LilGuyAttachPoint;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _SpecialRange;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool _CanThrow;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	bool holdingLilGuy;
@@ -34,7 +33,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	AActor* _LilGuyRef; //ToDo: Ref ok?
 
-	virtual void BeginPlay() override;
+	virtual void GuySetup(APC_Guy* controller) override;
 	
 private:
 	UFUNCTION()
