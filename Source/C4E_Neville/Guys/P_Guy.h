@@ -13,6 +13,7 @@ class UCapsuleComponent;
 class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpecialLogicSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP_Guy*, guy);
 
 UCLASS(Abstract)
@@ -48,6 +49,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UHealthComponent> _Health;
 protected:
+	FSpecialLogicSignature OnSpecialLogic;
+	
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	//TObjectPtr<UCameraComponent> _Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
@@ -58,7 +61,7 @@ protected:
 	FHitResult SpecialLineTraceLogic(FName profile, float range);
 	
 	UFUNCTION()
-	virtual void SpecialLogic() {};
+	virtual void SpecialLogic();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _EyeBallFrameLength;

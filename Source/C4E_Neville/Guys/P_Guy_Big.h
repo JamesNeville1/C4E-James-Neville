@@ -15,8 +15,6 @@ class C4E_NEVILLE_API AP_Guy_Big : public AP_Guy
 
 public:
 	AP_Guy_Big();
-	
-	virtual void SpecialLogic() override;
 	virtual void Input_CharacterSwapPressed_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	
@@ -26,10 +24,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _SpecialRange;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool _CanThrow;
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	bool holdingLilGuy;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float launchSpeed;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	AActor* _LilGuyRef; //ToDo: Ref ok?
+
+	virtual void BeginPlay() override;
+	
+private:
+	UFUNCTION()
+	void ThrowLogic();
 };

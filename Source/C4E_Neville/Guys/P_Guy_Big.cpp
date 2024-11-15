@@ -9,7 +9,31 @@ AP_Guy_Big::AP_Guy_Big()
 	_LilGuyAttachPoint->SetupAttachment(RootComponent);
 }
 
-void AP_Guy_Big::SpecialLogic()
+void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
+{
+	SpecialLogic();
+	Super::Input_CharacterSwapPressed_Implementation();
+}
+
+void AP_Guy_Big::Input_JumpPressed_Implementation()
+{
+	if(!holdingLilGuy)
+	{
+		Super::Input_JumpPressed_Implementation();
+	}
+}
+
+void AP_Guy_Big::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(_CanThrow)
+	{
+		OnSpecialLogic.AddUniqueDynamic(this, &AP_Guy_Big::ThrowLogic);	
+	}
+}
+
+void AP_Guy_Big::ThrowLogic()
 {
 	if(holdingLilGuy)
 	{
@@ -31,20 +55,5 @@ void AP_Guy_Big::SpecialLogic()
 		_LilGuyRef = hitResult.GetActor();
 		
 		holdingLilGuy = true;
-	}
-
-}
-
-void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
-{
-	SpecialLogic();
-	Super::Input_CharacterSwapPressed_Implementation();
-}
-
-void AP_Guy_Big::Input_JumpPressed_Implementation()
-{
-	if(!holdingLilGuy)
-	{
-		Super::Input_JumpPressed_Implementation();
 	}
 }

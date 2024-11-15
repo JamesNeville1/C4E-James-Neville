@@ -118,6 +118,11 @@ FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)
 	return  hitResult;
 }
 
+void AP_Guy::SpecialLogic()
+{
+	OnSpecialLogic.Broadcast();
+}
+
 void AP_Guy::Handle_HealthComponentDead(AController* causer)
 {
 	OnRespawnAlertCheck.Broadcast(this);
