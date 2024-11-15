@@ -1,5 +1,6 @@
 ﻿#include "LevelEnd.h"
 
+#include "C4E_Neville/GameMode/LevelManager.h"
 #include "C4E_Neville/Guys/P_Guy.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
 #include "Components/BoxComponent.h"
@@ -32,6 +33,7 @@ void ALevelEnd::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	if (guy->GetClass() != _MyGuy) return;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("On Finish"));
+	OnStateOn.Broadcast();
 }
 
 void ALevelEnd::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -43,13 +45,24 @@ void ALevelEnd::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 	if (guy->GetClass() != _MyGuy) return;
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Off Finish"));
+	OnStateOff.Broadcast();
 }
 
-void ALevelEnd::BeginPlay()
+void ALevelEnd::Register(ALevelManager* levelManager)
 {
-	Super::BeginPlay();
-
 	_OverlapZone->OnComponentBeginOverlap.AddUniqueDynamic(this, &ALevelEnd::Handle_OnOverlap);
 	_OverlapZone->OnComponentEndOverlap.AddUniqueDynamic(this, &ALevelEnd::Handle_OnOverlapEnd);
+
+	OnStateOn.AddUniqueDynamic(levelManager, &ALevelManager::EndLevelCounterIncrease);
+	OnStateOff.AddUniqueDynamic(levelManager, &ALevelManager::EndLevelCounterDecrease);
+
+	_OverlapZone->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	_Mesh->SetMaterial(0, _OffMaterial);
+}
+
+void ALevelEnd::Enable()
+{
+	_OverlapZone->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	_Mesh->SetMaterial(0, _OnMaterial);
 }
 

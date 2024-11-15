@@ -6,6 +6,7 @@
 #include "GameFramework/GameMode.h"
 #include "GM_Puzzle.generated.h"
 
+class ALevelManager;
 class APC_Guy;
 class AP_Guy;
 
@@ -16,9 +17,15 @@ class C4E_NEVILLE_API AGM_Puzzle : public AGameMode, public IGameRuleReturns
 
 public:
 	AGM_Puzzle();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Classes")
+	TSubclassOf<ALevelManager> LevelManagerClass;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APC_Guy* _ControllerRef;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ALevelManager* _LevelManagerRef;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UGR_Candy* _CandyGRRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -32,7 +39,15 @@ public:
 	void MyStartMatch(); //Used to spawn multiple characters used by player
 
 	virtual void HandleMatchIsWaitingToStart() override;
-	
+
+	void EnableAllEndLevels();
+
+	UFUNCTION()
+	void EndGame();
+	UFUNCTION()
+	void EndLevel();
+	UFUNCTION()
+	void FailLevel(FString reason);
 	UFUNCTION()
 	void CandyGameRuleComplete();
 	UFUNCTION()
@@ -44,7 +59,6 @@ public:
 	
 	virtual void BeginPlay() override;
 	
-
 	UFUNCTION()
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
 	virtual UGR_Pumpkin* GR_Pumpkin_Ref_Implementation() override;
@@ -55,4 +69,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int _GameRuleObjectivesToComplete;
+private:
+
+	void CheckGameRuleObjectivesToComplete();
 };

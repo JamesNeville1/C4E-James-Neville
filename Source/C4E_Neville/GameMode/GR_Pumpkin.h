@@ -25,6 +25,7 @@ public:
 	void RegisterPumpkin(UPumpkinComponent* pumpkinComponent);
 
 	int _CurrentPumpkin;
+	
 private:
 	UFUNCTION()
 	void PumpkinDeathAlert();

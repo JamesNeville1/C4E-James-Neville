@@ -3,14 +3,14 @@
 
 #include "GI_Puzzle.h"
 
-FName UGI_Puzzle::GetNextLeve()
+FName UGI_Puzzle::GetNextLevel_Implementation()
 {
 	_CurrentLevel++;
 
-	if(_LevelMap.Find(_CurrentLevel) == new FName(""))
+	if(_CurrentLevel >= _Levels.Num() -1)
 	{
 		return "";
 	}
 
-	return  _LevelMap[_CurrentLevel];
+	return  _Levels[_CurrentLevel];
 }

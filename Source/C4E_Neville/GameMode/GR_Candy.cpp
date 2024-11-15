@@ -9,6 +9,9 @@
 
 UGR_Candy::UGR_Candy()
 {
+	PrimaryComponentTick.bCanEverTick = false;
+	
+	_IsRequiredToCompleteGame = true;
 }
 
 void UGR_Candy::BeginPlay()

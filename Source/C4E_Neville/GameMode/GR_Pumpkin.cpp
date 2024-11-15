@@ -6,7 +6,9 @@
 
 UGR_Pumpkin::UGR_Pumpkin()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
+
+	_IsRequiredToCompleteGame = true;
 }
 
 void UGR_Pumpkin::BeginPlay()

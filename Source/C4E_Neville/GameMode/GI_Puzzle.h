@@ -3,19 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "C4E_Neville/Interface/GameInstanceLogic.h"
 #include "Engine/GameInstance.h"
 #include "GI_Puzzle.generated.h"
 
 UCLASS()
-class C4E_NEVILLE_API UGI_Puzzle : public UGameInstance
+class C4E_NEVILLE_API UGI_Puzzle : public UGameInstance, public IGameInstanceLogic
 {
 	GENERATED_BODY()
 
 public:
-	UFUNCTION()
-	FName GetNextLeve();
+	virtual FName GetNextLevel_Implementation() override;
 protected:
-	TMap<int, FName> _LevelMap;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<FName> _Levels;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int _CurrentLevel;
 };

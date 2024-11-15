@@ -3,13 +3,16 @@
 #include "GR_Candy.h"
 #include "GR_Pumpkin.h"
 #include "K2Node_SpawnActorFromClass.h"
+#include "LevelManager.h"
 #include "../Guys/P_Guy.h"
 #include "../Guys/P_Guy.h"
 #include "ToolBuilderUtil.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
 #include "C4E_Neville/Guys/P_Guy_Lil.h"
 #include "C4E_Neville/Guys/P_Guy_Strong.h"
+#include "C4E_Neville/Interface/GameInstanceLogic.h"
 #include "C4E_Neville/Level/GuyStart.h"
+#include "Engine/LevelStreamingDynamic.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -53,7 +56,8 @@ void AGM_Puzzle::MyStartMatch()
 	//TArray<AActor*> foundActors;
 	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGuyStart::StaticClass(), foundActors);
 	//_GuyStarts = foundActors;
-	
+
+	//Spawn Guys
 	TArray<AP_Guy*> guys;
 	for (AActor* start : _GuyStarts)
 	{
@@ -69,8 +73,32 @@ void AGM_Puzzle::MyStartMatch()
 		guys.Add(IGuyReturns::Execute_Return_Self(guy));
 	}
 
+	//Setup Controller
 	_ControllerRef->ControllerSetup(guys, sharedLivesTotal, _SwapListOrder);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
+
+	//Setup Level Manager
+	FActorSpawnParameters spawnParams;
+	spawnParams.Owner = GetOwner();
+	spawnParams.Instigator = GetInstigator();
+	spawnParams.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	
+	_LevelManagerRef = GetWorld()->SpawnActor<ALevelManager>(LevelManagerClass, spawnParams);
+	_LevelManagerRef->LevelManagerSetup(this, guys.Num());
+
+	//GameRuleObjectiveCounter
+	TArray<UActorComponent*> gameRules = K2_GetComponentsByClass(UPuzzleGameRule::StaticClass());
+
+	for (auto gameRule : gameRules)
+	{
+		if(Cast<UPuzzleGameRule>(gameRule)->_IsRequiredToCompleteGame)
+		{
+			_GameRuleObjectivesToComplete++;
+		}
+	}
+
+	CheckGameRuleObjectivesToComplete();
 }
 
 void AGM_Puzzle::HandleMatchIsWaitingToStart()
@@ -78,26 +106,63 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	MyStartMatch();
 }
 
+void AGM_Puzzle::EnableAllEndLevels()
+{
+	_LevelManagerRef->EnableAllEndLevels();
+}
+
+void AGM_Puzzle::EndGame()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("GAME END"));
+}
+
+void AGM_Puzzle::EndLevel()
+{
+	FName nextLevelName = IGameInstanceLogic::Execute_GetNextLevel(GetGameInstance());
+
+	if(nextLevelName == TEXT(""))
+	{
+		EndGame();
+	}
+	else
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
+	}
+}
+
+void AGM_Puzzle::FailLevel(FString reason)
+{
+	UGameplayStatics::OpenLevel(GetWorld(), FName(GetWorld()->GetName()));
+}
+
 void AGM_Puzzle::CandyGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
+
+	_GameRuleObjectivesToComplete--;
+	CheckGameRuleObjectivesToComplete();
 }
 
 void AGM_Puzzle::TimerGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player ran out of time"));
+
+	FailLevel("Time ran out!!!");
 }
 
 void AGM_Puzzle::PumpkinGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Pumpkin Complete, check other GRs"));
+	
+	_GameRuleObjectivesToComplete--;
+	CheckGameRuleObjectivesToComplete();
 }
 
 void AGM_Puzzle::PlayerOutOfLives(AP_Guy* guyThatDied)
 {
 	FString output = guyThatDied->GetName() + " Died!";
 				
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, output);
+	FailLevel(output);
 }
 
 
@@ -117,4 +182,12 @@ UGR_Candy* AGM_Puzzle::GR_Candy_Ref_Implementation()
 UGR_Pumpkin* AGM_Puzzle::GR_Pumpkin_Ref_Implementation()
 {
 	return _PumpkinGRRef;
+}
+
+void AGM_Puzzle::CheckGameRuleObjectivesToComplete()
+{
+	if(_GameRuleObjectivesToComplete == 0)
+	{
+		_LevelManagerRef->EnableAllEndLevels();
+	}
 }

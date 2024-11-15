@@ -16,6 +16,8 @@ public:
 
 	FPuzzleGameRuleCompleteSignature OnPuzzleGameRuleComplete;
 
+	bool _IsRequiredToCompleteGame = false; 
+
 protected:
 	void BroadcastGameRuleComplete();
 };
