@@ -43,6 +43,7 @@ public:
 	void PlayerOutOfLives(AP_Guy* guyThatDied);
 	
 	virtual void BeginPlay() override;
+	
 
 	UFUNCTION()
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
@@ -51,4 +52,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int sharedLivesTotal;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 };

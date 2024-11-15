@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "C4E_Neville/Interface/GuyStartReturns.h"
+#include "C4E_Neville/Interface/GuyStaticClassReturn.h"
 #include "GameFramework/Actor.h"
 #include "GuyStart.generated.h"
 
 UCLASS()
-class C4E_NEVILLE_API AGuyStart : public AActor, public IGuyStartReturns
+class C4E_NEVILLE_API AGuyStart : public AActor, public IGuyStaticClassReturn
 {
 	GENERATED_BODY()
 

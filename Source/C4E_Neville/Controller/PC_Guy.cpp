@@ -115,9 +115,9 @@ void APC_Guy::SwapCharacter()
 	Possess(_SwapList[player]);
 }
 
-void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal) //ToDo: Use Guy Array Param
+void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder) //ToDo: Use Guy Array Param
 {
-	GuySwapSetup(guys);
+	GuySwapSetup(guys, swapListOrder);
 
 	_SharedLivesCurrent = sharedLivesTotal;
 }
@@ -136,11 +136,11 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	}
 }
 
-void APC_Guy::GuySwapSetup(TArray<AP_Guy*> guys)
+void APC_Guy::GuySwapSetup(TArray<AP_Guy*> guys, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder)
 {
 	//Swap Setup
 	TArray<TSubclassOf<AP_Guy>> swapListOrderKeys;
-	_SwapListOrder.GenerateKeyArray(swapListOrderKeys);
+	swapListOrder.GenerateKeyArray(swapListOrderKeys);
 
 	//Setup Swap Order
 	for (TSubclassOf<AP_Guy> guyClass : swapListOrderKeys)
@@ -150,7 +150,7 @@ void APC_Guy::GuySwapSetup(TArray<AP_Guy*> guys)
 		AP_Guy* value;
 		key = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), guyClass));
 		value = IGuyReturns::Execute_Return_Self(
-			UGameplayStatics::GetActorOfClass(GetWorld(), _SwapListOrder[guyClass]));
+			UGameplayStatics::GetActorOfClass(GetWorld(), swapListOrder[guyClass]));
 
 		//Setup
 		value->GuySetup(this);

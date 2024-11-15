@@ -2,7 +2,6 @@
 
 #include "Components/SphereComponent.h"
 
-
 ACandy::ACandy()
 {
 	PrimaryActorTick.bCanEverTick = false;

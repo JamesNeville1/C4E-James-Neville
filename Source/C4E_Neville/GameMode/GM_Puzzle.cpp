@@ -63,13 +63,13 @@ void AGM_Puzzle::MyStartMatch()
 		spawnParams.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		TSubclassOf<AP_Guy> myGuy = IGuyStartReturns::Execute_Return_GuyClass(start);
+		TSubclassOf<AP_Guy> myGuy = IGuyStaticClassReturn::Execute_Return_GuyClass(start);
 		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(myGuy, start->GetActorLocation(), start->GetActorRotation(), spawnParams);
 
 		guys.Add(IGuyReturns::Execute_Return_Self(guy));
 	}
 
-	_ControllerRef->ControllerSetup(guys, sharedLivesTotal);
+	_ControllerRef->ControllerSetup(guys, sharedLivesTotal, _SwapListOrder);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 }
 

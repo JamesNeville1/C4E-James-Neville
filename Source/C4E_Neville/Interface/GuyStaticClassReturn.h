@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "GuyStartReturns.generated.h"
+#include "GuyStaticClassReturn.generated.h"
 
 class AP_Guy;
 // This class does not need to be modified.
 UINTERFACE()
-class UGuyStartReturns : public UInterface
+class UGuyStaticClassReturn : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -17,7 +17,7 @@ class UGuyStartReturns : public UInterface
 /**
  * 
  */
-class C4E_NEVILLE_API IGuyStartReturns
+class C4E_NEVILLE_API IGuyStaticClassReturn
 {
 	GENERATED_BODY()
 

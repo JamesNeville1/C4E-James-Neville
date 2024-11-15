@@ -21,7 +21,7 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal);
+	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder);
 	UFUNCTION()
 	void RespawnCheck(AP_Guy* guy);
 
@@ -54,9 +54,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TMap<AP_Guy*, AP_Guy*> _SwapList;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
 
 private:
-	void GuySwapSetup(TArray<AP_Guy*> guys);
+	void GuySwapSetup(TArray<AP_Guy*> guys, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder);
 };
