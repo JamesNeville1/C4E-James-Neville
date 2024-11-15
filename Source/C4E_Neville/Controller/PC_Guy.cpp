@@ -113,29 +113,22 @@ void APC_Guy::OnPossess(APawn* InPawn)
 void APC_Guy::SwapCharacter()
 {
 	AP_Guy* player = IGuyReturns::Execute_Return_Self(GetCharacter());
-	Possess(_SwapList[player]);
+
+	TArray<TSubclassOf<AP_Guy>> guyKeys;
+	_GuyMap.GenerateKeyArray(guyKeys);
+
+	int index = guyKeys.Find(player->GetClass());
+
+	index > guyKeys.Num() - 2 ? index = 0 : index++;
+	
+	Possess(_GuyMap[guyKeys[index]]);
 }
 
-void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>,
-	TSubclassOf<AP_Guy>> swapListOrder, bool bigGuyCanThrow) //ToDo: Use Guy Array Param
-{
-	if(!bigGuyCanThrow)
-	{
-		for (AP_Guy* guy : guys)
-		{
-			if (guy->GetClass() == AP_Guy_Big::StaticClass())
-			{
-				Cast<AP_Guy_Big>(guy)->_CanThrow = false;
-				
-				break;
-			}
-		}
-	}
-	
-	GuySwapSetup(guys, swapListOrder);
+void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow) //ToDo: Use Guy Array Param
+{	
+	GuySwapSetup(swapOrder, guys, bigGuyCanThrow);
 	
 	_SharedLivesCurrent = sharedLivesTotal;
-	
 }
 
 void APC_Guy::RespawnCheck(AP_Guy* guy)
@@ -152,29 +145,18 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	}
 }
 
-void APC_Guy::GuySwapSetup(TArray<AP_Guy*> guys, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder)
+void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys, bool bigGuyCanThrow)
 {
 	//Swap Setup
-	TArray<TSubclassOf<AP_Guy>> swapListOrderKeys;
-	swapListOrder.GenerateKeyArray(swapListOrderKeys);
-
-	//Setup Swap Order
-	for (TSubclassOf<AP_Guy> guyClass : swapListOrderKeys)
+	for (int i = 0; i < order.Num(); i++)
 	{
-		//Get object reference from class reference map
-		AP_Guy* key;
-		AP_Guy* value;
-		key = IGuyReturns::Execute_Return_Self(UGameplayStatics::GetActorOfClass(GetWorld(), guyClass));
-		value = IGuyReturns::Execute_Return_Self(
-			UGameplayStatics::GetActorOfClass(GetWorld(), swapListOrder[guyClass]));
-
-		//Setup
-		value->GuySetup(this);
-		
-		//Add to map
-		_SwapList.Add(
-			key,
-			value
-		);
+		_GuyMap.Add(order[i], guys[i]);
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, AP_Guy_Big::StaticClass()->GetName());
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, order[i]->GetName());
+		if(order[i] == AP_Guy_Big::StaticClass())
+		{
+			Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->_CanThrow = bigGuyCanThrow;
+		}
+		guys[i]->GuySetup(this);
 	}
 }

@@ -21,7 +21,7 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder, bool bigGuyCanThrow);
+	void ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow);
 	UFUNCTION()
 	void RespawnCheck(AP_Guy* guy);
 
@@ -53,8 +53,8 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TMap<AP_Guy*, AP_Guy*> _SwapList;
+	TMap<TSubclassOf<AP_Guy>, AP_Guy*> _GuyMap;
 
 private:
-	void GuySwapSetup(TArray<AP_Guy*> guys, TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> swapListOrder);
+	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys, bool bigGuyCanThrow);
 };

@@ -37,7 +37,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool _BigGuyCanThrow = true;
 	
-	TArray<TObjectPtr<AActor>> _GuyStarts;
 	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
 	void MyStartMatch(); //Used to spawn multiple characters used by player
 
@@ -71,11 +70,12 @@ protected:
 	int sharedLivesTotal;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<TSubclassOf<AP_Guy>, TSubclassOf<AP_Guy>> _SwapListOrder;
+	TArray<TSubclassOf<AP_Guy>> _SwapOrder;
+	TArray<TObjectPtr<AActor>> _GuyStarts;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int _GameRuleObjectivesToComplete;
-private:
 
+private:
 	void CheckGameRuleObjectivesToComplete();
 };

@@ -59,22 +59,24 @@ void AGM_Puzzle::MyStartMatch()
 
 	//Spawn Guys
 	TArray<AP_Guy*> guys;
-	for (AActor* start : _GuyStarts)
+	guys.Init(nullptr, _SwapOrder.Num());
+	
+	for (int i = 0; i < _GuyStarts.Num(); i++)
 	{
+		int index = _SwapOrder.Find(IGuyStaticClassReturn::Execute_Return_GuyClass(_GuyStarts[i]));			
+		
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = GetOwner();
 		spawnParams.Instigator = GetInstigator();
 		spawnParams.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-		TSubclassOf<AP_Guy> myGuy = IGuyStaticClassReturn::Execute_Return_GuyClass(start);
-		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(myGuy, start->GetActorLocation(), start->GetActorRotation(), spawnParams);
-
-		guys.Add(IGuyReturns::Execute_Return_Self(guy));
+		
+		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(_SwapOrder[index], _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
+		guys[index] = IGuyReturns::Execute_Return_Self(guy);
 	}
 
 	//Setup Controller
-	_ControllerRef->ControllerSetup(guys, sharedLivesTotal, _SwapListOrder, _BigGuyCanThrow);
+	_ControllerRef->ControllerSetup(_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 
 	//Setup Level Manager
