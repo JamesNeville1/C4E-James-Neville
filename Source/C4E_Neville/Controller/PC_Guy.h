@@ -56,5 +56,5 @@ protected:
 	TMap<TSubclassOf<AP_Guy>, AP_Guy*> _GuyMap;
 
 private:
-	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys, bool bigGuyCanThrow);
+	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys);
 };

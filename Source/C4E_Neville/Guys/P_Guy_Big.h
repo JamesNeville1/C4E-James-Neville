@@ -17,8 +17,6 @@ public:
 	AP_Guy_Big();
 	virtual void Input_CharacterSwapPressed_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
-
-	bool _CanThrow = true;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UChildActorComponent> _LilGuyAttachPoint;
@@ -33,7 +31,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	AActor* _LilGuyRef; //ToDo: Ref ok?
 
-	virtual void GuySetup(APC_Guy* controller) override;
+	void SetCanThrow(bool canThrow);
 	
 private:
 	UFUNCTION()

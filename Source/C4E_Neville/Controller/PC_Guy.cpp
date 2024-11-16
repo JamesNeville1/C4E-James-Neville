@@ -117,7 +117,7 @@ void APC_Guy::SwapCharacter()
 	TArray<TSubclassOf<AP_Guy>> guyKeys;
 	_GuyMap.GenerateKeyArray(guyKeys);
 
-	int index = guyKeys.Find(player->GetClass());
+	int index = guyKeys.Find(player->GetClass()->GetSuperClass());
 
 	index > guyKeys.Num() - 2 ? index = 0 : index++;
 	
@@ -126,7 +126,9 @@ void APC_Guy::SwapCharacter()
 
 void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow) //ToDo: Use Guy Array Param
 {	
-	GuySwapSetup(swapOrder, guys, bigGuyCanThrow);
+	GuySwapSetup(swapOrder, guys);
+
+	Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
 	
 	_SharedLivesCurrent = sharedLivesTotal;
 }
@@ -145,18 +147,16 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	}
 }
 
-void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys, bool bigGuyCanThrow)
+void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys)
 {
 	//Swap Setup
 	for (int i = 0; i < order.Num(); i++)
 	{
-		_GuyMap.Add(order[i], guys[i]);
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, AP_Guy_Big::StaticClass()->GetName());
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, order[i]->GetName());
-		if(order[i] == AP_Guy_Big::StaticClass())
-		{
-			Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->_CanThrow = bigGuyCanThrow;
-		}
+		_GuyMap.Add(order[i]->GetSuperClass(), guys[i]);
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, _GuyMap[]->GetName());
+		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, guys[i]->GetName());
+		
 		guys[i]->GuySetup(this);
 	}
 }

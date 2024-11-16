@@ -23,9 +23,9 @@ void AP_Guy_Big::Input_JumpPressed_Implementation()
 	}
 }
 
-void AP_Guy_Big::GuySetup(APC_Guy* controller)
+void AP_Guy_Big::SetCanThrow(bool canThrow)
 {
-	if(_CanThrow)
+	if(canThrow)
 	{
 		OnSpecialLogic.AddUniqueDynamic(this, &AP_Guy_Big::ThrowLogic);	
 	}
@@ -33,8 +33,6 @@ void AP_Guy_Big::GuySetup(APC_Guy* controller)
 	{
 		//ToDo: UI Alert
 	}
-	
-	Super::GuySetup(controller);
 }
 
 void AP_Guy_Big::ThrowLogic()
