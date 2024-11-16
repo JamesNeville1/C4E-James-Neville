@@ -17,4 +17,6 @@ class C4E_NEVILLE_API IGameInstanceLogic
 public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FName GetNextLevel();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FName GetCurrentLevel();
 };

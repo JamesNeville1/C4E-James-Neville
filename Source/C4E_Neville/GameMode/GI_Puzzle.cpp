@@ -12,5 +12,10 @@ FName UGI_Puzzle::GetNextLevel_Implementation()
 		return "";
 	}
 
-	return  _Levels[_CurrentLevel];
+	return  _Levels[_CurrentLevel].levelToLoad;
+}
+
+FName UGI_Puzzle::GetCurrentLevel_Implementation()
+{
+	return  _Levels[_CurrentLevel].levelDisplayName;
 }

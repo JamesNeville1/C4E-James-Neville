@@ -75,6 +75,9 @@ void AGM_Puzzle::MyStartMatch()
 		guys[index] = IGuyReturns::Execute_Return_Self(guy);
 	}
 
+	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
+	_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
+	
 	//Setup Controller
 	_ControllerRef->ControllerSetup(_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
@@ -170,8 +173,8 @@ void AGM_Puzzle::PlayerOutOfLives(AP_Guy* guyThatDied)
 
 void AGM_Puzzle::BeginPlay()
 {
-	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
-	_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
+	//_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
+	//_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
 	
 	Super::BeginPlay();
 }

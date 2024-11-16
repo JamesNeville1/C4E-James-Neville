@@ -6,13 +6,19 @@
 #include "Blueprint/UserWidget.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
 #include "C4E_Neville/ClassStuff/P_FPS.h"
+#include "C4E_Neville/GameMode/GR_Candy.h"
+#include "C4E_Neville/GameMode/GR_Pumpkin.h"
 #include "C4E_Neville/Guys/P_Guy.h"
 #include "C4E_Neville/Guys/P_Guy_Big.h"
+#include "C4E_Neville/Interface/GameRuleReturns.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
 #include "C4E_Neville/UI/W_Hud.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
+#include "Kismet/KismetTextLibrary.h"
 
 void APC_Guy::SetupInputComponent()
 {
@@ -140,10 +146,12 @@ void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_G
 		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
 		_HudWidget->AddToViewport();
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("REEEEEEE"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy));
 		
-		//_HudWidget->UpdateHealth(1.0f);
-		//_HudWidget->UpdateScore(0);
+		_HudWidget->Setup(
+			UKismetStringLibrary::Conv_IntToString(sharedLivesTotal),
+			UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy),
+			UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy));
 	}
 }
 

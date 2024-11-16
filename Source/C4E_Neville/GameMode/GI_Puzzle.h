@@ -7,6 +7,17 @@
 #include "Engine/GameInstance.h"
 #include "GI_Puzzle.generated.h"
 
+USTRUCT(BlueprintType)
+struct FGuyData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName levelToLoad;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FName levelDisplayName;
+};
+
 UCLASS()
 class C4E_NEVILLE_API UGI_Puzzle : public UGameInstance, public IGameInstanceLogic
 {
@@ -14,9 +25,10 @@ class C4E_NEVILLE_API UGI_Puzzle : public UGameInstance, public IGameInstanceLog
 
 public:
 	virtual FName GetNextLevel_Implementation() override;
+	virtual FName GetCurrentLevel_Implementation() override;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FName> _Levels;
+	TArray<FGuyData> _Levels;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int _CurrentLevel;

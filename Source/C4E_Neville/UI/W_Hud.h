@@ -7,13 +7,6 @@
 class UProgressBar;
 class UTextBlock;
 
-UENUM(BlueprintType)
-enum class DynamicWidgetID : uint8 {
-	CANDY_COUNTER = 0 UMETA(DisplayName = "CANDY_COUNTER"),
-	PUMPKIN_COUNTER = 1  UMETA(DisplayName = "PUMPKIN_COUNTER"),
-	TIMER_DISPLAY = 2     UMETA(DisplayName = "TIMER_DISPLAY"),
-};
-
 UCLASS()
 class C4E_NEVILLE_API UW_Hud : public UUserWidget
 {
@@ -22,10 +15,16 @@ class C4E_NEVILLE_API UW_Hud : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	
-	void Setup(TArray<DynamicWidgetID> hide);
-	
-	TMap<DynamicWidgetID, TObjectPtr<UWidget>> _DynamicWidgets;
+	void Setup(FString playerStartingLives, FString pumpkinTotal, FString candyTotal);
 
+	void UpdateHealthBar();
+	void UpdateCandyCounter(FString candyCurrent, FString candyMax);
+	void UpdatePumpkinCounter(FString pumpkinCurrent, FString pumpkinMax);
+	void UpdateTimerDisplay(FString current);
+	void UpdatePlayerLivesDisplay(FString playerLivesCurrent, FString playerLivesMax);
+	void UpdateLevelNameDisplay(FText levelNameDisplayText);
+	
+protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;
 	UPROPERTY(meta = (BindWidget))
