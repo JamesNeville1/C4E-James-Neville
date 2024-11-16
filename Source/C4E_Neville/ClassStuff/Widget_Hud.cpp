@@ -5,7 +5,7 @@ void UWidget_Hud::NativeConstruct()
 	Super::NativeConstruct();
 
 	if(HealthBar) HealthBar->SetPercent(0.0f);
-	if (ScoreText) ScoreText->SetText(FText::FromString("Score: ERROR! :/"));
+	if(ScoreText) ScoreText->SetText(FText::FromString("Score: ERROR! :/"));
 }
 
 void UWidget_Hud::UpdateHealth(float newHealthRatio)

@@ -3,11 +3,14 @@
 #include "EnhancedInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
+#include "Blueprint/UserWidget.h"
 #include "C4E_Neville/ClassStuff/HealthComponent.h"
+#include "C4E_Neville/ClassStuff/P_FPS.h"
 #include "C4E_Neville/Guys/P_Guy.h"
 #include "C4E_Neville/Guys/P_Guy_Big.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
+#include "C4E_Neville/UI/W_Hud.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -124,13 +127,24 @@ void APC_Guy::SwapCharacter()
 	Possess(_GuyMap[guyKeys[index]]);
 }
 
-void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow) //ToDo: Use Guy Array Param
+void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow)
 {	
 	GuySwapSetup(swapOrder, guys);
 
 	Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
 	
 	_SharedLivesCurrent = sharedLivesTotal;
+
+	if(_HudWidgetClass != nullptr)
+	{
+		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
+		_HudWidget->AddToViewport();
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("REEEEEEE"));
+		
+		//_HudWidget->UpdateHealth(1.0f);
+		//_HudWidget->UpdateScore(0);
+	}
 }
 
 void APC_Guy::RespawnCheck(AP_Guy* guy)
@@ -153,9 +167,6 @@ void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> gu
 	for (int i = 0; i < order.Num(); i++)
 	{
 		_GuyMap.Add(order[i]->GetSuperClass(), guys[i]);
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, _GuyMap[]->GetName());
-		//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, guys[i]->GetName());
 		
 		guys[i]->GuySetup(this);
 	}

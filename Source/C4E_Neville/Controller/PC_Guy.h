@@ -5,6 +5,7 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_Guy.generated.h"
 
+class UW_Hud;
 class AGuyStart;
 struct FInputActionValue;
 class UInputAction;
@@ -55,6 +56,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TMap<TSubclassOf<AP_Guy>, AP_Guy*> _GuyMap;
 
+protected: //Hud
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UW_Hud> _HudWidgetClass;
+	TObjectPtr<UW_Hud> _HudWidget;
+	
 private:
 	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys);
 };
