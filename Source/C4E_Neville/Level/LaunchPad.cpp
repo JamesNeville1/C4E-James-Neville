@@ -27,7 +27,7 @@ void ALaunchPad::BeginPlay()
 	_OverlapZone->OnComponentEndOverlap.AddUniqueDynamic(this, &ALaunchPad::Handle_OnOverlapEnd);
 }
 
-void ALaunchPad::Trigger_Implementation()
+void ALaunchPad::Trigger_Implementation() //ToDo: Turn Button Off Straight After
 {
 	for (auto character : _HeldCharacters)
 	{

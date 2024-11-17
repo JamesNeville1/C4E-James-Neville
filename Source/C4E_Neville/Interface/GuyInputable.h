@@ -33,6 +33,9 @@ public:
 	void Input_CharacterSwapPressed();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UBehaviorTree* GetBehaviorTree();
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UInputMappingContext* GetMappingContext();
 	
 };
