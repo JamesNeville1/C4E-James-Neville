@@ -30,6 +30,7 @@ public:
 	UGR_Candy* _CandyGRRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UGR_Pumpkin* _PumpkinGRRef;
+	bool _HasTimer;
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 	virtual void Logout(AController* Exiting) override;
@@ -39,7 +40,8 @@ public:
 	
 	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
 	void MyStartMatch(); //Used to spawn multiple characters used by player
-
+	void DelayedBeginPlay(bool played);
+	
 	virtual void HandleMatchIsWaitingToStart() override;
 
 	void EnableAllEndLevels();

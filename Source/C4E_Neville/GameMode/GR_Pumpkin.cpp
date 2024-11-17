@@ -1,6 +1,7 @@
 ﻿#include "GR_Pumpkin.h"
 
 #include "GM_Puzzle.h"
+#include "C4E_Neville/Interface/GuyController.h"
 #include "C4E_Neville/Level/PumpkinComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -11,11 +12,9 @@ UGR_Pumpkin::UGR_Pumpkin()
 	_IsRequiredToCompleteGame = true;
 }
 
-void UGR_Pumpkin::BeginPlay()
+void UGR_Pumpkin::Setup(AGM_Puzzle* gm)
 {
-	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::PumpkinGameRuleComplete);
-	
-	Super::BeginPlay();
+	OnPuzzleGameRuleComplete.AddUniqueDynamic(gm, &AGM_Puzzle::PumpkinGameRuleComplete);
 }
 
 void UGR_Pumpkin::RegisterPumpkin(UPumpkinComponent* pumpkinComponent)
@@ -23,12 +22,14 @@ void UGR_Pumpkin::RegisterPumpkin(UPumpkinComponent* pumpkinComponent)
 	pumpkinComponent->_OnPumpkinDefeat.AddUniqueDynamic(this, &UGR_Pumpkin::PumpkinDeathAlert);
 
 	_CurrentPumpkin++;
+	_TotalPumpkin++;
 }
 
 void UGR_Pumpkin::PumpkinDeathAlert()
 {
 	_CurrentPumpkin -= 1;
 
+	IGuyController::Execute_UpdatePumpkinAlert(UGameplayStatics::GetPlayerController(GetWorld(),0), _CurrentPumpkin, _TotalPumpkin);
 	if(_CurrentPumpkin <= 0)
 	{
 		BroadcastGameRuleComplete();

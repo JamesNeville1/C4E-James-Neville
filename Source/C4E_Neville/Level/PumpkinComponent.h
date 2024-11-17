@@ -25,6 +25,5 @@ protected:
 private:
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
-	void LateBeginPlay(bool played);
 public:
 };

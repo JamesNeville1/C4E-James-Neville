@@ -21,7 +21,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	void LateBeginPlay(bool played);
 	virtual void Interact_Implementation() override;
 	
 private:

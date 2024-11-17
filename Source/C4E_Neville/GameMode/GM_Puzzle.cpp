@@ -2,6 +2,7 @@
 
 #include "GR_Candy.h"
 #include "GR_Pumpkin.h"
+#include "GR_Timer.h"
 #include "K2Node_SpawnActorFromClass.h"
 #include "LevelManager.h"
 #include "../Guys/P_Guy.h"
@@ -75,11 +76,29 @@ void AGM_Puzzle::MyStartMatch()
 		guys[index] = IGuyReturns::Execute_Return_Self(guy);
 	}
 
+	//GRs with setups, can be done with begin play, but allows me to controller the execution order
+	int totalCandy = 0;
+	int totalPumpkin = 0;
+	
 	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
+	if(_CandyGRRef != nullptr)
+	{
+		_CandyGRRef->Setup(this);
+		totalCandy = _CandyGRRef->_CurrentCandy;
+	}
+	
 	_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
+	if(_PumpkinGRRef != nullptr)
+	{
+		_PumpkinGRRef->Setup(this);
+		totalPumpkin = _PumpkinGRRef->_CurrentPumpkin;
+	}
+
+	_HasTimer = GetComponentByClass(UGR_Timer::StaticClass()) != nullptr;
 	
 	//Setup Controller
-	_ControllerRef->ControllerSetup(_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
+	_ControllerRef->ControllerSetup(
+		_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 
 	//Setup Level Manager
@@ -104,6 +123,27 @@ void AGM_Puzzle::MyStartMatch()
 	}
 
 	CheckGameRuleObjectivesToComplete();
+	
+	//Late Begin Player (Used to trigger things after all begin plays)
+	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &AGM_Puzzle::DelayedBeginPlay);
+}
+
+void AGM_Puzzle::DelayedBeginPlay(bool played)
+{
+	int totalCandy = 0;
+	int totalPumpkin = 0;
+	
+	if (_CandyGRRef != nullptr)
+	{
+		totalCandy = _CandyGRRef->_CurrentCandy;
+	}
+	
+	if (_PumpkinGRRef != nullptr)
+	{
+		totalPumpkin = _PumpkinGRRef->_CurrentPumpkin;
+	}
+	
+	_ControllerRef->UISetupAlert(totalCandy, totalPumpkin, _HasTimer);
 }
 
 void AGM_Puzzle::HandleMatchIsWaitingToStart()

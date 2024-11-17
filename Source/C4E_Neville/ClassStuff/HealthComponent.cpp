@@ -3,6 +3,8 @@
 
 #include "HealthComponent.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -16,6 +18,11 @@ UHealthComponent::UHealthComponent()
 void UHealthComponent::Reset()
 {
 	_CurrentHealth = _MaxHealth;
+}
+
+float UHealthComponent::GetNormalisedHealth()
+{
+	return UKismetMathLibrary::NormalizeToRange(_CurrentHealth, 0, _MaxHealth);
 }
 
 // Called when the game starts

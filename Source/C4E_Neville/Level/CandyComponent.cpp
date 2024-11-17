@@ -12,13 +12,9 @@ UCandyComponent::UCandyComponent()
 
 void UCandyComponent::BeginPlay()
 {
-	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &UCandyComponent::LateBeginPlay);
-	Super::BeginPlay();
-}
-
-void UCandyComponent::LateBeginPlay(bool played)
-{
+	//GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &UCandyComponent::LateBeginPlay);
 	IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->RegisterCandy(this);
+	Super::BeginPlay();
 }
 
 void UCandyComponent::Interact_Implementation()

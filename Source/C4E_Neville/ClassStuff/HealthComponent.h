@@ -33,6 +33,8 @@ public:
 
 	UFUNCTION()
 	void Reset();
+
+	float GetNormalisedHealth();
 	
 protected:
 	

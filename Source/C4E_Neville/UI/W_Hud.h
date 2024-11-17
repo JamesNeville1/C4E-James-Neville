@@ -14,16 +14,18 @@ class C4E_NEVILLE_API UW_Hud : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
-	
-	void Setup(FString playerStartingLives, FString pumpkinTotal, FString candyTotal);
 
-	void UpdateHealthBar();
+	void UpdateHealthBar(float normalisedHealth);
+	void UpdateHealthBarColour(FLinearColor color);
 	void UpdateCandyCounter(FString candyCurrent, FString candyMax);
 	void UpdatePumpkinCounter(FString pumpkinCurrent, FString pumpkinMax);
 	void UpdateTimerDisplay(FString current);
-	void UpdatePlayerLivesDisplay(FString playerLivesCurrent, FString playerLivesMax);
+	void UpdatePlayerLivesDisplay(FText playerLivesCurrent);
 	void UpdateLevelNameDisplay(FText levelNameDisplayText);
-	
+
+	void HidePumpkinCounter();
+	void HideCandyCounter();
+	void HideTimerDisplay();
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;

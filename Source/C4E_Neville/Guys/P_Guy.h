@@ -15,6 +15,7 @@ class APC_Guy;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpecialLogicSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP_Guy*, guy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGuyReturns
@@ -37,6 +38,7 @@ public:
 	
 	FSwapGuySignature OnSwapGuy;
 	FOnGuyRespawnCheckAlertSignature OnRespawnAlertCheck;
+	FOnGuyDamageUIAlertSignature OnDamageUIAlert;
 
 	virtual void GuySetup(APC_Guy* controller);
 
@@ -45,6 +47,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UHealthComponent> _Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FLinearColor _HealthColour;
 protected:
 	FSpecialLogicSignature OnSpecialLogic;
 	
@@ -54,7 +59,7 @@ protected:
 	TObjectPtr<UCameraComponent> _Camera;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
-
+	
 	FHitResult SpecialLineTraceLogic(FName profile, float range);
 	
 	UFUNCTION()

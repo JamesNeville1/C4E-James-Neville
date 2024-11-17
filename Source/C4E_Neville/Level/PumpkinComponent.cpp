@@ -32,14 +32,10 @@ void UPumpkinComponent::BeginPlay()
 
 	_Health->OnDead.AddUniqueDynamic(this, &UPumpkinComponent::Handle_HealthDead);
 
-	GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &UPumpkinComponent::LateBeginPlay);
-
-	Super::BeginPlay();
-}
-
-void UPumpkinComponent::LateBeginPlay(bool played)
-{
+	//GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &UPumpkinComponent::LateBeginPlay);
 	IGameRuleReturns::Execute_GR_Pumpkin_Ref(UGameplayStatics::GetGameMode(GetWorld()))->RegisterPumpkin(this);
+	
+	Super::BeginPlay();
 }
 
 void UPumpkinComponent::Handle_HealthDead(AController* causer)

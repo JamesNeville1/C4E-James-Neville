@@ -8,6 +8,7 @@
 
 
 class UCandyComponent;
+class AGM_Puzzle;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
@@ -16,9 +17,10 @@ class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
 
 public:
 	UGR_Candy();
-	virtual void BeginPlay() override;
+	void Setup(AGM_Puzzle* gm);
 	
 	int _CurrentCandy;
+	int _TotalCandy;
 	UFUNCTION()
 	void RegisterCandy(UCandyComponent* candyComponent);
 	UFUNCTION()

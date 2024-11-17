@@ -118,7 +118,6 @@ void APC_Guy::OnPossess(APawn* InPawn)
 	}
 }
 
-
 void APC_Guy::SwapCharacter()
 {
 	AP_Guy* player = IGuyReturns::Execute_Return_Self(GetCharacter());
@@ -131,6 +130,8 @@ void APC_Guy::SwapCharacter()
 	index > guyKeys.Num() - 2 ? index = 0 : index++;
 	
 	Possess(_GuyMap[guyKeys[index]]);
+	_HudWidget->UpdateHealthBar(_GuyMap[guyKeys[index]]->_Health->GetNormalisedHealth());
+	_HudWidget->UpdateHealthBarColour(_GuyMap[guyKeys[index]]->_HealthColour);
 }
 
 void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow)
@@ -140,19 +141,58 @@ void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_G
 	Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
 	
 	_SharedLivesCurrent = sharedLivesTotal;
+}
 
+void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
+{
 	if(_HudWidgetClass != nullptr)
 	{
 		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
 		_HudWidget->AddToViewport();
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy));
 		
-		_HudWidget->Setup(
-			UKismetStringLibrary::Conv_IntToString(sharedLivesTotal),
-			UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy),
-			UKismetStringLibrary::Conv_IntToString(IGameRuleReturns::Execute_GR_Candy_Ref(UGameplayStatics::GetGameMode(GetWorld()))->_CurrentCandy));
+		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
+
+		if(maxPumpkin != 0)
+		{
+			FString in = UKismetStringLibrary::Conv_IntToString(maxPumpkin);
+			_HudWidget->UpdatePumpkinCounter(in, in);
+		}
+		else
+		{
+			_HudWidget->HidePumpkinCounter();
+		}
+		if(maxCandy != 0)
+		{
+			FString in = UKismetStringLibrary::Conv_IntToString(maxCandy);
+			_HudWidget->UpdateCandyCounter(in, in);
+		}
+		else
+		{
+			_HudWidget->HideCandyCounter();
+		}
+
+		_HudWidget->UpdateHealthBar(1);
+		_HudWidget->UpdateHealthBarColour(IGuyReturns::Execute_Return_Self(GetPawn())->_HealthColour);
+
+		if (!hasTimer) _HudWidget->HideTimerDisplay();
 	}
+}
+
+void APC_Guy::UpdateTimerAlert_Implementation(float time)
+{
+	_HudWidget->UpdateTimerDisplay(UKismetStringLibrary::Conv_IntToString(time) + "s");
+}
+
+void APC_Guy::UpdateCandyAlert_Implementation(int current, int max)
+{
+	_HudWidget->UpdateCandyCounter(
+		UKismetStringLibrary::Conv_IntToString(current), UKismetStringLibrary::Conv_IntToString(max));
+}
+
+void APC_Guy::UpdatePumpkinAlert_Implementation(int current, int max)
+{
+	_HudWidget->UpdatePumpkinCounter(
+		UKismetStringLibrary::Conv_IntToString(current), UKismetStringLibrary::Conv_IntToString(max));
 }
 
 void APC_Guy::RespawnCheck(AP_Guy* guy)
@@ -161,12 +201,20 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	{
 		guy->EyeBallFramesStart();
 		guy->_Health->Reset();
+		if(guy == IGuyReturns::Execute_Return_Self(GetPawn())) _HudWidget->UpdateHealthBar(1);
 		_SharedLivesCurrent = _SharedLivesCurrent - 1;
+		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
 	}
 	else
 	{
 		OnOutOfLives.Broadcast(guy);
 	}
+}
+
+void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
+{
+	_HudWidget->UpdateHealthBar(normalisedHealth);
+	_HudWidget->UpdateHealthBarColour(colour);
 }
 
 void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys)

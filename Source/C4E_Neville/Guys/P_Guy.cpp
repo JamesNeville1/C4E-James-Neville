@@ -69,6 +69,7 @@ void AP_Guy::GuySetup(APC_Guy* controller)
 {
 	OnSwapGuy.AddUniqueDynamic(controller, &APC_Guy::SwapCharacter);
 	OnRespawnAlertCheck.AddUniqueDynamic(controller, &APC_Guy::RespawnCheck);
+	OnDamageUIAlert.AddUniqueDynamic(controller, &APC_Guy::UpdateHealthAlert);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("AAAAAAAAAAAAAAAAAAAAA"));
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_Guy::Handle_HealthComponentDead);
@@ -113,6 +114,10 @@ void AP_Guy::Handle_HealthComponentDead(AController* causer)
 
 void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
 {
+	if(GetController() != nullptr)
+	{
+		OnDamageUIAlert.Broadcast(_Health->GetNormalisedHealth(), _HealthColour);
+	}
 }
 
 void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
