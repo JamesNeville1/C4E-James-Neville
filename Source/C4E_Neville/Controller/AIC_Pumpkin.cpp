@@ -4,6 +4,7 @@
 #include "AIC_Pumpkin.h"
 
 #include "C4E_Neville/Interface/GuyInputable.h"
+#include "C4E_Neville/Interface/PumpkinInputable.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AAIC_Pumpkin::AAIC_Pumpkin()
@@ -20,8 +21,8 @@ void AAIC_Pumpkin::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UGuyInputable::StaticClass()))
+	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UPumpkinInputable::StaticClass()))
 	{
-		RunBehaviorTree(IGuyInputable::Execute_GetBehaviorTree(InPawn));
+		RunBehaviorTree(IPumpkinInputable::Execute_GetBehaviorTree(InPawn));
 	}
 }

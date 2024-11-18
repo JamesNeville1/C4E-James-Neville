@@ -1,5 +1,7 @@
 ﻿#include "Pumpkin.h"
 
+#include "Kismet/KismetStringLibrary.h"
+
 APumpkin::APumpkin()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -11,30 +13,23 @@ void APumpkin::BeginPlay()
 	
 }
 
-void APumpkin::Input_Look_Implementation(FVector2D value)
-{
-	
-}
-
-void APumpkin::Input_Move_Implementation(FVector2D value)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, "-_-");
-
-	LaunchCharacter(GetActorUpVector() * 10000, false, false);
-}
-
-void APumpkin::Input_JumpPressed_Implementation()
-{
-	
-}
-
-void APumpkin::Input_JumpReleased_Implementation()
-{
-	
-}
-
 UBehaviorTree* APumpkin::GetBehaviorTree_Implementation()
 {
 	return _BehaviorTree;
+}
+
+FVector APumpkin::GetNextPatrolPoint_Implementation()
+{
+	if(_PatrolPointIndex >= _PatrolPoints.Num())
+	{
+		_PatrolPointIndex = 0;
+	}
+
+
+
+	FVector pos = _PatrolPoints[_PatrolPointIndex]->GetActorLocation(); 
+	_PatrolPointIndex++;
+	
+	return pos;
 }
 
