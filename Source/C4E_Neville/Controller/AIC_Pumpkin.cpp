@@ -8,7 +8,7 @@
 
 AAIC_Pumpkin::AAIC_Pumpkin()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AAIC_Pumpkin::BeginPlay()
