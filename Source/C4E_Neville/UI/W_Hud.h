@@ -7,6 +7,9 @@
 class UProgressBar;
 class UTextBlock;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHidePumpkinCounterSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHideCandyCounterSignature);
+
 UCLASS()
 class C4E_NEVILLE_API UW_Hud : public UUserWidget
 {
@@ -26,6 +29,12 @@ public:
 	void HidePumpkinCounter();
 	void HideCandyCounter();
 	void HideTimerDisplay();
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnHidePumpkinCounterSignature OnHidePumpkinCounter;
+	UPROPERTY(Blueprintable)
+	FOnHideCandyCounterSignature OnHideCandyCounter;
+	
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;
@@ -39,4 +48,5 @@ protected:
 	TObjectPtr<UTextBlock> PlayerLivesDisplay;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> LevelNameDisplay;
+
 };

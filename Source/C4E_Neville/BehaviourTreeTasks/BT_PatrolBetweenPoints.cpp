@@ -10,8 +10,15 @@ EBTNodeResult::Type UBT_PatrolBetweenPoints::ExecuteTask(UBehaviorTreeComponent&
 {
 	if(OwnerComp.GetAIOwner()->GetMoveStatus() != EPathFollowingStatus::Moving)
 	{
-		OwnerComp.GetAIOwner()->MoveToLocation(IPumpkinInputable::Execute_GetNextPatrolPoint(OwnerComp.GetAIOwner()->GetPawn()));	
+		EPathFollowingRequestResult::Type res = OwnerComp.GetAIOwner()->MoveToLocation(
+			IPumpkinInputable::Execute_GetNextPatrolPoint(OwnerComp.GetAIOwner()->GetPawn()));
 	}
+
+	//GetWorld()->GetTimerManager().SetTimer(_CheckDistHandle, this, &UGR_Timer::BroadcastGameRuleComplete, _length, false);
 	
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::InProgress;
+}
+
+void UBT_PatrolBetweenPoints::CheckDistance()
+{
 }

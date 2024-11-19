@@ -59,12 +59,14 @@ void UW_Hud::UpdateLevelNameDisplay(FText levelNameDisplayText)
 
 void UW_Hud::HidePumpkinCounter()
 {
-	PumpkinCounter->SetVisibility(ESlateVisibility::Hidden);
+	//PumpkinCounter->SetVisibility(ESlateVisibility::Hidden);
+	//PumpkinCounter->RemoveFromParent();
 }
 
 void UW_Hud::HideCandyCounter()
 {
 	CandyCounter->SetVisibility(ESlateVisibility::Hidden);
+	CandyCounter->RemoveFromParent();
 }
 
 void UW_Hud::HideTimerDisplay()
