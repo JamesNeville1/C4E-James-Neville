@@ -19,6 +19,6 @@ void UCandyComponent::BeginPlay()
 
 void UCandyComponent::Interact_Implementation()
 {
-	_OnCandyEaten.Broadcast();
+	_OnCandyEaten.Broadcast(GetOwner()->GetActorLocation());
 	GetOwner()->Destroy();
 }

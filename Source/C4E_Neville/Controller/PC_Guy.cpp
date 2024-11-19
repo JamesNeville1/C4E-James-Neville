@@ -27,7 +27,9 @@ void APC_Guy::SetupInputComponent()
 	if(UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EIP->BindAction(_LookAction, ETriggerEvent::Triggered, this, &APC_Guy::Look);
+		EIP->BindAction(_MoveAction, ETriggerEvent::Started, this, &APC_Guy::MovePressed);
 		EIP->BindAction(_MoveAction, ETriggerEvent::Triggered, this, &APC_Guy::Move);
+		EIP->BindAction(_MoveAction, ETriggerEvent::Completed, this, &APC_Guy::MoveReleased);
 		EIP->BindAction(_JumpAction, ETriggerEvent::Triggered, this, &APC_Guy::JumpPressed);
 		EIP->BindAction(_JumpAction, ETriggerEvent::Completed, this, &APC_Guy::JumpReleased);
 		EIP->BindAction(_SpecialAction, ETriggerEvent::Started, this, &APC_Guy::SpecialPressed);
@@ -48,6 +50,23 @@ void APC_Guy::Look(const FInputActionValue& value)
 	}
 }
 
+void APC_Guy::MovePressed()
+{
+	if(APawn* currentpawn = GetPawn())
+	{
+		IGuyInputable::Execute_Input_MovePressed(currentpawn);
+	}
+}
+
+void APC_Guy::MoveReleased()
+{
+	if(APawn* currentpawn = GetPawn())
+	{
+		IGuyInputable::Execute_Input_MoveReleased(currentpawn);
+		_IsMoving = false;
+	}
+}
+
 void APC_Guy::Move(const FInputActionValue& value)
 {
 	FVector2D MoveVector = value.Get<FVector2d>();
@@ -57,6 +76,7 @@ void APC_Guy::Move(const FInputActionValue& value)
 		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_Move(currentpawn, MoveVector);
+			_IsMoving = true;
 		}
 	}
 }
@@ -114,6 +134,10 @@ void APC_Guy::OnPossess(APawn* InPawn)
 		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UGuyInputable::StaticClass()))
 		{
 			subsystem->AddMappingContext(IGuyInputable::Execute_GetMappingContext(InPawn), 0);
+			if(_IsMoving)
+			{
+				MovePressed();
+			}
 		}
 	}
 }

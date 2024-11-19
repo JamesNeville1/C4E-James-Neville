@@ -54,7 +54,9 @@ protected:
 	
 	virtual void SetupInputComponent() override;
 	void Look(const FInputActionValue& value);
+	void MovePressed();
 	void Move(const FInputActionValue& value);
+	void MoveReleased();
 	void JumpPressed();
 	void JumpReleased();
 	void SpecialPressed();
@@ -71,4 +73,6 @@ protected: //Hud
 	
 private:
 	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys);
+
+	bool _IsMoving;
 };

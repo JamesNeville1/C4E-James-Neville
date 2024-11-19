@@ -23,13 +23,16 @@ void UGR_Candy::Setup(AGM_Puzzle* gm)
 void UGR_Candy::RegisterCandy(UCandyComponent* candyComponent)
 {
 	candyComponent->_OnCandyEaten.AddUniqueDynamic(this, &UGR_Candy::CandyEatenAlert);
+
 	
 	_CurrentCandy++;
 	_TotalCandy++;
 }
 
-void UGR_Candy::CandyEatenAlert()
+void UGR_Candy::CandyEatenAlert(FVector pos)
 {
+	 UGameplayStatics::PlaySoundAtLocation(GetWorld(), _CandyEatenSFX, pos);
+	
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Eaten"));
 	_CurrentCandy -= 1;
 	

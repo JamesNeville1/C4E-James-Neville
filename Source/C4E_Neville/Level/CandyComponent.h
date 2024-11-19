@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "CandyComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCandyEatenSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCandyEatenSignature, FVector, pos);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C4E_NEVILLE_API UCandyComponent : public UActorComponent, public IUseOnOverlap

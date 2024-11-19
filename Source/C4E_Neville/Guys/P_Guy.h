@@ -27,10 +27,13 @@ public:
 	
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
+	virtual void Input_MovePressed_Implementation() override;
+	virtual void Input_MoveReleased_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_SpecialPressed_Implementation() override;
 	virtual void Input_CharacterSwapPressed_Implementation() override;
+	virtual void UnPossessed() override;
 	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
@@ -52,6 +55,13 @@ public:
 	FLinearColor _HealthColour;
 protected:
 	FSpecialLogicSignature OnSpecialLogic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* _FootstepSFX;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _TimeBetweenSteps;
+	FTimerHandle _FootstepTimer;
+	void PlayFootStep();
 	
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	//TObjectPtr<UCameraComponent> _Camera;

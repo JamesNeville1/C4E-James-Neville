@@ -8,6 +8,7 @@
 #include "C4E_Neville/Interface/UseOnOverlap.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -34,10 +35,32 @@ void AP_Guy::Input_Move_Implementation(FVector2D value)
 	AddMovementInput(_Camera->GetRightVector(), value.Y);
 }
 
+void AP_Guy::Input_MovePressed_Implementation()
+{
+	GetWorld()->GetTimerManager().SetTimer(_FootstepTimer, this, &AP_Guy::PlayFootStep, _TimeBetweenSteps, true);
+}
+
+void AP_Guy::PlayFootStep()
+{
+	if(!GetCharacterMovement()->IsFalling())
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), _FootstepSFX, GetActorLocation());
+	}
+}
+
+void AP_Guy::Input_MoveReleased_Implementation()
+{
+	if(_FootstepTimer.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_FootstepTimer);
+	}
+}
+
 void AP_Guy::Input_JumpPressed_Implementation()
 {
 	ACharacter::Jump();
 }
+
 
 void AP_Guy::Input_JumpReleased_Implementation()
 {
@@ -53,6 +76,16 @@ void AP_Guy::Input_CharacterSwapPressed_Implementation()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Swap Logic Here!"));
 	OnSwapGuy.Broadcast();
+}
+
+void AP_Guy::UnPossessed()
+{
+	Super::UnPossessed();
+
+	if(_FootstepTimer.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(_FootstepTimer);
+	}
 }
 
 UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
@@ -80,6 +113,7 @@ void AP_Guy::GuySetup(APC_Guy* controller)
 	
 	//Super::BeginPlay();
 }
+
 
 
 FHitResult AP_Guy::SpecialLineTraceLogic(FName profile, float range)

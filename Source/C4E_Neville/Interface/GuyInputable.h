@@ -22,6 +22,10 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_Look(FVector2D value);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_MovePressed();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void Input_MoveReleased();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_Move(FVector2D value);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void Input_JumpPressed();

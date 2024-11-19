@@ -21,8 +21,12 @@ public:
 	
 	int _CurrentCandy;
 	int _TotalCandy;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* _CandyEatenSFX;
+	
 	UFUNCTION()
 	void RegisterCandy(UCandyComponent* candyComponent);
 	UFUNCTION()
-	void CandyEatenAlert();
+	void CandyEatenAlert(FVector pos);
 };
