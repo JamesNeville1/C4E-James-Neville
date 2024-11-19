@@ -13,7 +13,8 @@ class C4E_NEVILLE_API UBT_PatrolBetweenPoints : public UBTTaskNode
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-	void CheckDistance();
+	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+	void Check(AAIController* controller);
 	
 	FTimerHandle _CheckDistHandle;
 };

@@ -19,7 +19,8 @@ protected:
 	
 	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
 	virtual FVector GetNextPatrolPoint_Implementation() override;
-
+	virtual FVector GetCurrentPatrolPoint_Implementation() override;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<AActor*> _PatrolPoints;
 	int _PatrolPointIndex;	

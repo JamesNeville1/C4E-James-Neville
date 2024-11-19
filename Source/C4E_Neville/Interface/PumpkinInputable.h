@@ -21,4 +21,6 @@ public:
 	UBehaviorTree* GetBehaviorTree();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	FVector GetNextPatrolPoint();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	FVector GetCurrentPatrolPoint();
 };
