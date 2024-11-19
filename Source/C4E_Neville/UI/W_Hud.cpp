@@ -59,17 +59,25 @@ void UW_Hud::UpdateLevelNameDisplay(FText levelNameDisplayText)
 
 void UW_Hud::HidePumpkinCounter()
 {
-	//PumpkinCounter->SetVisibility(ESlateVisibility::Hidden);
-	//PumpkinCounter->RemoveFromParent();
+	PumpkinCounter->SetVisibility(ESlateVisibility::Hidden);
+	PumpkinCounter->RemoveFromParent();
+
+	ReceiveHidePumpkinCounter();
 }
 
 void UW_Hud::HideCandyCounter()
 {
 	CandyCounter->SetVisibility(ESlateVisibility::Hidden);
 	CandyCounter->RemoveFromParent();
+
+	ReceiveHideCandyCounter();
 }
 
 void UW_Hud::HideTimerDisplay()
 {
 	TimerDisplay->SetVisibility(ESlateVisibility::Hidden);
 }
+
+void UW_Hud::ReceiveHidePumpkinCounter_Implementation() { }
+
+void UW_Hud::ReceiveHideCandyCounter_Implementation() { }

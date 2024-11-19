@@ -34,6 +34,11 @@ public:
 	FOnHidePumpkinCounterSignature OnHidePumpkinCounter;
 	UPROPERTY(Blueprintable)
 	FOnHideCandyCounterSignature OnHideCandyCounter;
+
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Pumpkin Counter")
+	void ReceiveHidePumpkinCounter();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Candy Counter")
+	void ReceiveHideCandyCounter();
 	
 protected:
 	UPROPERTY(meta = (BindWidget))
