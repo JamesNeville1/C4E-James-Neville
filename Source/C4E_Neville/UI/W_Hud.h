@@ -7,9 +7,6 @@
 class UProgressBar;
 class UTextBlock;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHidePumpkinCounterSignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHideCandyCounterSignature);
-
 UCLASS()
 class C4E_NEVILLE_API UW_Hud : public UUserWidget
 {
@@ -29,16 +26,29 @@ public:
 	void HidePumpkinCounter();
 	void HideCandyCounter();
 	void HideTimerDisplay();
-
-	UPROPERTY(BlueprintAssignable, BlueprintCallable)
-	FOnHidePumpkinCounterSignature OnHidePumpkinCounter;
-	UPROPERTY(Blueprintable)
-	FOnHideCandyCounterSignature OnHideCandyCounter;
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Health Bar")
+	void ReceiveUpdateHealthBar(const float& normalisedHealth);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Health Bar Colour")
+	void ReceiveUpdateHealthBarColour(const FLinearColor& color);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Candy Counter")
+	void ReceiveUpdateCandyCounter(const FString& candyCurrent, const FString& candyMax);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Pumpkin Counter")
+	void ReceiveUpdatePumpkinCounter(const FString& pumpkinCurrent, const FString& pumpkinMax);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Timer Display")
+	void ReceiveUpdateTimerDisplay(const FString& current);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Player Lives Display")
+	void ReceiveUpdatePlayerLivesDisplay(const FText& playerLivesCurrent);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Level Name Display")
+	void ReceiveUpdateLevelNameDisplay(const FText& levelNameDisplayText);
 
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Pumpkin Counter")
 	void ReceiveHidePumpkinCounter();
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Candy Counter")
 	void ReceiveHideCandyCounter();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Timer Display")
+	void ReceiveHideTimerDisplay();
+
 	
 protected:
 	UPROPERTY(meta = (BindWidget))
