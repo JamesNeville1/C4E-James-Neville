@@ -154,8 +154,8 @@ void APC_Guy::SwapCharacter()
 	index > guyKeys.Num() - 2 ? index = 0 : index++;
 	
 	Possess(_GuyMap[guyKeys[index]]);
-	_HudWidget->UpdateHealthBar(_GuyMap[guyKeys[index]]->_Health->GetNormalisedHealth());
-	_HudWidget->UpdateHealthBarColour(_GuyMap[guyKeys[index]]->_HealthColour);
+	_HudWidget->UpdateHealthBar(_GuyMap[guyKeys[index]]->GetNormalizedHealth());
+	_HudWidget->UpdateHealthBarColour(_GuyMap[guyKeys[index]]->GetHealthColor());
 }
 
 void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow)
@@ -196,7 +196,7 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 		}
 
 		_HudWidget->UpdateHealthBar(1);
-		_HudWidget->UpdateHealthBarColour(IGuyReturns::Execute_Return_Self(GetPawn())->_HealthColour);
+		_HudWidget->UpdateHealthBarColour(IGuyReturns::Execute_Return_Self(GetPawn())->GetHealthColor());
 
 		if (!hasTimer) _HudWidget->HideTimerDisplay();
 	}
@@ -224,7 +224,7 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	if(_SharedLivesCurrent > 0)
 	{
 		guy->EyeBallFramesStart();
-		guy->_Health->Reset();
+		guy->ResetHealth();
 		if(guy == IGuyReturns::Execute_Return_Self(GetPawn())) _HudWidget->UpdateHealthBar(1);
 		_SharedLivesCurrent = _SharedLivesCurrent - 1;
 		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));

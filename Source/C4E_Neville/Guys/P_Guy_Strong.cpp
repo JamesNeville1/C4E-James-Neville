@@ -7,7 +7,7 @@
 void AP_Guy_Strong::SpecialLogic()
 {
 
-	FHitResult hitResult = SpecialLineTraceLogic("WorldDynamic", _SpecialRange);
+	FHitResult hitResult = LineTraceLogic("WorldDynamic", _SpecialRange);
 	
 	bool guard =
 		(hitResult.GetActor() == nullptr);

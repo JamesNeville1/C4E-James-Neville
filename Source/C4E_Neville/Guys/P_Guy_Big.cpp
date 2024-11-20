@@ -45,7 +45,7 @@ void AP_Guy_Big::ThrowLogic()
 	}
 	else
 	{
-		FHitResult hitResult = SpecialLineTraceLogic("WorldDynamic", _SpecialRange);
+		FHitResult hitResult = LineTraceLogic("WorldDynamic", _SpecialRange);
 
 		bool guard =
 			(hitResult.GetActor() == nullptr) ||

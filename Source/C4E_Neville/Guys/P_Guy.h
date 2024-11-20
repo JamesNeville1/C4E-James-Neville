@@ -24,6 +24,55 @@ class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public 
 
 public:
 	AP_Guy();
+
+	//Start Eye Ball Frames
+	void EyeBallFramesStart();
+
+	//Setup (Called by Controller)
+	void GuySetup(APC_Guy* controller);
+
+	//Health Related
+	void ResetHealth();
+	float GetNormalizedHealth();
+
+	//UI Related
+	FLinearColor GetHealthColor();
+
+protected:
+	//Health Color (UI)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FLinearColor _HealthColor;
+
+	//Components
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UHealthComponent> _Health;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UCameraComponent> _Camera;
+
+	//Protected Events
+	FSpecialLogicSignature OnSpecialLogic;
+
+	//FootStep Related
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* _FootstepSFX;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _TimeBetweenSteps;
+	FTimerHandle _FootstepTimer;
+	void PlayFootstep();
+	
+	//Utility
+	FHitResult LineTraceLogic(FName profile, float range);
+
+	//Special Logic - Calls event used in cercumstances where the
+	virtual void SpecialLogic();
+
+	//How long after death is the character invincible?
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float _EyeBallFrameLength;
+
+	//Input
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UInputMappingContext> _InputMapping;
 	
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
@@ -33,61 +82,57 @@ public:
 	virtual void Input_JumpReleased_Implementation() override;
 	virtual void Input_SpecialPressed_Implementation() override;
 	virtual void Input_CharacterSwapPressed_Implementation() override;
-	virtual void UnPossessed() override;
-	
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
+	//Pawn Overrides
+	virtual void UnPossessed() override;
+
+	//Return Self
 	virtual AP_Guy* Return_Self_Implementation() override;
+
+	//Designer Hooks
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Play Footstep")
+	void RecievePlayFootstep();
 	
-	FSwapGuySignature OnSwapGuy;
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_Look")
+	void RecieveInput_Look(const FVector2D& value);
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_Move")
+	void RecieveInput_Move(const FVector2D& value);
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_MovePressed")
+	void RecieveInput_MovePressed();
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_MoveReleased")
+	void RecieveInput_MoveReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_JumpPressed")
+	void RecieveInput_JumpPressed();
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_JumpReleased")
+	void RecieveInput_JumpReleased();
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_SpecialPressed")
+	void RecieveInput_SpecialPressed();
+	
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_CharacterSwapPressed")
+	void RecieveInput_CharacterSwapPressed();
+private:
+	//Private Events - Used to alert controller via AMD
 	FOnGuyRespawnCheckAlertSignature OnRespawnAlertCheck;
 	FOnGuyDamageUIAlertSignature OnDamageUIAlert;
+	FSwapGuySignature OnSwapGuy;
 
-	virtual void GuySetup(APC_Guy* controller);
-
-	UFUNCTION()
-	void EyeBallFramesStart();
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UHealthComponent> _Health;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FLinearColor _HealthColour;
-protected:
-	FSpecialLogicSignature OnSpecialLogic;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USoundBase* _FootstepSFX;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float _TimeBetweenSteps;
-	FTimerHandle _FootstepTimer;
-	void PlayFootStep();
-	
-	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	//TObjectPtr<UCameraComponent> _Camera;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UCameraComponent> _Camera;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UInputMappingContext> _InputMapping;
-	
-	FHitResult SpecialLineTraceLogic(FName profile, float range);
-	
-	UFUNCTION()
-	virtual void SpecialLogic();
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float _EyeBallFrameLength;
-	
-private:
+	//Handles
 	UFUNCTION()
 	void Handle_HealthComponentDead(AController* causer);
 	UFUNCTION()
 	void Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
+	//Eye Ball Frame Related
 	FTimerHandle _EyeBallTimerHandle;
-
 	void EyeBallFramesStop();
 };
