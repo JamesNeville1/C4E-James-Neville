@@ -19,24 +19,24 @@ class C4E_NEVILLE_API IGuyInputable
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_Look(FVector2D value);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_MovePressed();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_MoveReleased();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_Move(FVector2D value);
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_JumpPressed();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_JumpReleased();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_SpecialPressed();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_CharacterSwapPressed();
 	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	UInputMappingContext* GetMappingContext();
 	
 };

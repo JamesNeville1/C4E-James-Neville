@@ -33,7 +33,7 @@ void UGR_Candy::CandyEatenAlert(FVector pos)
 {
 	 UGameplayStatics::PlaySoundAtLocation(GetWorld(), _CandyEatenSFX, pos);
 	
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Eaten"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Eaten"));
 	_CurrentCandy -= 1;
 	
 	IGuyController::Execute_UpdateCandyAlert(UGameplayStatics::GetPlayerController(GetWorld(),0), _CurrentCandy, _TotalCandy);
