@@ -18,66 +18,66 @@ class C4E_NEVILLE_API AGM_Puzzle : public AGameMode, public IGameRuleReturns
 public:
 	AGM_Puzzle();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Classes")
-	TSubclassOf<ALevelManager> LevelManagerClass;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	APC_Guy* _ControllerRef;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	ALevelManager* _LevelManagerRef;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UGR_Candy* _CandyGRRef;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UGR_Pumpkin* _PumpkinGRRef;
-	bool _HasTimer;
-	
-	virtual void PostLogin(APlayerController* NewPlayer) override;
-	virtual void Logout(AController* Exiting) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool _BigGuyCanThrow = true;
-	
-	virtual AActor* FindPlayerStart_Implementation(AController* Player, const FString& IncomingName) override;
-	void MyStartMatch(); //Used to spawn multiple characters used by player
-	void DelayedBeginPlay(bool played);
-	
-	virtual void HandleMatchIsWaitingToStart() override;
-
-	void EnableAllEndLevels();
-
-	UFUNCTION()
-	void EndGame();
-	UFUNCTION()
+	//Designers may call these
+	UFUNCTION(BlueprintCallable)
+	void FailLevel();
+	UFUNCTION(BlueprintCallable)
 	void EndLevel();
+
+	//Designers may not call these
 	UFUNCTION()
-	void FailLevel(FString reason);
+	void Handle_CandyGameRuleComplete();
 	UFUNCTION()
-	void CandyGameRuleComplete();
+	void Handle_TimerGameRuleComplete();
 	UFUNCTION()
-	void TimerGameRuleComplete();
-	UFUNCTION()
-	void PumpkinGameRuleComplete();
+	void Handle_PumpkinGameRuleComplete();
 	UFUNCTION()
 	void PlayerOutOfLives(AP_Guy* guyThatDied);
 	
-	virtual void BeginPlay() override;
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="_Important!")
+	bool _BigGuyCanThrow = true;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
+	int sharedLivesTotal;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
+	TArray<TSubclassOf<AP_Guy>> _SwapOrder;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Classes")
+	TSubclassOf<ALevelManager> LevelManagerClass;
+
+	//Designers may find useful
+	UPROPERTY(BlueprintReadOnly)
+	TArray<TObjectPtr<AActor>> _GuyStarts;
+	UPROPERTY(BlueprintReadOnly)
+	APC_Guy* _ControllerRef;
+	UPROPERTY(BlueprintReadOnly)
+	ALevelManager* _LevelManagerRef;
+	UPROPERTY(BlueprintReadOnly)
+	UGR_Candy* _CandyGRRef;
+	UPROPERTY(BlueprintReadOnly)
+	UGR_Pumpkin* _PumpkinGRRef;
+	UPROPERTY(BlueprintReadOnly)
+	bool _HasTimer;
+	UPROPERTY(BlueprintReadWrite) //Made "ReadWrite" to ensure designers can add their own functionality
+	int _GameRuleObjectivesToComplete;
+
+	//Designers may call these
+	UFUNCTION(BlueprintCallable)
+	void EnableAllEndLevels();
+	UFUNCTION(BlueprintCallable)
+	void EndGame();
+	UFUNCTION(BlueprintCallable)
+	void CheckGameRuleObjectivesToComplete();
 	
-	UFUNCTION()
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
 	virtual UGR_Pumpkin* GR_Pumpkin_Ref_Implementation() override;
 
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	int sharedLivesTotal;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<TSubclassOf<AP_Guy>> _SwapOrder;
-	TArray<TObjectPtr<AActor>> _GuyStarts;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	int _GameRuleObjectivesToComplete;
-
 private:
-	void CheckGameRuleObjectivesToComplete();
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+	virtual void Logout(AController* Exiting) override;
+
+	//Before "BeginPlay"
+	virtual void HandleMatchIsWaitingToStart() override;
+	//After "BeginPlay"
+	void DelayedBeginPlay(bool played);
 };

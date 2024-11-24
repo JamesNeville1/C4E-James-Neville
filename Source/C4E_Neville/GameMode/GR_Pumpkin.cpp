@@ -14,7 +14,7 @@ UGR_Pumpkin::UGR_Pumpkin()
 
 void UGR_Pumpkin::Setup(AGM_Puzzle* gm)
 {
-	OnPuzzleGameRuleComplete.AddUniqueDynamic(gm, &AGM_Puzzle::PumpkinGameRuleComplete);
+	OnPuzzleGameRuleComplete.AddUniqueDynamic(gm, &AGM_Puzzle::Handle_PumpkinGameRuleComplete);
 }
 
 void UGR_Pumpkin::RegisterPumpkin(UPumpkinComponent* pumpkinComponent)

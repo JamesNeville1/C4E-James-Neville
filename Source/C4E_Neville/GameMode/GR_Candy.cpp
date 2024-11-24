@@ -17,7 +17,7 @@ UGR_Candy::UGR_Candy()
 
 void UGR_Candy::Setup(AGM_Puzzle* gm)
 {
-	OnPuzzleGameRuleComplete.AddUniqueDynamic(gm, &AGM_Puzzle::CandyGameRuleComplete);
+	OnPuzzleGameRuleComplete.AddUniqueDynamic(gm, &AGM_Puzzle::Handle_CandyGameRuleComplete);
 }
 
 void UGR_Candy::RegisterCandy(UCandyComponent* candyComponent)

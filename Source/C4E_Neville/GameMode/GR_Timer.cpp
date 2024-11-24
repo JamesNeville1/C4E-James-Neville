@@ -23,7 +23,7 @@ void UGR_Timer::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UGR_Timer::BeginPlay()
 {
-	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::TimerGameRuleComplete);
+	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::Handle_TimerGameRuleComplete);
 
 	GetWorld()->GetTimerManager().SetTimer(_StopWatchHandle, this, &UGR_Timer::BroadcastGameRuleComplete, _length, false);
 	

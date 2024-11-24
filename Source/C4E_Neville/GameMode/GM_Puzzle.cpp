@@ -17,9 +17,9 @@
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 
-AGM_Puzzle::AGM_Puzzle()
-{
-}
+AGM_Puzzle::AGM_Puzzle() { }
+
+#pragma region Controller Login/Logout
 
 void AGM_Puzzle::PostLogin(APlayerController* NewPlayer)
 {
@@ -33,8 +33,15 @@ void AGM_Puzzle::Logout(AController* Exiting)
 	Super::Logout(Exiting);
 }
 
-AActor* AGM_Puzzle::FindPlayerStart_Implementation(AController* Player, const FString& IncomingName)
+#pragma endregion
+
+#pragma region Exec Order
+
+void AGM_Puzzle::HandleMatchIsWaitingToStart()
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
+
+	//Get Spawns
 	if(_GuyStarts.Num() == 0)
 	{
 		TArray<AActor*> foundActors;
@@ -45,19 +52,6 @@ AActor* AGM_Puzzle::FindPlayerStart_Implementation(AController* Player, const FS
 		}
 	}
 	
-	if(_GuyStarts.Num() > 0)
-	{
-		return _GuyStarts[FMath::RandRange(0, _GuyStarts.Num()-1)];
-	}
-	return nullptr;
-}
-
-void AGM_Puzzle::MyStartMatch()
-{
-	//TArray<AActor*> foundActors;
-	//UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGuyStart::StaticClass(), foundActors);
-	//_GuyStarts = foundActors;
-
 	//Spawn Guys
 	TArray<AP_Guy*> guys;
 	guys.Init(nullptr, _SwapOrder.Num());
@@ -71,27 +65,22 @@ void AGM_Puzzle::MyStartMatch()
 		spawnParams.Instigator = GetInstigator();
 		spawnParams.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-		
+
 		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(_SwapOrder[index], _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
 		guys[index] = IGuyReturns::Execute_Return_Self(guy);
 	}
 
 	//GRs with setups, can be done with begin play, but allows me to controller the execution order
-	int totalCandy = 0;
-	int totalPumpkin = 0;
-	
 	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
 	if(_CandyGRRef != nullptr)
 	{
 		_CandyGRRef->Setup(this);
-		totalCandy = _CandyGRRef->_CurrentCandy;
 	}
 	
 	_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
 	if(_PumpkinGRRef != nullptr)
 	{
 		_PumpkinGRRef->Setup(this);
-		totalPumpkin = _PumpkinGRRef->_CurrentPumpkin;
 	}
 
 	_HasTimer = GetComponentByClass(UGR_Timer::StaticClass()) != nullptr;
@@ -130,6 +119,8 @@ void AGM_Puzzle::MyStartMatch()
 
 void AGM_Puzzle::DelayedBeginPlay(bool played)
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("C"));
+	
 	int totalCandy = 0;
 	int totalPumpkin = 0;
 	
@@ -146,10 +137,9 @@ void AGM_Puzzle::DelayedBeginPlay(bool played)
 	_ControllerRef->UISetupAlert(totalCandy, totalPumpkin, _HasTimer);
 }
 
-void AGM_Puzzle::HandleMatchIsWaitingToStart()
-{
-	MyStartMatch();
-}
+#pragma endregion
+
+#pragma region Level Control
 
 void AGM_Puzzle::EnableAllEndLevels()
 {
@@ -175,12 +165,12 @@ void AGM_Puzzle::EndLevel()
 	}
 }
 
-void AGM_Puzzle::FailLevel(FString reason)
+void AGM_Puzzle::FailLevel()
 {
 	UGameplayStatics::OpenLevel(GetWorld(), FName(GetWorld()->GetName()));
 }
 
-void AGM_Puzzle::CandyGameRuleComplete()
+void AGM_Puzzle::Handle_CandyGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
 
@@ -188,14 +178,14 @@ void AGM_Puzzle::CandyGameRuleComplete()
 	CheckGameRuleObjectivesToComplete();
 }
 
-void AGM_Puzzle::TimerGameRuleComplete()
+void AGM_Puzzle::Handle_TimerGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player ran out of time"));
 
-	FailLevel("Time ran out!!!");
+	FailLevel();
 }
 
-void AGM_Puzzle::PumpkinGameRuleComplete()
+void AGM_Puzzle::Handle_PumpkinGameRuleComplete()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Pumpkin Complete, check other GRs"));
 	
@@ -207,17 +197,20 @@ void AGM_Puzzle::PlayerOutOfLives(AP_Guy* guyThatDied)
 {
 	FString output = guyThatDied->GetName() + " Died!";
 				
-	FailLevel(output);
+	FailLevel();
 }
 
-
-void AGM_Puzzle::BeginPlay()
+void AGM_Puzzle::CheckGameRuleObjectivesToComplete()
 {
-	//_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
-	//_PumpkinGRRef = Cast<UGR_Pumpkin>(GetComponentByClass(UGR_Pumpkin::StaticClass()));
-	
-	Super::BeginPlay();
+	if(_GameRuleObjectivesToComplete == 0)
+	{
+		_LevelManagerRef->EnableAllEndLevels();
+	}
 }
+
+#pragma endregion
+
+#pragma region Return Gamerules
 
 UGR_Candy* AGM_Puzzle::GR_Candy_Ref_Implementation()
 {
@@ -229,10 +222,4 @@ UGR_Pumpkin* AGM_Puzzle::GR_Pumpkin_Ref_Implementation()
 	return _PumpkinGRRef;
 }
 
-void AGM_Puzzle::CheckGameRuleObjectivesToComplete()
-{
-	if(_GameRuleObjectivesToComplete == 0)
-	{
-		_LevelManagerRef->EnableAllEndLevels();
-	}
-}
+#pragma endregion
