@@ -38,6 +38,9 @@ public:
 	//UI Related
 	FLinearColor GetHealthColor();
 
+	//
+	UPROPERTY(BlueprintReadWrite)
+	bool _CanSpecial;
 protected:
 	//Health Color (UI)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -63,9 +66,10 @@ protected:
 	//Utility
 	FHitResult LineTraceLogic(FName profile, float range);
 
-	//Special Logic - Calls event used in cercumstances where the
+	//Special Logic
 	virtual void SpecialLogic();
-
+	
+	
 	//How long after death is the character invincible?
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _EyeBallFrameLength;
@@ -114,6 +118,7 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_CharacterSwapPressed")
 	void RecieveInput_CharacterSwapPressed();
+
 private:
 	//Private Events - Used to alert controller via AMD
 	FOnGuyRespawnCheckAlertSignature OnRespawnAlertCheck;

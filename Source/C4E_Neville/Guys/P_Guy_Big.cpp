@@ -11,7 +11,10 @@ AP_Guy_Big::AP_Guy_Big()
 
 void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 {
-	SpecialLogic();
+	if(holdingLilGuy)
+	{
+		Input_SpecialPressed_Implementation();
+	}
 	Super::Input_CharacterSwapPressed_Implementation();
 }
 
@@ -23,19 +26,7 @@ void AP_Guy_Big::Input_JumpPressed_Implementation()
 	}
 }
 
-void AP_Guy_Big::SetCanThrow(bool canThrow)
-{
-	if(canThrow)
-	{
-		OnSpecialLogic.AddUniqueDynamic(this, &AP_Guy_Big::ThrowLogic);	
-	}
-	else
-	{
-		//ToDo: UI Alert
-	}
-}
-
-void AP_Guy_Big::ThrowLogic()
+void AP_Guy_Big::SpecialLogic()
 {
 	if(holdingLilGuy)
 	{
@@ -59,3 +50,4 @@ void AP_Guy_Big::ThrowLogic()
 		holdingLilGuy = true;
 	}
 }
+

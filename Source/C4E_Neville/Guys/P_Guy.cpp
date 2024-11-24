@@ -72,7 +72,14 @@ void AP_Guy::Input_JumpReleased_Implementation()
 
 void AP_Guy::Input_SpecialPressed_Implementation()
 {
-	SpecialLogic();
+	if(_CanSpecial)
+	{
+		SpecialLogic();
+	}
+	else
+	{
+		
+	}
 
 	RecieveInput_SpecialPressed();
 }
@@ -174,16 +181,12 @@ FHitResult AP_Guy::LineTraceLogic(FName profile, float range)
 	return  hitResult;
 }
 
-#pragma endregion Utils
-
-#pragma region Special Logic
-
-void AP_Guy::SpecialLogic() //ToDo: Check
+void AP_Guy::SpecialLogic()
 {
-	OnSpecialLogic.Broadcast();
 }
 
-#pragma endregion Special Logic
+
+#pragma endregion Utils
 
 #pragma region Component Event Handles
 

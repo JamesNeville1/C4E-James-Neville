@@ -6,11 +6,23 @@
 #include "GameFramework/PlayerController.h"
 #include "PC_Guy.generated.h"
 
+class AP_Guy_Big;
 class UW_Hud;
 class AGuyStart;
 struct FInputActionValue;
 class UInputAction;
 class AP_Guy;
+
+USTRUCT(BlueprintType)
+struct FGuyData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AP_Guy* _Guy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool _CanSpecial;
+};
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOutOfLivesAlertSignature, AP_Guy*, guy);
 
@@ -23,7 +35,7 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow);
+	void ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal);
 	void UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer);
 
 	virtual void UpdateTimerAlert_Implementation(float time) override;
@@ -64,7 +76,7 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TMap<TSubclassOf<AP_Guy>, AP_Guy*> _GuyMap;
+	TArray<AP_Guy*> _GuyList;
 
 protected: //Hud
 	UPROPERTY(EditAnywhere)
@@ -72,7 +84,6 @@ protected: //Hud
 	TObjectPtr<UW_Hud> _HudWidget;
 	
 private:
-	void GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys);
-
 	bool _IsMoving;
+	int _CurrentGuyIndex;
 };

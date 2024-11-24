@@ -16,6 +16,7 @@
 #include "Engine/LevelStreamingDynamic.h"
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 
 AGM_Puzzle::AGM_Puzzle() { }
 
@@ -53,10 +54,9 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	}
 	
 	//Spawn Guys
-	TArray<AP_Guy*> guys;
-	guys.Init(nullptr, _SwapOrder.Num());
+	TArray<FGuyData> guys;
 	
-	for (int i = 0; i < _GuyStarts.Num(); i++)
+	for (int i = 0; i < _GuyData.Num(); i++)
 	{
 		TSubclassOf<AP_Guy> type = IGuyStaticClassReturn::Execute_Return_GuyClass(_GuyStarts[i]);			
 		
@@ -67,9 +67,7 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(type, _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
-		guys[i] = Cast<AP_Guy>(guy);
-
-		//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, guys[i]->GetName());
+		guys.Add(FGuyData(Cast<AP_Guy>(guy), _GuyData[i]._CanSpecial));
 	}
 
 	//GRs with setups, can be done with begin play, but allows me to controller the execution order
@@ -88,8 +86,7 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	_HasTimer = GetComponentByClass(UGR_Timer::StaticClass()) != nullptr;
 	
 	//Setup Controller
-	_ControllerRef->ControllerSetup(
-		_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
+	_ControllerRef->ControllerSetup(guys, _SharedLivesTotal);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
 	
 	//Setup Level Manager
@@ -99,7 +96,7 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	spawnParams.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
-	_LevelManagerRef = GetWorld()->SpawnActor<ALevelManager>(LevelManagerClass, spawnParams);
+	_LevelManagerRef = GetWorld()->SpawnActor<ALevelManager>(_LevelManagerClass, spawnParams);
 	_LevelManagerRef->LevelManagerSetup(this, guys.Num());
 	
 	//GameRuleObjectiveCounter

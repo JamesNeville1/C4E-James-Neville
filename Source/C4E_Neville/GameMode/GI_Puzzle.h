@@ -8,7 +8,7 @@
 #include "GI_Puzzle.generated.h"
 
 USTRUCT(BlueprintType)
-struct FGuyData
+struct FLevelData
 {
 	GENERATED_USTRUCT_BODY()
 
@@ -28,7 +28,7 @@ public:
 	virtual FName GetCurrentLevel_Implementation() override;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<FGuyData> _Levels;
+	TArray<FLevelData> _Levels;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int _CurrentLevel;

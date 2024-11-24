@@ -6,9 +6,21 @@
 #include "GameFramework/GameMode.h"
 #include "GM_Puzzle.generated.h"
 
+struct FGuyData;
 class ALevelManager;
 class APC_Guy;
 class AP_Guy;
+
+USTRUCT(BlueprintType)
+struct FPreGuyData
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AP_Guy> _Guy;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool _CanSpecial;
+};
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AGM_Puzzle : public AGameMode, public IGameRuleReturns
@@ -36,14 +48,12 @@ public:
 	
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="_Important!")
-	bool _BigGuyCanThrow = true;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
-	int sharedLivesTotal;
+	int _SharedLivesTotal;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
-	TArray<TSubclassOf<AP_Guy>> _SwapOrder;
+	TArray<FPreGuyData> _GuyData;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Classes")
-	TSubclassOf<ALevelManager> LevelManagerClass;
+	TSubclassOf<ALevelManager> _LevelManagerClass;
 
 	//Designers may find useful
 	UPROPERTY(BlueprintReadOnly)

@@ -20,6 +20,65 @@
 #include "Kismet/KismetStringLibrary.h"
 #include "Kismet/KismetTextLibrary.h"
 
+#pragma region Setup
+
+void APC_Guy::ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, UKismetStringLibrary::Conv_IntToString(guys.Num()));
+	
+	//
+	Possess(guys[0]._Guy);
+	
+	//
+	for (auto data : guys)
+	{
+		data._Guy->_CanSpecial = data._CanSpecial;
+		_GuyList.Add(data._Guy);
+	}
+	
+	//Set shared lives
+	_SharedLivesCurrent = sharedLivesTotal;
+}
+
+void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
+{
+	if(_HudWidgetClass != nullptr)
+	{
+		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
+		_HudWidget->AddToViewport();
+		
+		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
+	
+		if(maxPumpkin != 0)
+		{
+			FString in = UKismetStringLibrary::Conv_IntToString(maxPumpkin);
+			_HudWidget->UpdatePumpkinCounter(in, in);
+		}
+		else
+		{
+			_HudWidget->HidePumpkinCounter();
+		}
+		if(maxCandy != 0)
+		{
+			FString in = UKismetStringLibrary::Conv_IntToString(maxCandy);
+			_HudWidget->UpdateCandyCounter(in, in);
+		}
+		else
+		{
+			_HudWidget->HideCandyCounter();
+		}
+	
+		_HudWidget->UpdateHealthBar(1);
+		_HudWidget->UpdateHealthBarColour(Cast<AP_Guy>(GetPawn())->GetHealthColor());
+	
+		if (!hasTimer) _HudWidget->HideTimerDisplay();
+	}
+}
+
+#pragma endregion
+
+#pragma region Input
+
 void APC_Guy::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -120,7 +179,7 @@ void APC_Guy::CharacterSwapPressed()
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
-			IGuyInputable::Execute_Input_CharacterSwapPressed(currentpawn);
+			SwapCharacter();
 		}
 	}
 }
@@ -142,67 +201,9 @@ void APC_Guy::OnPossess(APawn* InPawn)
 	}
 }
 
-void APC_Guy::SwapCharacter()
-{
-	TArray<TSubclassOf<AP_Guy>> guyKeys;
-	_GuyMap.GenerateKeyArray(guyKeys);
+#pragma endregion
 
-	int index = guyKeys.Find(GetCharacter()->GetClass()->GetSuperClass());
-
-	index > guyKeys.Num() - 2 ? index = 0 : index++;
-	
-	Possess(_GuyMap[guyKeys[index]]);
-	_HudWidget->UpdateHealthBar(_GuyMap[guyKeys[index]]->GetNormalizedHealth());
-	_HudWidget->UpdateHealthBarColour(_GuyMap[guyKeys[index]]->GetHealthColor());
-}
-
-void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_Guy*> guys, int sharedLivesTotal, bool bigGuyCanThrow)
-{	
-	GuySwapSetup(swapOrder, guys);
-
-	if(_GuyMap.Contains(AP_Guy_Big::StaticClass()))
-	{
-		Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
-	}
-		
-	
-	_SharedLivesCurrent = sharedLivesTotal;
-}
-
-void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
-{
-	if(_HudWidgetClass != nullptr)
-	{
-		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
-		_HudWidget->AddToViewport();
-		
-		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
-
-		if(maxPumpkin != 0)
-		{
-			FString in = UKismetStringLibrary::Conv_IntToString(maxPumpkin);
-			_HudWidget->UpdatePumpkinCounter(in, in);
-		}
-		else
-		{
-			_HudWidget->HidePumpkinCounter();
-		}
-		if(maxCandy != 0)
-		{
-			FString in = UKismetStringLibrary::Conv_IntToString(maxCandy);
-			_HudWidget->UpdateCandyCounter(in, in);
-		}
-		else
-		{
-			_HudWidget->HideCandyCounter();
-		}
-
-		_HudWidget->UpdateHealthBar(1);
-		_HudWidget->UpdateHealthBarColour(Cast<AP_Guy>(GetPawn())->GetHealthColor());
-
-		if (!hasTimer) _HudWidget->HideTimerDisplay();
-	}
-}
+#pragma region UI
 
 void APC_Guy::UpdateTimerAlert_Implementation(float time)
 {
@@ -221,6 +222,16 @@ void APC_Guy::UpdatePumpkinAlert_Implementation(int current, int max)
 		UKismetStringLibrary::Conv_IntToString(current), UKismetStringLibrary::Conv_IntToString(max));
 }
 
+void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
+{
+	_HudWidget->UpdateHealthBar(normalisedHealth);
+	_HudWidget->UpdateHealthBarColour(colour);
+}
+
+#pragma endregion
+
+#pragma region Guy
+
 void APC_Guy::RespawnCheck(AP_Guy* guy)
 {
 	if(_SharedLivesCurrent > 0)
@@ -237,26 +248,18 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	}
 }
 
-void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
+void APC_Guy::SwapCharacter()
 {
-	_HudWidget->UpdateHealthBar(normalisedHealth);
-	_HudWidget->UpdateHealthBarColour(colour);
+	_CurrentGuyIndex++;
+
+	if(_CurrentGuyIndex > _GuyList.Num() - 1)
+	{
+		_CurrentGuyIndex = 0;
+	}
+	
+	Possess(_GuyList[_CurrentGuyIndex]);
+	_HudWidget->UpdateHealthBar(_GuyList[_CurrentGuyIndex]->GetNormalizedHealth());
+	_HudWidget->UpdateHealthBarColour(_GuyList[_CurrentGuyIndex]->GetHealthColor());
 }
 
-void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys)
-{
-	//Swap Setup
-	for (int orderIndex = 0; orderIndex < order.Num(); orderIndex++)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "A");
-		for (int guyIndex = 0; guyIndex < guys.Num(); guyIndex++)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "B");
-			if(guys[guyIndex]->GetClass()->GetSuperClass() == order[orderIndex])
-			{
-				_GuyMap.Add(order[guyIndex]->GetSuperClass(), guys[guyIndex]);
-				guys[guyIndex]->GuySetup(this);
-			}
-		}
-	}
-}
+#pragma endregion

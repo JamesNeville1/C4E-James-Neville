@@ -31,9 +31,10 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	AActor* _LilGuyRef; //ToDo: Ref ok?
 
-	void SetCanThrow(bool canThrow);
+protected:
+	UFUNCTION(BlueprintCallable)
+	virtual void SpecialLogic() override;
+
 	
 private:
-	UFUNCTION()
-	void ThrowLogic();
 };
