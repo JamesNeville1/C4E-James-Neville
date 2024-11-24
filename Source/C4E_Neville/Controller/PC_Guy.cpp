@@ -144,12 +144,10 @@ void APC_Guy::OnPossess(APawn* InPawn)
 
 void APC_Guy::SwapCharacter()
 {
-	AP_Guy* player = IGuyReturns::Execute_Return_Self(GetCharacter());
-
 	TArray<TSubclassOf<AP_Guy>> guyKeys;
 	_GuyMap.GenerateKeyArray(guyKeys);
 
-	int index = guyKeys.Find(player->GetClass()->GetSuperClass());
+	int index = guyKeys.Find(GetCharacter()->GetClass()->GetSuperClass());
 
 	index > guyKeys.Num() - 2 ? index = 0 : index++;
 	
@@ -162,7 +160,11 @@ void APC_Guy::ControllerSetup(TArray<TSubclassOf<AP_Guy>> swapOrder, TArray<AP_G
 {	
 	GuySwapSetup(swapOrder, guys);
 
-	Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
+	if(_GuyMap.Contains(AP_Guy_Big::StaticClass()))
+	{
+		Cast<AP_Guy_Big>(_GuyMap[AP_Guy_Big::StaticClass()])->SetCanThrow(bigGuyCanThrow);
+	}
+		
 	
 	_SharedLivesCurrent = sharedLivesTotal;
 }
@@ -196,7 +198,7 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 		}
 
 		_HudWidget->UpdateHealthBar(1);
-		_HudWidget->UpdateHealthBarColour(IGuyReturns::Execute_Return_Self(GetPawn())->GetHealthColor());
+		_HudWidget->UpdateHealthBarColour(Cast<AP_Guy>(GetPawn())->GetHealthColor());
 
 		if (!hasTimer) _HudWidget->HideTimerDisplay();
 	}
@@ -244,10 +246,17 @@ void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
 void APC_Guy::GuySwapSetup(TArray<TSubclassOf<AP_Guy>> order, TArray<AP_Guy*> guys)
 {
 	//Swap Setup
-	for (int i = 0; i < order.Num(); i++)
+	for (int orderIndex = 0; orderIndex < order.Num(); orderIndex++)
 	{
-		_GuyMap.Add(order[i]->GetSuperClass(), guys[i]);
-		
-		guys[i]->GuySetup(this);
+		GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "A");
+		for (int guyIndex = 0; guyIndex < guys.Num(); guyIndex++)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "B");
+			if(guys[guyIndex]->GetClass()->GetSuperClass() == order[orderIndex])
+			{
+				_GuyMap.Add(order[guyIndex]->GetSuperClass(), guys[guyIndex]);
+				guys[guyIndex]->GuySetup(this);
+			}
+		}
 	}
 }

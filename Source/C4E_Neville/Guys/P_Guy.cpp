@@ -118,15 +118,6 @@ void AP_Guy::UnPossessed()
 
 #pragma endregion Pawn Overrides
 
-#pragma region Return Self
-
-AP_Guy* AP_Guy::Return_Self_Implementation()
-{
-	return this;
-}
-
-#pragma endregion ReturnSelf
-
 #pragma region Setup
 
 void AP_Guy::GuySetup(APC_Guy* controller)

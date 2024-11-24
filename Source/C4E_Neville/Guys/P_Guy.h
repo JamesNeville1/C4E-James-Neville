@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGuyReturns
+class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable
 {
 	GENERATED_BODY()
 
@@ -86,9 +86,6 @@ protected:
 
 	//Pawn Overrides
 	virtual void UnPossessed() override;
-
-	//Return Self
-	virtual AP_Guy* Return_Self_Implementation() override;
 
 	//Designer Hooks
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Play Footstep")

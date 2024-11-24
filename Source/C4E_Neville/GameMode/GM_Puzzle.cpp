@@ -58,7 +58,7 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	
 	for (int i = 0; i < _GuyStarts.Num(); i++)
 	{
-		int index = _SwapOrder.Find(IGuyStaticClassReturn::Execute_Return_GuyClass(_GuyStarts[i]));			
+		TSubclassOf<AP_Guy> type = IGuyStaticClassReturn::Execute_Return_GuyClass(_GuyStarts[i]);			
 		
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = GetOwner();
@@ -66,8 +66,10 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 		spawnParams.SpawnCollisionHandlingOverride =
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(_SwapOrder[index], _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
-		guys[index] = IGuyReturns::Execute_Return_Self(guy);
+		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(type, _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
+		guys[i] = Cast<AP_Guy>(guy);
+
+		//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, guys[i]->GetName());
 	}
 
 	//GRs with setups, can be done with begin play, but allows me to controller the execution order
@@ -82,14 +84,14 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	{
 		_PumpkinGRRef->Setup(this);
 	}
-
+	
 	_HasTimer = GetComponentByClass(UGR_Timer::StaticClass()) != nullptr;
 	
 	//Setup Controller
 	_ControllerRef->ControllerSetup(
 		_SwapOrder, guys, sharedLivesTotal, _BigGuyCanThrow);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
-
+	
 	//Setup Level Manager
 	FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
@@ -99,10 +101,10 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	
 	_LevelManagerRef = GetWorld()->SpawnActor<ALevelManager>(LevelManagerClass, spawnParams);
 	_LevelManagerRef->LevelManagerSetup(this, guys.Num());
-
+	
 	//GameRuleObjectiveCounter
 	TArray<UActorComponent*> gameRules = K2_GetComponentsByClass(UPuzzleGameRule::StaticClass());
-
+	
 	for (auto gameRule : gameRules)
 	{
 		if(Cast<UPuzzleGameRule>(gameRule)->_IsRequiredToCompleteGame)
@@ -110,7 +112,7 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 			_GameRuleObjectivesToComplete++;
 		}
 	}
-
+	
 	CheckGameRuleObjectivesToComplete();
 	
 	//Late Begin Player (Used to trigger things after all begin plays)
