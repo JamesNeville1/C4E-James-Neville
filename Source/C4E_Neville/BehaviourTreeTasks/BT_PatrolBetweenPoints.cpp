@@ -1,34 +1,30 @@
 ﻿#include "BT_PatrolBetweenPoints.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/Tasks/BTTask_MoveTo.h"
 #include "C4E_Neville/Controller/AIC_Pumpkin.h"
-#include "C4E_Neville/Interface/GuyInputable.h"
-#include "C4E_Neville/Interface/PumpkinInputable.h"
-#include "C4E_Neville/Level/Pumpkin.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Kismet/KismetStringLibrary.h"
-#include "Tasks/AITask_MoveTo.h"
+#include "NavigationSystem.h"
+
+
 
 EBTNodeResult::Type UBT_PatrolBetweenPoints::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	OwnerComp.GetAIOwner()->MoveToLocation(
-		IPumpkinInputable::Execute_GetNextPatrolPoint(OwnerComp.GetAIOwner()->GetPawn()));
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "BEANS");
 
-	// GetWorld()->GetTimerManager().SetTimer(
-	// 	_CheckDistHandle,
-	// 	Cast<APumpkin>(OwnerComp.GetAIOwner()->GetPawn()), &APumpkin::CheckIfAtPatrolPoint_Implementation,
-	// 	3.0f, false);
+	FNavLocation navLocation;
 	
-	return EBTNodeResult::InProgress;
-}
+	UNavigationSystemV1* navigationSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
-void UBT_PatrolBetweenPoints::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
-{
-	bool closeEnough = UKismetMathLibrary::Vector_Distance(
+	 navigationSystem->GetRandomPointInNavigableRadius(
 		OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(),
-		IPumpkinInputable::Execute_GetCurrentPatrolPoint(OwnerComp.GetAIOwner()->GetPawn())) < 100;
+		100000.0f,
+		navLocation
+	);
 
-	if(closeEnough)
-	{
-		//OwnerComp.GetBlackboardComponent().set
-	}
+	OwnerComp.GetAIOwner()->MoveToLocation(navLocation.Location);
+
+	OwnerComp.GetBlackboardComponent()->SetValueAsBool("ReachedPatrolPoint", false);
+	OwnerComp.GetBlackboardComponent()->SetValueAsVector("TargetPos", navLocation.Location);
+	
+	return EBTNodeResult::Succeeded;
 }

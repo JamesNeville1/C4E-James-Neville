@@ -14,6 +14,11 @@ class C4E_NEVILLE_API APumpkin : public ACharacter, public IPumpkinInputable
 public:
 	APumpkin();
 
+	FTimerHandle _CheckDistTimerHandle;
+	FTimerDelegate _CheckDistTimerDel;
+
+	void AISetup();
+
 protected:
 	virtual void BeginPlay() override;
 	

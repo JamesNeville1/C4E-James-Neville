@@ -10,10 +10,14 @@ APumpkin::APumpkin()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void APumpkin::AISetup()
+{
+	
+}
+
 void APumpkin::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 UBehaviorTree* APumpkin::GetBehaviorTree_Implementation()
