@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Perception/AIPerceptionComponent.h"
 
 AP_Guy::AP_Guy()
 {

@@ -6,6 +6,9 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "AIC_Pumpkin.generated.h"
 
+class UAISenseConfig_Sight;
+struct FAIStimulus;
+
 UCLASS()
 class C4E_NEVILLE_API AAIC_Pumpkin : public AAIController
 {
@@ -14,8 +17,17 @@ class C4E_NEVILLE_API AAIC_Pumpkin : public AAIController
 public:
 	AAIC_Pumpkin();
 
-protected:
-	virtual void BeginPlay() override;
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
 	
-	virtual void OnPossess(APawn* InPawn) override;	
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAIPerceptionComponent> _AIPerception;
+	TObjectPtr<UAISenseConfig_Sight> _AISense_Sight;
+	
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
+
+private:
+	UFUNCTION()
+	void Handle_TargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus);
 };

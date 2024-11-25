@@ -10,7 +10,7 @@
 UBTT_GetMoveToPos::UBTT_GetMoveToPos()
 {
 	Key_Pos.AddVectorFilter(this, GET_MEMBER_NAME_CHECKED(UBTT_GetMoveToPos, Key_Pos));
-	Key_HasReached.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTT_GetMoveToPos, Key_HasReached));
+	//Key_HasReached.AddBoolFilter(this, GET_MEMBER_NAME_CHECKED(UBTT_GetMoveToPos, Key_HasReached));
 }
 
 void UBTT_GetMoveToPos::InitializeFromAsset(UBehaviorTree& Asset)
@@ -30,7 +30,7 @@ EBTNodeResult::Type UBTT_GetMoveToPos::ExecuteTask(UBehaviorTreeComponent& Owner
 	   navLocation
    );
 
-	OwnerComp.GetBlackboardComponent()->SetValueAsBool(Key_HasReached.SelectedKeyName, false);
+	//OwnerComp.GetBlackboardComponent()->SetValueAsBool(Key_HasReached.SelectedKeyName, false);
 	OwnerComp.GetBlackboardComponent()->SetValueAsVector(Key_Pos.SelectedKeyName, navLocation.Location);
 	
 	return EBTNodeResult::Succeeded;

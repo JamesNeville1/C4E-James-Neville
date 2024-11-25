@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Pumpkin.generated.h"
 
+class UAISenseConfig_Sight;
+class UAIPerceptionComponent;
+
 UCLASS()
 class C4E_NEVILLE_API APumpkin : public ACharacter, public IPumpkinInputable
 {
@@ -13,9 +16,6 @@ class C4E_NEVILLE_API APumpkin : public ACharacter, public IPumpkinInputable
 
 public:
 	APumpkin();
-
-	FTimerHandle _CheckDistTimerHandle;
-	FTimerDelegate _CheckDistTimerDel;
 
 	void AISetup();
 

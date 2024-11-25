@@ -13,4 +13,7 @@ UCLASS()
 class C4E_NEVILLE_API UBTT_Attack : public UBTTaskNode
 {
 	GENERATED_BODY()
+
+public:
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

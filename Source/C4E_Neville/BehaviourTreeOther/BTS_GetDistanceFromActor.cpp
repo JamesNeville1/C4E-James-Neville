@@ -42,7 +42,7 @@ void UBTS_GetDistanceFromActor::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 	
 	bbComp->SetValueAsFloat(Key_DistanceOutput.SelectedKeyName, distance);
 	
-	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, FString::SanitizeFloat(distance));
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "Test B");
 	
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }

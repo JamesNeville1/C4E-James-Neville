@@ -4,6 +4,7 @@
 #include "C4E_Neville/Interface/GuyInputable.h"
 #include "C4E_Neville/Interface/GuyReturns.h"
 #include "GameFramework/Character.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "P_Guy.generated.h"
 
 class UHealthComponent;
