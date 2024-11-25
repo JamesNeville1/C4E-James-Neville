@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BT_Chase.generated.h"
+#include "BTT_Attack.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class C4E_NEVILLE_API UBT_Chase : public UBTTaskNode
+class C4E_NEVILLE_API UBTT_Attack : public UBTTaskNode
 {
 	GENERATED_BODY()
 };
