@@ -21,6 +21,11 @@ AP_Guy::AP_Guy()
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
+FGenericTeamId AP_Guy::GetGenericTeamId() const
+{
+	return _TeamID;
+}
+
 #pragma region Input
 
 void AP_Guy::Input_Look_Implementation(FVector2D value)

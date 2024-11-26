@@ -30,4 +30,6 @@ protected:
 private:
 	UFUNCTION()
 	void Handle_TargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus);
+	UFUNCTION()
+	void Handle_TargetPerceptionForgotten(AActor* actor);
 };

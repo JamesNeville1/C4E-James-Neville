@@ -19,13 +19,16 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable
+class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
 public:
 	AP_Guy();
 
+	virtual FGenericTeamId GetGenericTeamId() const override;
+	FGenericTeamId _TeamID = FGenericTeamId(2);
+	
 	//Start Eye Ball Frames
 	void EyeBallFramesStart();
 

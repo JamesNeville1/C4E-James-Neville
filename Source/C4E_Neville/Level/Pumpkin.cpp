@@ -1,12 +1,17 @@
 ﻿#include "Pumpkin.h"
 
 #include "AIController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 
 APumpkin::APumpkin()
 {
-	PrimaryActorTick.bCanEverTick = true;	
+	PrimaryActorTick.bCanEverTick = true;
+
+	_AttackPoint = CreateDefaultSubobject<UChildActorComponent>(TEXT("Attack Point"));
+	_AttackPoint->SetupAttachment(RootComponent);
 }
 
 void APumpkin::AISetup()
@@ -24,21 +29,25 @@ UBehaviorTree* APumpkin::GetBehaviorTree_Implementation()
 	return _BehaviorTree;
 }
 
-FVector APumpkin::GetNextPatrolPoint_Implementation()
+void APumpkin::Input_Attack_Implementation(AActor* target)
 {
-	if(_PatrolPointIndex >= _PatrolPoints.Num())
-	{
-		_PatrolPointIndex = 0;
-	}
-	
-	FVector pos = _PatrolPoints[_PatrolPointIndex]->GetActorLocation(); 
-	_PatrolPointIndex++;
-	
-	return pos;
-}
+	TArray<FHitResult> hits;
+	TArray<AActor*> ignore;
 
-FVector APumpkin::GetCurrentPatrolPoint_Implementation()
-{
-	return _PatrolPoints[_PatrolPointIndex]->GetActorLocation();
+	UKismetSystemLibrary::SphereTraceMultiForObjects(
+		GetWorld(), _AttackPoint->GetComponentLocation(), _AttackPoint->GetComponentLocation(), _AttackRadius,
+		_ObjectTypeToHit, false, ignore, EDrawDebugTrace::Persistent, hits, true
+	);
+
+	for (auto hit : hits)
+	{
+		if(hit.GetActor() == target)
+		{
+			UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage, GetController(), this, nullptr);
+		}
+		else
+		{
+		}
+	}
 }
 

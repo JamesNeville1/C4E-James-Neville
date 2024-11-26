@@ -20,7 +20,5 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UBehaviorTree* GetBehaviorTree();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FVector GetNextPatrolPoint();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	FVector GetCurrentPatrolPoint();
+	void Input_Attack(AActor* target);
 };

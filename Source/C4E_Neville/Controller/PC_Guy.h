@@ -27,7 +27,7 @@ struct FGuyData
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOutOfLivesAlertSignature, AP_Guy*, guy);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API APC_Guy : public APlayerController, public IGuyController
+class C4E_NEVILLE_API APC_Guy : public APlayerController, public IGuyController, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -38,6 +38,10 @@ public:
 	void ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal);
 	void UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer);
 
+	virtual FGenericTeamId GetGenericTeamId() const override;
+
+	FGenericTeamId _TeamID = FGenericTeamId(2);
+	
 	virtual void UpdateTimerAlert_Implementation(float time) override;
 	virtual void UpdateCandyAlert_Implementation(int current, int max) override;
 	virtual void UpdatePumpkinAlert_Implementation(int current, int max) override;

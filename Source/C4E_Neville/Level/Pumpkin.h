@@ -23,13 +23,19 @@ protected:
 	virtual void BeginPlay() override;
 	
 	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
-	virtual FVector GetNextPatrolPoint_Implementation() override;
-	virtual FVector GetCurrentPatrolPoint_Implementation() override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TArray<AActor*> _PatrolPoints;
-	int _PatrolPointIndex;	
+	virtual void Input_Attack_Implementation(AActor* target) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UChildActorComponent> _AttackPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _AttackRadius;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int _Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TArray<TEnumAsByte<EObjectTypeQuery>> _ObjectTypeToHit;
 };

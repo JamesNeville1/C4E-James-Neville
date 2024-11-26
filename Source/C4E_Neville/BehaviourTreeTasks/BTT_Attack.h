@@ -16,4 +16,7 @@ class C4E_NEVILLE_API UBTT_Attack : public UBTTaskNode
 
 public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+
+	UPROPERTY(EditAnywhere, Category="Blackboard")
+	FBlackboardKeySelector Key_Target;
 };

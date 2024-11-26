@@ -30,6 +30,7 @@ AAIC_Pumpkin::AAIC_Pumpkin()
 ETeamAttitude::Type AAIC_Pumpkin::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	FGenericTeamId teamID(FGenericTeamId::GetTeamIdentifier(&Other));
+	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, FString::Printf(TEXT("Getting Att towards: %d"), teamID.GetId()));
 
 	if(teamID == FGenericTeamId(1))
 	{
@@ -46,7 +47,9 @@ void AAIC_Pumpkin::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
 	_AIPerception->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &AAIC_Pumpkin::Handle_TargetPerceptionUpdated);
+	_AIPerception->OnTargetPerceptionForgotten.AddUniqueDynamic(this, &AAIC_Pumpkin::Handle_TargetPerceptionForgotten);
 }
 
 void AAIC_Pumpkin::OnPossess(APawn* InPawn)
@@ -71,4 +74,9 @@ void AAIC_Pumpkin::Handle_TargetPerceptionUpdated(AActor* actor, FAIStimulus sti
 		default:
 			return;
 	}
+}
+
+void AAIC_Pumpkin::Handle_TargetPerceptionForgotten(AActor* actor)
+{
+	GetBlackboardComponent()->ClearValue("TargetActor");
 }

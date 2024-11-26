@@ -75,6 +75,11 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 	}
 }
 
+FGenericTeamId APC_Guy::GetGenericTeamId() const
+{
+	return _TeamID;
+}
+
 #pragma endregion
 
 #pragma region Input
