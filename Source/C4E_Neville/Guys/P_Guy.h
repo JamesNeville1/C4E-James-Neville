@@ -25,6 +25,7 @@ class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public 
 public:
 	AP_Guy();
 
+	//AI
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	FGenericTeamId _TeamID = FGenericTeamId(2);
 	

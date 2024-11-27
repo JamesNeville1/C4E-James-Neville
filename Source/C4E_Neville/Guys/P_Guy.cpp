@@ -21,10 +21,14 @@ AP_Guy::AP_Guy()
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
+#pragma region AI
+
 FGenericTeamId AP_Guy::GetGenericTeamId() const
 {
 	return _TeamID;
 }
+
+#pragma endregion
 
 #pragma region Input
 
