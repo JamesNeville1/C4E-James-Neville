@@ -212,7 +212,6 @@ void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, flo
 void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Overlap Hit Something"));
 	UActorComponent* candyComponent = OtherActor->GetComponentByClass(UCandyComponent::StaticClass());
 
 	if(IsValid(candyComponent))
@@ -231,11 +230,15 @@ void AP_Guy::EyeBallFramesStart()
 	_Health->_Invincible = true;
 
 	GetWorld()->GetTimerManager().SetTimer(_EyeBallTimerHandle, this, &AP_Guy::EyeBallFramesStop, _EyeBallFrameLength, false);
+
+	RecieveEyeBallFramesStart();
 }
 
 void AP_Guy::EyeBallFramesStop()
 {
 	_Health->_Invincible = false;
+
+	RecieveEyeBallFramesStop();
 }
 #pragma endregion Eye Ball Frames
 
@@ -250,5 +253,7 @@ void AP_Guy::RecieveInput_JumpPressed_Implementation() { }
 void AP_Guy::RecieveInput_JumpReleased_Implementation() { }
 void AP_Guy::RecieveInput_SpecialPressed_Implementation() { }
 void AP_Guy::RecieveInput_CharacterSwapPressed_Implementation() { }
+void AP_Guy::RecieveEyeBallFramesStart_Implementation() { }
+void AP_Guy::RecieveEyeBallFramesStop_Implementation() { }
 
 #pragma endregion Designer Hooks

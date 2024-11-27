@@ -34,6 +34,7 @@ void APC_Guy::ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal)
 	{
 		data._Guy->_CanSpecial = data._CanSpecial;
 		_GuyList.Add(data._Guy);
+		data._Guy->GuySetup(this);
 	}
 	
 	//Set shared lives
@@ -229,6 +230,7 @@ void APC_Guy::UpdatePumpkinAlert_Implementation(int current, int max)
 
 void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, FString::SanitizeFloat(normalisedHealth));
 	_HudWidget->UpdateHealthBar(normalisedHealth);
 	_HudWidget->UpdateHealthBarColour(colour);
 }
@@ -243,7 +245,7 @@ void APC_Guy::RespawnCheck(AP_Guy* guy)
 	{
 		guy->EyeBallFramesStart();
 		guy->ResetHealth();
-		if(guy == IGuyReturns::Execute_Return_Self(GetPawn())) _HudWidget->UpdateHealthBar(1);
+		_HudWidget->UpdateHealthBar(1);
 		_SharedLivesCurrent = _SharedLivesCurrent - 1;
 		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
 	}

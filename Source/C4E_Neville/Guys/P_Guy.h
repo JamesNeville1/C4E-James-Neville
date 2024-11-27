@@ -14,7 +14,6 @@ class UCapsuleComponent;
 class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpecialLogicSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP_Guy*, guy);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
 
@@ -42,9 +41,10 @@ public:
 	//UI Related
 	FLinearColor GetHealthColor();
 
-	//
+	//Designers can change this
 	UPROPERTY(BlueprintReadWrite)
 	bool _CanSpecial;
+	
 protected:
 	//Health Color (UI)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -55,9 +55,6 @@ protected:
 	TObjectPtr<UHealthComponent> _Health;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UCameraComponent> _Camera;
-
-	//Protected Events
-	FSpecialLogicSignature OnSpecialLogic;
 
 	//FootStep Related
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -122,6 +119,11 @@ protected:
 	
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_CharacterSwapPressed")
 	void RecieveInput_CharacterSwapPressed();
+
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStart")
+	void RecieveEyeBallFramesStart();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStop")
+	void RecieveEyeBallFramesStop();
 
 private:
 	//Private Events - Used to alert controller via AMD

@@ -30,7 +30,7 @@ AAIC_Pumpkin::AAIC_Pumpkin()
 ETeamAttitude::Type AAIC_Pumpkin::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	FGenericTeamId teamID(FGenericTeamId::GetTeamIdentifier(&Other));
-	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, FString::Printf(TEXT("Getting Att towards: %d"), teamID.GetId()));
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, FString::Printf(TEXT("Getting Att towards: %d"), teamID.GetId()));
 
 	if(teamID == FGenericTeamId(1))
 	{
@@ -64,7 +64,7 @@ void AAIC_Pumpkin::OnPossess(APawn* InPawn)
 
 void AAIC_Pumpkin::Handle_TargetPerceptionUpdated(AActor* actor, FAIStimulus stimulus)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "Stimed");
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "Stimed");
 
 	switch (stimulus.Type)
 	{

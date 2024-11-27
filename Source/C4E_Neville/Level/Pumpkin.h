@@ -32,6 +32,8 @@ protected:
 	TObjectPtr<UChildActorComponent> _AttackPoint;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _AttackCapsuleHalfHeight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _AttackRadius;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int _Damage;

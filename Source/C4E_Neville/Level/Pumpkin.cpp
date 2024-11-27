@@ -34,19 +34,17 @@ void APumpkin::Input_Attack_Implementation(AActor* target)
 	TArray<FHitResult> hits;
 	TArray<AActor*> ignore;
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(
-		GetWorld(), _AttackPoint->GetComponentLocation(), _AttackPoint->GetComponentLocation(), _AttackRadius,
+	
+	UKismetSystemLibrary::CapsuleTraceMultiForObjects(
+		GetWorld(), _AttackPoint->GetComponentLocation(), _AttackPoint->GetComponentLocation(), _AttackRadius, _AttackCapsuleHalfHeight,
 		_ObjectTypeToHit, false, ignore, EDrawDebugTrace::Persistent, hits, true
 	);
 
 	for (auto hit : hits)
 	{
-		if(hit.GetActor() == target)
+		if(hit.GetActor() == target) //In case two guys are really close, will only hit one
 		{
-			UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage, GetController(), this, nullptr);
-		}
-		else
-		{
+			UGameplayStatics::ApplyDamage(hit.GetActor(), 10, GetController(), this, UDamageType::StaticClass());
 		}
 	}
 }
