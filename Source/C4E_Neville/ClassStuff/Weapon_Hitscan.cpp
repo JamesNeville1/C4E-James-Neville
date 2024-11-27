@@ -7,7 +7,10 @@
 void AWeapon_Hitscan::Fire()
 {
 	UWorld* const world = GetWorld();
-	if (world == nullptr) return;
+	if (world == nullptr)
+	{
+		return;
+	}
 
 	FHitResult hit(ForceInit);
 	FVector start = _Muzzle->GetComponentLocation();
@@ -21,10 +24,11 @@ void AWeapon_Hitscan::Fire()
 		EDrawDebugTrace::ForDuration, hit, true,
 		FLinearColor::Red, FLinearColor::Green, 5))
 	{
-		UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage, GetOwner()->GetInstigatorController(), GetOwner(), UGameplayStatics::StaticClass());
+		UGameplayStatics::ApplyDamage(hit.GetActor(), _Damage, GetOwner()->GetInstigatorController(), GetOwner(),
+		                              UGameplayStatics::StaticClass());
 
 		UE_LOG(LogTemp, Display, TEXT("Hit position: %s"), *hit.ImpactPoint.ToString());
 	}
-	
+
 	Super::Fire();
 }

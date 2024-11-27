@@ -21,17 +21,17 @@ void UBTT_GetMoveToPos::InitializeFromAsset(UBehaviorTree& Asset)
 EBTNodeResult::Type UBTT_GetMoveToPos::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	FNavLocation navLocation;
-	
+
 	UNavigationSystemV1* navigationSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
 	navigationSystem->GetRandomPointInNavigableRadius(
-	   OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(),
-	   100000.0f,
-	   navLocation
-   );
+		OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(),
+		100000.0f,
+		navLocation
+	);
 
 	//OwnerComp.GetBlackboardComponent()->SetValueAsBool(Key_HasReached.SelectedKeyName, false);
 	OwnerComp.GetBlackboardComponent()->SetValueAsVector(Key_Pos.SelectedKeyName, navLocation.Location);
-	
+
 	return EBTNodeResult::Succeeded;
 }

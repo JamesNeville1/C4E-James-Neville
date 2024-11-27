@@ -21,5 +21,4 @@ protected:
 	TObjectPtr<USphereComponent> _Collider;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
-	
 };

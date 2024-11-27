@@ -26,12 +26,12 @@ public:
 
 	UFUNCTION()
 	void EnableAllEndLevels();
-	
+
 private:
 	int _EndLevelCounter;
 	int _EndLevelCounterMax;
 
 	TArray<ALevelEnd*> _LevelEnds;
-	
+
 	FEndLevelCounterAlertSignature OnEndLevelCounterAlert;
 };

@@ -10,6 +10,6 @@ EBTNodeResult::Type UBTT_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		OwnerComp.GetAIOwner()->GetPawn(),
 		Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(Key_Target.SelectedKeyName))
 	);
-	
+
 	return EBTNodeResult::Succeeded;
 }

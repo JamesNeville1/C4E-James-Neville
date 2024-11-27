@@ -14,12 +14,11 @@ UPumpkinComponent::UPumpkinComponent()
 
 void UPumpkinComponent::BeginPlay()
 {
-
 	AActor* owner = GetOwner();
 
 	_Health = owner->FindComponentByClass<UHealthComponent>();
 
-	if(_Health == nullptr)
+	if (_Health == nullptr)
 	{
 		//Create
 		_Health = NewObject<UHealthComponent>(owner, TEXT("Health"));
@@ -32,12 +31,12 @@ void UPumpkinComponent::BeginPlay()
 
 	_Health->OnDead.AddUniqueDynamic(this, &UPumpkinComponent::Handle_HealthDead);
 
-	if(_Tracked)
+	if (_Tracked)
 	{
 		//GetWorld()->GetOnBeginPlayEvent().AddUObject(this, &UPumpkinComponent::LateBeginPlay);
 		IGameRuleReturns::Execute_GR_Pumpkin_Ref(UGameplayStatics::GetGameMode(GetWorld()))->RegisterPumpkin(this);
 	}
-	
+
 	Super::BeginPlay();
 }
 
@@ -46,4 +45,3 @@ void UPumpkinComponent::Handle_HealthDead(AController* causer)
 	_OnPumpkinDefeat.Broadcast();
 	GetOwner()->Destroy();
 }
-

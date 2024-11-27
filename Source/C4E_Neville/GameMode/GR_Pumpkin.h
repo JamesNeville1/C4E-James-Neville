@@ -19,13 +19,12 @@ public:
 	UGR_Pumpkin();
 	void Setup(AGM_Puzzle* gm);
 
-public:
 	UFUNCTION()
 	void RegisterPumpkin(UPumpkinComponent* pumpkinComponent);
 
 	int _CurrentPumpkin;
 	int _TotalPumpkin;
-	
+
 private:
 	UFUNCTION()
 	void PumpkinDeathAlert();

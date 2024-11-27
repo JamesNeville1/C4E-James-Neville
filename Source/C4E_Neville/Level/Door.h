@@ -22,7 +22,7 @@ protected:
 	TObjectPtr<UBoxComponent> _Collider;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
-	
+
 	virtual void BeginPlay() override;
 
 	virtual void Trigger_Implementation() override;

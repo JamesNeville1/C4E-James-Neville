@@ -19,9 +19,8 @@ public:
 	AFirstActor();
 
 protected:
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UBoxComponent> _Collider;	
+	TObjectPtr<UBoxComponent> _Collider;
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	//TObjectPtr<USceneComponent> _Root;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -33,9 +32,9 @@ protected:
 
 	UFUNCTION()
 	void Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		FVector NormalImpulse, const FHitResult& Hit);
+	                        FVector NormalImpulse, const FHitResult& Hit);
 
 	virtual void BeginPlay() override;
-	
+
 	virtual ~AFirstActor() override = default;
 };

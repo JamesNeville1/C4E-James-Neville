@@ -25,9 +25,9 @@ void AProjectile::Handle_Hit(UPrimitiveComponent* HitComponent, AActor* OtherAct
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, _Damage, GetInstigatorController(),
-			this, UDamageType::StaticClass());
+		                              this, UDamageType::StaticClass());
 
-		if(OtherComp->IsSimulatingPhysics())
+		if (OtherComp->IsSimulatingPhysics())
 		{
 			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 		}

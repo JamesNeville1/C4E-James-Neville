@@ -11,7 +11,7 @@ void APC_Debug::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if(UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EIP->BindAction(_DebugAction, ETriggerEvent::Triggered, this, &APC_Debug::Debug);
 		EIP->BindAction(_JumpAction, ETriggerEvent::Started, this, &APC_Debug::Jump);
@@ -21,8 +21,6 @@ void APC_Debug::SetupInputComponent()
 		EIP->BindAction(_SpecialAction, ETriggerEvent::Started, this, &APC_Debug::Special);
 		EIP->BindAction(_LookAction, ETriggerEvent::Started, this, &APC_Debug::Look);
 	}
-
-	
 }
 
 void APC_Debug::Debug(const FInputActionValue& Value)

@@ -22,7 +22,7 @@ protected:
 	TObjectPtr<UBoxComponent> _Collider;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
-	
+
 	virtual void BeginPlay() override;
 
 	virtual void Trigger_Implementation() override;
@@ -34,7 +34,7 @@ protected:
 	FVector _OnPos;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="MAIN")
 	float _Speed;
-	
+
 	virtual void Tick(float DeltaTime) override;
 
 private:

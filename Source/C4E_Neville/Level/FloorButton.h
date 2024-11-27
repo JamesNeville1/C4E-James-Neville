@@ -19,10 +19,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	                      AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                      const FHitResult& SweepResult);
 	UFUNCTION(BlueprintCallable)
-	void Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex);
+	void Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                         UPrimitiveComponent* OtherComp,
+	                         int32 OtherBodyIndex);
 	TObjectPtr<UButtonComponent> _ButtonComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

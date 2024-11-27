@@ -10,9 +10,8 @@ ACandy::ACandy()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 }
-
 
 
 void ACandy::BeginPlay()

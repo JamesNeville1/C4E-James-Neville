@@ -30,7 +30,7 @@ void ALevelManager::EndLevelCounterIncrease()
 {
 	_EndLevelCounter++;
 
-	if(_EndLevelCounter >= _EndLevelCounterMax)
+	if (_EndLevelCounter >= _EndLevelCounterMax)
 	{
 		OnEndLevelCounterAlert.Broadcast();
 	}

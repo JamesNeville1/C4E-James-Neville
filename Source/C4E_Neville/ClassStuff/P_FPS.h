@@ -16,7 +16,7 @@ class UCapsuleComponent;
 DECLARE_DYNAMIC_DELEGATE_RetVal(int, FOnPlayerDamageSignature);
 
 UCLASS()
-class C4E_NEVILLE_API AP_FPS : public ACharacter, public  IInputable
+class C4E_NEVILLE_API AP_FPS : public ACharacter, public IInputable
 {
 	GENERATED_BODY()
 
@@ -37,14 +37,14 @@ public:
 	virtual UInputMappingContext* GetMappingContext_Implementation() override;
 
 	int GetHealth();
-	
+
 	int _Points;
 
 	FOnPlayerDamageSignature _OnPlayerDamage;
 
 	UFUNCTION()
 	void DamageTest();
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UCameraComponent> _Camera;
@@ -53,14 +53,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
 
-	
+
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _WeaponAttachPoint;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AWeapon_Base> _DefaultWeapon;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<AWeapon_Base> _WeaponRef;
-	
+
 	// Called every frame
 	//virtual void Tick(float DeltaTime) override;
 

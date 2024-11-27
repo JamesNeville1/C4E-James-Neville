@@ -21,10 +21,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	virtual UBehaviorTree* GetBehaviorTree_Implementation() override;
 	virtual void Input_Attack_Implementation(AActor* target) override;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UBehaviorTree> _BehaviorTree;
 

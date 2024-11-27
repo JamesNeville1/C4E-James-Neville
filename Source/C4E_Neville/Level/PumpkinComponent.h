@@ -26,8 +26,8 @@ protected:
 	//Allows designer to decide if game rule should track
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool _Tracked = true;
+
 private:
 	UFUNCTION()
 	void Handle_HealthDead(AController* causer);
-public:
 };

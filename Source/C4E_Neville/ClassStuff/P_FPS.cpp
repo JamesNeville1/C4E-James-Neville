@@ -28,14 +28,15 @@ void AP_FPS::BeginPlay()
 	Super::BeginPlay();
 
 	_Health->OnDead.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDead);
-	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDamaged );
+	_Health->OnDamaged.AddUniqueDynamic(this, &AP_FPS::Handle_HealthComponentDamaged);
 
 	if (_DefaultWeapon)
 	{
 		FActorSpawnParameters spawnParams;
 		spawnParams.Owner = this;
 		spawnParams.Instigator = this;
-		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(), spawnParams);
+		_WeaponRef = GetWorld()->SpawnActor<AWeapon_Base>(_DefaultWeapon, _WeaponAttachPoint->GetComponentTransform(),
+		                                                  spawnParams);
 		_WeaponRef->AttachToComponent(_WeaponAttachPoint, FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
 }
@@ -44,7 +45,7 @@ void AP_FPS::Input_Look_Implementation(FVector2D value)
 {
 	//IInputable::Input_Look_Implementation(value);
 	UE_LOG(LogTemp, Display, TEXT("X: %f, Y: %f"), value.X, value.Y);
-	
+
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
 	_Camera->AddLocalRotation(FRotator(value.Y, 0, 0));
 }
@@ -54,7 +55,7 @@ void AP_FPS::Input_Move_Implementation(FVector2D value)
 	//IInputable::Input_Move_Implementation(value);
 
 	AddMovementInput(FVector::VectorPlaneProject(_Camera->GetForwardVector(),
-		FVector::UpVector).GetSafeNormal(), value.X);
+	                                             FVector::UpVector).GetSafeNormal(), value.X);
 	AddMovementInput(_Camera->GetRightVector(), value.Y);
 }
 
@@ -90,7 +91,7 @@ void AP_FPS::Input_FireReleased_Implementation()
 UInputMappingContext* AP_FPS::GetMappingContext_Implementation()
 {
 	//return IInputable::GetMappingContext_Implementation();
-	return  _InputMapping;
+	return _InputMapping;
 }
 
 int AP_FPS::GetHealth()
@@ -105,11 +106,9 @@ void AP_FPS::DamageTest()
 
 void AP_FPS::Handle_HealthComponentDead(AController* causer)
 {
-	
 }
 
 void AP_FPS::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
 {
 	//_OnPlayerDamage.Execute();
 }
-

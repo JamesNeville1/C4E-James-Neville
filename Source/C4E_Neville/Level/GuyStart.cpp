@@ -8,7 +8,6 @@ AGuyStart::AGuyStart()
 void AGuyStart::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 TSubclassOf<AP_Guy> AGuyStart::Return_GuyClass_Implementation()

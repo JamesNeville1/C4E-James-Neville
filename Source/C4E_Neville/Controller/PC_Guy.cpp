@@ -16,17 +16,17 @@ void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, UKismetStringLibrary::Conv_IntToString(guys.Num()));
 
-	if(guys.Num() != 0)
+	if (guys.Num() != 0)
 	{
 		Possess(guys[0]);
-	} 
-	
+	}
+
 	for (AP_Guy* guy : guys)
 	{
 		guy->GuySetup(this);
 		_GuyList.Add(guy);
 	}
-	
+
 	//Set shared lives
 	_SharedLivesCurrent = sharedLivesTotal;
 
@@ -35,14 +35,14 @@ void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal)
 
 void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 {
-	if(_HudWidgetClass != nullptr)
+	if (_HudWidgetClass != nullptr)
 	{
 		_HudWidget = CreateWidget<UW_Hud, APC_Guy*>(this, _HudWidgetClass.Get());
 		_HudWidget->AddToViewport();
-		
+
 		_HudWidget->UpdatePlayerLivesDisplay(UKismetTextLibrary::Conv_IntToText(_SharedLivesCurrent));
-	
-		if(maxPumpkin != 0)
+
+		if (maxPumpkin != 0)
 		{
 			FString in = UKismetStringLibrary::Conv_IntToString(maxPumpkin);
 			_HudWidget->UpdatePumpkinCounter(in, in);
@@ -51,7 +51,7 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 		{
 			_HudWidget->HidePumpkinCounter();
 		}
-		if(maxCandy != 0)
+		if (maxCandy != 0)
 		{
 			FString in = UKismetStringLibrary::Conv_IntToString(maxCandy);
 			_HudWidget->UpdateCandyCounter(in, in);
@@ -60,11 +60,14 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 		{
 			_HudWidget->HideCandyCounter();
 		}
-	
+
 		_HudWidget->UpdateHealthBar(1);
 		_HudWidget->UpdateHealthBarColour(Cast<AP_Guy>(GetPawn())->GetHealthColor());
-	
-		if (!hasTimer) _HudWidget->HideTimerDisplay();
+
+		if (!hasTimer)
+		{
+			_HudWidget->HideTimerDisplay();
+		}
 	}
 
 	RecieveUISetupAlert();
@@ -83,7 +86,7 @@ void APC_Guy::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	if(UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
+	if (UEnhancedInputComponent* EIP = CastChecked<UEnhancedInputComponent>(InputComponent))
 	{
 		EIP->BindAction(_LookAction, ETriggerEvent::Triggered, this, &APC_Guy::Look);
 		EIP->BindAction(_MoveAction, ETriggerEvent::Started, this, &APC_Guy::MovePressed);
@@ -100,9 +103,9 @@ void APC_Guy::Look(const FInputActionValue& value)
 {
 	FVector2D LookVector = value.Get<FVector2d>();
 
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_Look(currentpawn, LookVector);
 		}
@@ -111,7 +114,7 @@ void APC_Guy::Look(const FInputActionValue& value)
 
 void APC_Guy::MovePressed()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
 		IGuyInputable::Execute_Input_MovePressed(currentpawn);
 	}
@@ -119,7 +122,7 @@ void APC_Guy::MovePressed()
 
 void APC_Guy::MoveReleased()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
 		IGuyInputable::Execute_Input_MoveReleased(currentpawn);
 		_IsMoving = false;
@@ -130,9 +133,9 @@ void APC_Guy::Move(const FInputActionValue& value)
 {
 	FVector2D MoveVector = value.Get<FVector2d>();
 
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_Move(currentpawn, MoveVector);
 			_IsMoving = true;
@@ -142,9 +145,9 @@ void APC_Guy::Move(const FInputActionValue& value)
 
 void APC_Guy::JumpPressed()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_JumpPressed(currentpawn);
 		}
@@ -153,9 +156,9 @@ void APC_Guy::JumpPressed()
 
 void APC_Guy::JumpReleased()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_JumpReleased(currentpawn);
 		}
@@ -164,9 +167,9 @@ void APC_Guy::JumpReleased()
 
 void APC_Guy::SpecialPressed()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test2");
 			IGuyInputable::Execute_Input_SpecialPressed(currentpawn);
@@ -176,9 +179,9 @@ void APC_Guy::SpecialPressed()
 
 void APC_Guy::CharacterSwapPressed()
 {
-	if(APawn* currentpawn = GetPawn())
+	if (APawn* currentpawn = GetPawn())
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
 			IGuyInputable::Execute_Input_CharacterSwapPressed(currentpawn);
 		}
@@ -186,15 +189,16 @@ void APC_Guy::CharacterSwapPressed()
 }
 
 void APC_Guy::OnPossess(APawn* InPawn)
-{	
+{
 	Super::OnPossess(InPawn);
-	
-	if(UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+
+	if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer()))
 	{
-		if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UGuyInputable::StaticClass()))
+		if (UKismetSystemLibrary::DoesImplementInterface(InPawn, UGuyInputable::StaticClass()))
 		{
 			subsystem->AddMappingContext(IGuyInputable::Execute_GetMappingContext(InPawn), 0);
-			if(_IsMoving)
+			if (_IsMoving)
 			{
 				MovePressed();
 			}
@@ -237,7 +241,7 @@ void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
 
 void APC_Guy::RespawnCheck(AP_Guy* guy)
 {
-	if(_SharedLivesCurrent > 0)
+	if (_SharedLivesCurrent > 0)
 	{
 		guy->EyeBallFramesStart();
 		guy->ResetHealth();
@@ -255,16 +259,17 @@ void APC_Guy::SwapCharacter()
 {
 	_CurrentGuyIndex++;
 
-	if(_CurrentGuyIndex > _GuyList.Num() - 1)
+	if (_CurrentGuyIndex > _GuyList.Num() - 1)
 	{
 		_CurrentGuyIndex = 0;
 	}
 
-	FVector velocity = _GuyList[_CurrentGuyIndex]->GetVelocity(); //Velocity got reset on possess, this add velocity back
-	
+	FVector velocity = _GuyList[_CurrentGuyIndex]->GetVelocity();
+	//Velocity got reset on possess, this add velocity back
+
 	Possess(_GuyList[_CurrentGuyIndex]);
 	_GuyList[_CurrentGuyIndex]->LaunchCharacter(velocity, false, false);
-	
+
 	_HudWidget->UpdateHealthBar(_GuyList[_CurrentGuyIndex]->GetNormalizedHealth());
 	_HudWidget->UpdateHealthBarColour(_GuyList[_CurrentGuyIndex]->GetHealthColor());
 }
@@ -273,7 +278,12 @@ void APC_Guy::SwapCharacter()
 
 #pragma region Hooks
 
-void APC_Guy::RecieveControllerSetup_Implementation(const TArray<AP_Guy*>& guys, const int& sharedLivesTotal) { }
-void APC_Guy::RecieveUISetupAlert_Implementation() { }
+void APC_Guy::RecieveControllerSetup_Implementation(const TArray<AP_Guy*>& guys, const int& sharedLivesTotal)
+{
+}
+
+void APC_Guy::RecieveUISetupAlert_Implementation()
+{
+}
 
 #pragma endregion

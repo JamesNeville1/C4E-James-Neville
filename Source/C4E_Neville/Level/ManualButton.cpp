@@ -14,11 +14,12 @@ AManualButton::AManualButton()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 }
 
 void AManualButton::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                     const FHitResult& SweepResult)
 {
 	if (_Pressed)
 	{
@@ -30,7 +31,7 @@ void AManualButton::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, A
 		_ButtonComponent->UnPress();
 		_Mesh->SetMaterial(0, _ButtonComponent->_OffMaterial);
 	}
-	
+
 	_Pressed = !_Pressed;
 }
 
@@ -46,7 +47,6 @@ void AManualButton::BeginPlay()
 	_Collider->OnComponentBeginOverlap.AddUniqueDynamic(this, &AManualButton::Handle_OnOverlap);
 
 	_Pressed = true;
-	
+
 	Super::BeginPlay();
 }
-

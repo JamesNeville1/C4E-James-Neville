@@ -11,10 +11,10 @@ AP_Guy_Big::AP_Guy_Big()
 
 void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 {
-	if(holdingLilGuy)
+	if (holdingLilGuy)
 	{
 		ILilGuyPickupAlert::Execute_ThrowAlert(_LilGuyRef, this, launchSpeed);
-		
+
 		holdingLilGuy = false;
 	}
 	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
@@ -23,7 +23,7 @@ void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 
 void AP_Guy_Big::Input_JumpPressed_Implementation()
 {
-	if(!holdingLilGuy)
+	if (!holdingLilGuy)
 	{
 		Super::Input_JumpPressed_Implementation();
 	}
@@ -31,10 +31,10 @@ void AP_Guy_Big::Input_JumpPressed_Implementation()
 
 void AP_Guy_Big::SpecialLogic()
 {
-	if(holdingLilGuy)
+	if (holdingLilGuy)
 	{
 		ILilGuyPickupAlert::Execute_ThrowAlert(_LilGuyRef, this, launchSpeed);
-		
+
 		holdingLilGuy = false;
 	}
 	else
@@ -44,12 +44,15 @@ void AP_Guy_Big::SpecialLogic()
 		bool guard =
 			(hitResult.GetActor() == nullptr) ||
 			(!UKismetMathLibrary::ClassIsChildOf(hitResult.GetActor()->GetClass(), AP_Guy_Lil::StaticClass()));
-		if (guard) return;
+		if (guard)
+		{
+			return;
+		}
 
 		ILilGuyPickupAlert::Execute_PickupAlert(hitResult.GetActor(), this);
 
 		_LilGuyRef = hitResult.GetActor();
-		
+
 		holdingLilGuy = true;
 	}
 }

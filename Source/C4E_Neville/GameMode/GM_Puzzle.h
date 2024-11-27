@@ -33,7 +33,6 @@ public:
 	void Handle_PumpkinGameRuleComplete();
 	UFUNCTION()
 	void PlayerOutOfLives(AP_Guy* guyThatDied);
-	
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")

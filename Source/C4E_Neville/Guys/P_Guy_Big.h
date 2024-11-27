@@ -17,10 +17,10 @@ public:
 	AP_Guy_Big();
 	virtual void Input_CharacterSwapPressed_Implementation() override;
 	virtual void Input_JumpPressed_Implementation() override;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UChildActorComponent> _LilGuyAttachPoint;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _SpecialRange;
 
@@ -34,6 +34,4 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void SpecialLogic() override;
-	
-private:
 };

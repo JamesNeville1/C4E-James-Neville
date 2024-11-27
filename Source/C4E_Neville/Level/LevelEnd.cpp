@@ -12,10 +12,10 @@ ALevelEnd::ALevelEnd()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 
 	_OverlapZone = CreateDefaultSubobject<UBoxComponent>(TEXT("Overlap Zone"));
-	_OverlapZone -> SetupAttachment(_Collider);
+	_OverlapZone->SetupAttachment(_Collider);
 }
 
 TSubclassOf<AP_Guy> ALevelEnd::Return_GuyClass_Implementation()
@@ -24,9 +24,13 @@ TSubclassOf<AP_Guy> ALevelEnd::Return_GuyClass_Implementation()
 }
 
 void ALevelEnd::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                 const FHitResult& SweepResult)
 {
-	if (OtherActor->GetClass() != _MyGuy) return;
+	if (OtherActor->GetClass() != _MyGuy)
+	{
+		return;
+	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("On Finish"));
 	OnStateOn.Broadcast();
@@ -35,9 +39,12 @@ void ALevelEnd::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 }
 
 void ALevelEnd::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor->GetClass() != _MyGuy) return;
+	if (OtherActor->GetClass() != _MyGuy)
+	{
+		return;
+	}
 
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Off Finish"));
 	OnStateOff.Broadcast();
@@ -77,4 +84,3 @@ void ALevelEnd::RecieveOnOverlap_Implementation()
 void ALevelEnd::RecieveOnOverlapEnd_Implementation()
 {
 }
-

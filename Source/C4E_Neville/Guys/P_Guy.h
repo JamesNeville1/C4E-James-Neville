@@ -14,11 +14,15 @@ class UCapsuleComponent;
 class APC_Guy;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSwapGuySignature);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP_Guy*, guy);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor,
+                                             colour);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGenericTeamAgentInterface, public ILaunchable
+class C4E_NEVILLE_API AP_Guy : public ACharacter, public IGuyInputable, public IGenericTeamAgentInterface,
+                               public ILaunchable
 {
 	GENERATED_BODY()
 
@@ -26,11 +30,11 @@ public:
 	AP_Guy();
 
 	virtual void Launch_Implementation(FVector velocity) override;
-	
+
 	//AI
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	FGenericTeamId _TeamID = FGenericTeamId(2);
-	
+
 	//Start Eye Ball Frames
 	void EyeBallFramesStart();
 
@@ -43,14 +47,14 @@ public:
 
 	//UI Related
 	FLinearColor GetHealthColor();
-	
+
 protected:
 	//
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _MaxLookUp = 55.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float _MaxLookDown = -45.0f;
-	
+
 	//Health Color (UI)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FLinearColor _HealthColor;
@@ -68,14 +72,14 @@ protected:
 	float _TimeBetweenSteps;
 	FTimerHandle _FootstepTimer;
 	void PlayFootstep();
-	
+
 	//Utility
 	FHitResult LineTraceLogic(FName profile, float range);
 
 	//Special Logic
 	virtual void SpecialLogic();
-	
-	
+
+
 	//How long after death is the character invincible?
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _EyeBallFrameLength;
@@ -83,7 +87,7 @@ protected:
 	//Input
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UInputMappingContext> _InputMapping;
-	
+
 	virtual void Input_Look_Implementation(FVector2D value) override;
 	virtual void Input_Move_Implementation(FVector2D value) override;
 	virtual void Input_MovePressed_Implementation() override;
@@ -100,34 +104,34 @@ protected:
 	//Designer Hooks
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Play Footstep")
 	void RecievePlayFootstep();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_Look")
 	void RecieveInput_Look(const FVector2D& value);
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_Move")
 	void RecieveInput_Move(const FVector2D& value);
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_MovePressed")
 	void RecieveInput_MovePressed();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_MoveReleased")
 	void RecieveInput_MoveReleased();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_JumpPressed")
 	void RecieveInput_JumpPressed();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_JumpReleased")
 	void RecieveInput_JumpReleased();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_SpecialPressed")
 	void RecieveInput_SpecialPressed();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_CharacterSwapPressed")
 	void RecieveInput_CharacterSwapPressed();
 
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Eye Ball Frames Start")
 	void RecieveEyeBallFramesStart();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Eye Ball Frames Stop")
 	void RecieveEyeBallFramesStop();
 
@@ -144,7 +148,8 @@ private:
 	void Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change);
 	UFUNCTION()
 	void Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	                      AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                      const FHitResult& SweepResult);
 
 	//Eye Ball Frame Related
 	FTimerHandle _EyeBallTimerHandle;

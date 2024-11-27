@@ -34,9 +34,9 @@ void UHealthComponent::BeginPlay()
 }
 
 void UHealthComponent::DamageTaken(AActor* damagedActor, float damage, const UDamageType* damageType,
-	AController* instigator, AActor* causer)
+                                   AController* instigator, AActor* causer)
 {
-	if(!_Invincible)
+	if (!_Invincible)
 	{
 		const float changeBy = FMath::Min(_CurrentHealth, damage);
 		_CurrentHealth -= changeBy;
@@ -44,11 +44,10 @@ void UHealthComponent::DamageTaken(AActor* damagedActor, float damage, const UDa
 		OnDamaged.Broadcast(_CurrentHealth, _MaxHealth, changeBy);
 		//UE_LOG(LogTemp, Display, TEXT("Damage for %f, %f health remaing"), changeBy, _CurrentHealth);
 
-		if(_CurrentHealth <= 0.0f)
+		if (_CurrentHealth <= 0.0f)
 		{
 			//UE_LOG(LogTemp, Display, TEXT("DEADED"));
 			OnDead.Broadcast(instigator);
 		}
 	}
 }
-

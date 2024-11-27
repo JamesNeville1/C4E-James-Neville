@@ -10,7 +10,8 @@ void UW_Hud::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	FText levelNameDisplayText = UKismetTextLibrary::Conv_NameToText(IGameInstanceLogic::Execute_GetCurrentLevel(GetGameInstance()));
+	FText levelNameDisplayText = UKismetTextLibrary::Conv_NameToText(
+		IGameInstanceLogic::Execute_GetCurrentLevel(GetGameInstance()));
 	UpdateLevelNameDisplay(levelNameDisplayText);
 }
 
@@ -94,14 +95,42 @@ void UW_Hud::HideTimerDisplay()
 	ReceiveHideTimerDisplay();
 }
 
-void UW_Hud::ReceiveUpdateHealthBar_Implementation(const float& normalisedHealth) { }
-void UW_Hud::ReceiveUpdateHealthBarColour_Implementation(const FLinearColor& color) { }
-void UW_Hud::ReceiveUpdateCandyCounter_Implementation(const FString& candyCurrent, const FString& candyMax) { }
-void UW_Hud::ReceiveUpdatePumpkinCounter_Implementation(const FString& pumpkinCurrent, const FString& pumpkinMax) { }
-void UW_Hud::ReceiveUpdateTimerDisplay_Implementation(const FString& current) { }
-void UW_Hud::ReceiveUpdatePlayerLivesDisplay_Implementation(const FText& playerLivesCurrent) { }
-void UW_Hud::ReceiveUpdateLevelNameDisplay_Implementation(const FText& levelNameDisplayText) { }
+void UW_Hud::ReceiveUpdateHealthBar_Implementation(const float& normalisedHealth)
+{
+}
 
-void UW_Hud::ReceiveHideTimerDisplay_Implementation() { }
-void UW_Hud::ReceiveHidePumpkinCounter_Implementation() { }
-void UW_Hud::ReceiveHideCandyCounter_Implementation() { }
+void UW_Hud::ReceiveUpdateHealthBarColour_Implementation(const FLinearColor& color)
+{
+}
+
+void UW_Hud::ReceiveUpdateCandyCounter_Implementation(const FString& candyCurrent, const FString& candyMax)
+{
+}
+
+void UW_Hud::ReceiveUpdatePumpkinCounter_Implementation(const FString& pumpkinCurrent, const FString& pumpkinMax)
+{
+}
+
+void UW_Hud::ReceiveUpdateTimerDisplay_Implementation(const FString& current)
+{
+}
+
+void UW_Hud::ReceiveUpdatePlayerLivesDisplay_Implementation(const FText& playerLivesCurrent)
+{
+}
+
+void UW_Hud::ReceiveUpdateLevelNameDisplay_Implementation(const FText& levelNameDisplayText)
+{
+}
+
+void UW_Hud::ReceiveHideTimerDisplay_Implementation()
+{
+}
+
+void UW_Hud::ReceiveHidePumpkinCounter_Implementation()
+{
+}
+
+void UW_Hud::ReceiveHideCandyCounter_Implementation()
+{
+}

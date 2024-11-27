@@ -16,7 +16,8 @@ void UBTT_CheckIfCloseEnough::InitializeFromAsset(UBehaviorTree& Asset)
 EBTNodeResult::Type UBTT_CheckIfCloseEnough::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	UBlackboardComponent* bbComp = OwnerComp.GetBlackboardComponent();
-	if(bbComp->GetValueAsFloat(Key_Distance.SelectedKeyName) <= bbComp->GetValueAsFloat(Key_DistanceAllowance.SelectedKeyName))
+	if (bbComp->GetValueAsFloat(Key_Distance.SelectedKeyName) <= bbComp->GetValueAsFloat(
+		Key_DistanceAllowance.SelectedKeyName))
 	{
 		bbComp->SetValueAsBool(Key_HasReachedOutput.SelectedKeyName, true);
 	}

@@ -21,5 +21,4 @@ public:
 	FBlackboardKeySelector Key_Distance;
 	UPROPERTY(EditAnywhere, Category="Blackboard")
 	FBlackboardKeySelector Key_DistanceAllowance;
-	
 };

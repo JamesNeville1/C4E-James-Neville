@@ -16,10 +16,10 @@ class C4E_NEVILLE_API UBTS_GetDistanceFromActor : public UBTService
 
 public:
 	UBTS_GetDistanceFromActor();
- 
+
 	virtual void InitializeFromAsset(UBehaviorTree& Asset) override;
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
- 
+
 	UPROPERTY(EditAnywhere, Category="Blackboard")
 	FBlackboardKeySelector Key_Target;
 	UPROPERTY(EditAnywhere, Category="Blackboard")

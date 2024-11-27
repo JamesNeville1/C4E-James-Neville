@@ -14,14 +14,14 @@ class C4E_NEVILLE_API UButtonComponent : public UActorComponent
 
 public:
 	UButtonComponent();
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<AActor*> _LevelPieces;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UMaterialInstance* _OnMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UMaterialInstance* _OffMaterial;
-	
+
 	UFUNCTION()
 	void Press();
 	UFUNCTION()
