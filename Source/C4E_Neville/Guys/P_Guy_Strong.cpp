@@ -9,16 +9,13 @@ void AP_Guy_Strong::SpecialLogic()
 
 	FHitResult hitResult = LineTraceLogic("WorldDynamic", _SpecialRange);
 	
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test");
+	
 	bool guard =
 		(hitResult.GetActor() == nullptr);
 
-
-	//FString test = hitResult.GetActor()->GetComponentByClass(UPumpkinComponent::StaticClass()) == nullptr ? "T" : "F";
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, test);
 	
 	if (guard) return;
 
 	UGameplayStatics::ApplyDamage(hitResult.GetActor(), 1, GetController(), this, UDamageType::StaticClass());
-	
-	//Super::SpecialLogic();
 }

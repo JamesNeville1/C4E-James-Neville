@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
-#include "C4E_Neville/Interface/GuyReturns.h"
+#include "C4E_Neville/Interface/Launchable.h"
 #include "GameFramework/Character.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "P_Guy.generated.h"
@@ -18,13 +18,15 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGuyRespawnCheckAlertSignature, AP
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGuyDamageUIAlertSignature, float, normalisedHealth, FLinearColor, colour);
 
 UCLASS(Abstract)
-class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGenericTeamAgentInterface
+class C4E_NEVILLE_API AP_Guy : public ACharacter, public  IGuyInputable, public IGenericTeamAgentInterface, public ILaunchable
 {
 	GENERATED_BODY()
 
 public:
 	AP_Guy();
 
+	virtual void Launch_Implementation(FVector velocity) override;
+	
 	//AI
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	FGenericTeamId _TeamID = FGenericTeamId(2);
@@ -123,6 +125,7 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStart")
 	void RecieveEyeBallFramesStart();
+	
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStop")
 	void RecieveEyeBallFramesStop();
 

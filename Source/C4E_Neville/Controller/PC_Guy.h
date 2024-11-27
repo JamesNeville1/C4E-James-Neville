@@ -82,6 +82,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<AP_Guy*> _GuyList;
 
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On ControllerSetup")
+	void RecieveControllerSetup(const TArray<FGuyData>& guys, const int& sharedLivesTotal);
+
 protected: //Hud
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UW_Hud> _HudWidgetClass;

@@ -13,8 +13,11 @@ void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 {
 	if(holdingLilGuy)
 	{
-		Input_SpecialPressed_Implementation();
+		ILilGuyPickupAlert::Execute_ThrowAlert(_LilGuyRef, this, launchSpeed);
+		
+		holdingLilGuy = false;
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
 	Super::Input_CharacterSwapPressed_Implementation();
 }
 
@@ -50,4 +53,3 @@ void AP_Guy_Big::SpecialLogic()
 		holdingLilGuy = true;
 	}
 }
-

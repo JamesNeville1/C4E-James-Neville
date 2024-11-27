@@ -38,5 +38,4 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	UInputMappingContext* GetMappingContext();
-	
 };

@@ -4,19 +4,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include  "EnhancedInputSubsystems.h"
 #include "Blueprint/UserWidget.h"
-#include "C4E_Neville/ClassStuff/HealthComponent.h"
-#include "C4E_Neville/ClassStuff/P_FPS.h"
-#include "C4E_Neville/GameMode/GR_Candy.h"
-#include "C4E_Neville/GameMode/GR_Pumpkin.h"
 #include "C4E_Neville/Guys/P_Guy.h"
-#include "C4E_Neville/Guys/P_Guy_Big.h"
-#include "C4E_Neville/Interface/GameRuleReturns.h"
 #include "C4E_Neville/Interface/GuyInputable.h"
-#include "C4E_Neville/Interface/GuyReturns.h"
 #include "C4E_Neville/UI/W_Hud.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/GameModeBase.h"
-#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "Kismet/KismetTextLibrary.h"
 
@@ -39,6 +29,8 @@ void APC_Guy::ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal)
 	
 	//Set shared lives
 	_SharedLivesCurrent = sharedLivesTotal;
+
+	RecieveControllerSetup(guys, sharedLivesTotal);
 }
 
 void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
@@ -174,6 +166,7 @@ void APC_Guy::SpecialPressed()
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test2");
 			IGuyInputable::Execute_Input_SpecialPressed(currentpawn);
 		}
 	}
@@ -185,7 +178,7 @@ void APC_Guy::CharacterSwapPressed()
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
-			SwapCharacter();
+			IGuyInputable::Execute_Input_CharacterSwapPressed(currentpawn);
 		}
 	}
 }
@@ -205,6 +198,10 @@ void APC_Guy::OnPossess(APawn* InPawn)
 			}
 		}
 	}
+}
+
+void APC_Guy::RecieveControllerSetup_Implementation(const TArray<FGuyData>& guys, const int& sharedLivesTotal)
+{
 }
 
 #pragma endregion

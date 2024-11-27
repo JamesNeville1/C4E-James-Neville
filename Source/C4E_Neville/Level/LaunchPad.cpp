@@ -1,8 +1,9 @@
 ﻿#include "LaunchPad.h"
 
-#include "C4E_Neville/Guys/P_Guy.h"
-#include "C4E_Neville/Interface/GuyReturns.h"
+#include "C4E_Neville/Interface/Launchable.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/KismetStringLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 ALaunchPad::ALaunchPad()
@@ -28,32 +29,32 @@ void ALaunchPad::BeginPlay()
 }
 
 void ALaunchPad::Trigger_Implementation() //ToDo: Turn Button Off Straight After
-{
-	for (auto character : _HeldCharacters)
+{	
+	for (auto throwable : _Held)
 	{
 		FVector dir = GetActorUpVector();
 		dir *= _Velocity;
-		character->LaunchCharacter(dir, false, false);
+		ILaunchable::Execute_Launch(throwable, dir);
 	}
 }
 
 void ALaunchPad::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AP_Guy* guy = IGuyReturns::Execute_Return_Self(OtherActor);
-
-	if(guy == nullptr) return;
+	if(!UKismetSystemLibrary::DoesImplementInterface(OtherActor, ULaunchable::StaticClass())) return;
 	
-	_HeldCharacters.AddUnique(guy);
+	_Held.AddUnique(OtherActor);
 }
 
 void ALaunchPad::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AP_Guy* guy = IGuyReturns::Execute_Return_Self(OtherActor);
-
-	if(guy == nullptr) return;
+	int32 actorIndex = _Held.Find(OtherActor);
 	
-	_HeldCharacters.Remove(guy);
+	if(actorIndex == INDEX_NONE) return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "aaa");
+	
+	_Held.RemoveAt(actorIndex);
 }
 

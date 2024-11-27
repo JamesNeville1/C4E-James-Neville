@@ -33,7 +33,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float _Velocity;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TArray<AP_Guy*> _HeldCharacters;
+	TArray<AActor*> _Held;
 
 	
 	UFUNCTION(BlueprintCallable)

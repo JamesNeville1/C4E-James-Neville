@@ -21,6 +21,11 @@ AP_Guy::AP_Guy()
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
+void AP_Guy::Launch_Implementation(FVector velocity)
+{
+	LaunchCharacter(velocity, false, false);
+}
+
 #pragma region AI
 
 FGenericTeamId AP_Guy::GetGenericTeamId() const
@@ -88,7 +93,7 @@ void AP_Guy::Input_SpecialPressed_Implementation()
 	}
 	else
 	{
-		
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test3");
 	}
 
 	RecieveInput_SpecialPressed();

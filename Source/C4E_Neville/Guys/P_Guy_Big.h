@@ -34,7 +34,6 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void SpecialLogic() override;
-
 	
 private:
 };

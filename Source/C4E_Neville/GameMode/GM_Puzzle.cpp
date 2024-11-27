@@ -3,20 +3,12 @@
 #include "GR_Candy.h"
 #include "GR_Pumpkin.h"
 #include "GR_Timer.h"
-#include "K2Node_SpawnActorFromClass.h"
 #include "LevelManager.h"
 #include "../Guys/P_Guy.h"
-#include "../Guys/P_Guy.h"
-#include "ToolBuilderUtil.h"
 #include "C4E_Neville/Controller/PC_Guy.h"
-#include "C4E_Neville/Guys/P_Guy_Lil.h"
-#include "C4E_Neville/Guys/P_Guy_Strong.h"
 #include "C4E_Neville/Interface/GameInstanceLogic.h"
 #include "C4E_Neville/Level/GuyStart.h"
-#include "Engine/LevelStreamingDynamic.h"
-#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetStringLibrary.h"
 
 AGM_Puzzle::AGM_Puzzle() { }
 
