@@ -40,8 +40,12 @@ FGenericTeamId AP_Guy::GetGenericTeamId() const
 void AP_Guy::Input_Look_Implementation(FVector2D value)
 {
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
-	_Camera->AddLocalRotation(FRotator(value.Y, 0, 0));
-
+	if(_Camera->GetRelativeRotation().Pitch + value.Y < _MaxLookUp &&
+		_Camera->GetRelativeRotation().Pitch + value.Y > _MaxLookDown)
+	{
+		_Camera->AddLocalRotation(FRotator(value.Y, 0.0f, 0.0f));
+	}
+	
 	RecieveInput_Look(value);
 }
 void AP_Guy::Input_Move_Implementation(FVector2D value)
@@ -87,14 +91,7 @@ void AP_Guy::Input_JumpReleased_Implementation()
 
 void AP_Guy::Input_SpecialPressed_Implementation()
 {
-	if(_CanSpecial)
-	{
-		SpecialLogic();
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test3");
-	}
+	SpecialLogic();
 
 	RecieveInput_SpecialPressed();
 }
@@ -191,7 +188,7 @@ FHitResult AP_Guy::LineTraceLogic(FName profile, float range)
 
 	UKismetSystemLibrary::LineTraceSingleByProfile(
 		GetWorld(), start, end, profile,
-		false, actorsToIgnore, EDrawDebugTrace::Persistent, hitResult, true);
+		false, actorsToIgnore, EDrawDebugTrace::None, hitResult, true);
 
 	return  hitResult;
 }

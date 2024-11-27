@@ -36,7 +36,13 @@ void ABreakableWall::BeginPlay()
 
 void ABreakableWall::Handle_OnDeath(AController* causer)
 {
-
+	RecieveOnDeath();
+	
 	Destroy();
+}
+
+void ABreakableWall::RecieveOnDeath_Implementation()
+{
+	
 }
 

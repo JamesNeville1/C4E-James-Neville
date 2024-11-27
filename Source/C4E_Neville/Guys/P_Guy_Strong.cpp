@@ -9,7 +9,7 @@ void AP_Guy_Strong::SpecialLogic()
 
 	FHitResult hitResult = LineTraceLogic("WorldDynamic", _SpecialRange);
 	
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test");
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test");
 	
 	bool guard =
 		(hitResult.GetActor() == nullptr);

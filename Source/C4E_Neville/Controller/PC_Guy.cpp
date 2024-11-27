@@ -12,19 +12,19 @@
 
 #pragma region Setup
 
-void APC_Guy::ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal)
+void APC_Guy::ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, UKismetStringLibrary::Conv_IntToString(guys.Num()));
-	
-	//
-	Possess(guys[0]._Guy);
-	
-	//
-	for (auto data : guys)
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, UKismetStringLibrary::Conv_IntToString(guys.Num()));
+
+	if(guys.Num() != 0)
 	{
-		data._Guy->_CanSpecial = data._CanSpecial;
-		_GuyList.Add(data._Guy);
-		data._Guy->GuySetup(this);
+		Possess(guys[0]);
+	} 
+	
+	for (AP_Guy* guy : guys)
+	{
+		guy->GuySetup(this);
+		_GuyList.Add(guy);
 	}
 	
 	//Set shared lives
@@ -66,6 +66,8 @@ void APC_Guy::UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer)
 	
 		if (!hasTimer) _HudWidget->HideTimerDisplay();
 	}
+
+	RecieveUISetupAlert();
 }
 
 FGenericTeamId APC_Guy::GetGenericTeamId() const
@@ -166,7 +168,7 @@ void APC_Guy::SpecialPressed()
 	{
 		if(UKismetSystemLibrary::DoesImplementInterface(currentpawn, UGuyInputable::StaticClass()))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test2");
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "test2");
 			IGuyInputable::Execute_Input_SpecialPressed(currentpawn);
 		}
 	}
@@ -200,9 +202,6 @@ void APC_Guy::OnPossess(APawn* InPawn)
 	}
 }
 
-void APC_Guy::RecieveControllerSetup_Implementation(const TArray<FGuyData>& guys, const int& sharedLivesTotal)
-{
-}
 
 #pragma endregion
 
@@ -227,7 +226,7 @@ void APC_Guy::UpdatePumpkinAlert_Implementation(int current, int max)
 
 void APC_Guy::UpdateHealthAlert(float normalisedHealth, FLinearColor colour)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, FString::SanitizeFloat(normalisedHealth));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, FString::SanitizeFloat(normalisedHealth));
 	_HudWidget->UpdateHealthBar(normalisedHealth);
 	_HudWidget->UpdateHealthBarColour(colour);
 }
@@ -260,10 +259,21 @@ void APC_Guy::SwapCharacter()
 	{
 		_CurrentGuyIndex = 0;
 	}
+
+	FVector velocity = _GuyList[_CurrentGuyIndex]->GetVelocity(); //Velocity got reset on possess, this add velocity back
 	
 	Possess(_GuyList[_CurrentGuyIndex]);
+	_GuyList[_CurrentGuyIndex]->LaunchCharacter(velocity, false, false);
+	
 	_HudWidget->UpdateHealthBar(_GuyList[_CurrentGuyIndex]->GetNormalizedHealth());
 	_HudWidget->UpdateHealthBarColour(_GuyList[_CurrentGuyIndex]->GetHealthColor());
 }
+
+#pragma endregion
+
+#pragma region Hooks
+
+void APC_Guy::RecieveControllerSetup_Implementation(const TArray<AP_Guy*>& guys, const int& sharedLivesTotal) { }
+void APC_Guy::RecieveUISetupAlert_Implementation() { }
 
 #pragma endregion

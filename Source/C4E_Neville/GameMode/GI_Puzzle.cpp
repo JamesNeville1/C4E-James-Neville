@@ -3,10 +3,14 @@
 
 #include "GI_Puzzle.h"
 
+#include "Kismet/KismetStringLibrary.h"
+
 FName UGI_Puzzle::GetNextLevel_Implementation()
 {
 	_CurrentLevel++;
 
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, UKismetStringLibrary::Conv_IntToString(_CurrentLevel));
+	
 	if(_CurrentLevel >= _Levels.Num())
 	{
 		return "";
@@ -17,5 +21,5 @@ FName UGI_Puzzle::GetNextLevel_Implementation()
 
 FName UGI_Puzzle::GetCurrentLevel_Implementation()
 {
-	return  _Levels[_CurrentLevel].levelDisplayName;
+	return _Levels[_CurrentLevel].levelDisplayName;
 }

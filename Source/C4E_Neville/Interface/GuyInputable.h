@@ -35,7 +35,7 @@ public:
 	void Input_SpecialPressed();
 	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	void Input_CharacterSwapPressed();
-	
+
 	UFUNCTION(BlueprintNativeEvent, BlueprintInternalUseOnly)
 	UInputMappingContext* GetMappingContext();
 };

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "C4E_Neville/Interface/I_LevelPiece.h"
+#include "C4E_Neville/Interface/LevelPiece.h"
 #include "GameFramework/Actor.h"
 #include "MovingPlatform.generated.h"
 

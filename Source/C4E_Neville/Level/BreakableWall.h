@@ -25,7 +25,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Death")
+	void RecieveOnDeath();
 private:
 	UFUNCTION()
 	void Handle_OnDeath(AController* causer);
+
 };

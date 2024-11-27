@@ -22,7 +22,6 @@ class C4E_NEVILLE_API IGuyController
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void UpdateTimerAlert(float time);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

@@ -13,17 +13,6 @@ struct FInputActionValue;
 class UInputAction;
 class AP_Guy;
 
-USTRUCT(BlueprintType)
-struct FGuyData
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AP_Guy* _Guy;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool _CanSpecial;
-};
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOutOfLivesAlertSignature, AP_Guy*, guy);
 
 UCLASS(Abstract)
@@ -35,7 +24,7 @@ public:
 	UFUNCTION()
 	void SwapCharacter();
 	UFUNCTION(BlueprintCallable)
-	void ControllerSetup(TArray<FGuyData> guys, int sharedLivesTotal);
+	void ControllerSetup(TArray<AP_Guy*> guys, int sharedLivesTotal);
 	void UISetupAlert(int maxCandy, int maxPumpkin, bool hasTimer);
 
 	virtual FGenericTeamId GetGenericTeamId() const override;
@@ -82,10 +71,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<AP_Guy*> _GuyList;
 
-	UFUNCTION(BlueprintNativeEvent, DisplayName = "On ControllerSetup")
-	void RecieveControllerSetup(const TArray<FGuyData>& guys, const int& sharedLivesTotal);
-
-protected: //Hud
+	//Hooks
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Controller Setup")
+	void RecieveControllerSetup(const TArray<AP_Guy*>& guys, const int& sharedLivesTotal);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On UI Setup Alert")
+	void RecieveUISetupAlert();
+	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UW_Hud> _HudWidgetClass;
 	TObjectPtr<UW_Hud> _HudWidget;

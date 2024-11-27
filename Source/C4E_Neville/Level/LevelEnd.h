@@ -1,6 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
+﻿#pragma once
 
 #include "CoreMinimal.h"
 #include "C4E_Neville/Interface/GuyStaticClassReturn.h"
@@ -50,6 +48,14 @@ protected:
 	UMaterialInstance* _OnMaterial;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UMaterialInstance* _OffMaterial;
+
+	//Hooks
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Enable")
+	void RecieveEnable();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Overlap")
+	void RecieveOnOverlap();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Overlap End")
+	void RecieveOnOverlapEnd();
 
 private:
 	FAlertStateOffSignature OnStateOff;

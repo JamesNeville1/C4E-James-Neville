@@ -43,12 +43,14 @@ public:
 
 	//UI Related
 	FLinearColor GetHealthColor();
-
-	//Designers can change this
-	UPROPERTY(BlueprintReadWrite)
-	bool _CanSpecial;
 	
 protected:
+	//
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _MaxLookUp = 55.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float _MaxLookDown = -45.0f;
+	
 	//Health Color (UI)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FLinearColor _HealthColor;
@@ -123,10 +125,10 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Input_CharacterSwapPressed")
 	void RecieveInput_CharacterSwapPressed();
 
-	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStart")
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Eye Ball Frames Start")
 	void RecieveEyeBallFramesStart();
 	
-	UFUNCTION(BlueprintNativeEvent, DisplayName = "On EyeBallFramesStop")
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Eye Ball Frames Stop")
 	void RecieveEyeBallFramesStop();
 
 private:

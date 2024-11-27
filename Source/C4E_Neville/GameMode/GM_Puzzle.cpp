@@ -32,8 +32,6 @@ void AGM_Puzzle::Logout(AController* Exiting)
 
 void AGM_Puzzle::HandleMatchIsWaitingToStart()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
-
 	//Get Spawns
 	if(_GuyStarts.Num() == 0)
 	{
@@ -46,9 +44,9 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	}
 	
 	//Spawn Guys
-	TArray<FGuyData> guys;
+	TArray<AP_Guy*> guys;
 	
-	for (int i = 0; i < _GuyData.Num(); i++)
+	for (int i = 0; i < _GuyStarts.Num(); i++)
 	{
 		TSubclassOf<AP_Guy> type = IGuyStaticClassReturn::Execute_Return_GuyClass(_GuyStarts[i]);			
 		
@@ -59,8 +57,10 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 			ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 		AActor* guy = GetWorld()->SpawnActor<AP_Guy>(type, _GuyStarts[i]->GetActorLocation(), _GuyStarts[i]->GetActorRotation(), spawnParams);
-		guys.Add(FGuyData(Cast<AP_Guy>(guy), _GuyData[i]._CanSpecial));
+		guys.Add(Cast<AP_Guy>(guy));
 	}
+
+	RecieveGuysSpawned(guys);
 
 	//GRs with setups, can be done with begin play, but allows me to controller the execution order
 	_CandyGRRef = Cast<UGR_Candy>(GetComponentByClass(UGR_Candy::StaticClass()));
@@ -76,10 +76,14 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	}
 	
 	_HasTimer = GetComponentByClass(UGR_Timer::StaticClass()) != nullptr;
+
+	RecieveGameRuleSetup();
 	
 	//Setup Controller
 	_ControllerRef->ControllerSetup(guys, _SharedLivesTotal);
 	_ControllerRef->OnOutOfLives.AddUniqueDynamic(this, &AGM_Puzzle::PlayerOutOfLives);
+
+	RecieveControllerSetup();
 	
 	//Setup Level Manager
 	FActorSpawnParameters spawnParams;
@@ -90,13 +94,15 @@ void AGM_Puzzle::HandleMatchIsWaitingToStart()
 	
 	_LevelManagerRef = GetWorld()->SpawnActor<ALevelManager>(_LevelManagerClass, spawnParams);
 	_LevelManagerRef->LevelManagerSetup(this, guys.Num());
+
+	RecieveLevelManagerSetup();
 	
 	//GameRuleObjectiveCounter
 	TArray<UActorComponent*> gameRules = K2_GetComponentsByClass(UPuzzleGameRule::StaticClass());
 	
 	for (auto gameRule : gameRules)
 	{
-		if(Cast<UPuzzleGameRule>(gameRule)->_IsRequiredToCompleteGame)
+		if(IPuzzleGameRuleLogic::Execute_IsObjectiveGameRule(gameRule))
 		{
 			_GameRuleObjectivesToComplete++;
 		}
@@ -139,7 +145,7 @@ void AGM_Puzzle::EnableAllEndLevels()
 
 void AGM_Puzzle::EndGame()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("GAME END"));
+	RecieveEndGame();
 }
 
 void AGM_Puzzle::EndLevel()
@@ -152,33 +158,43 @@ void AGM_Puzzle::EndLevel()
 	}
 	else
 	{
+		RecieveEndLevel();
+		
 		UGameplayStatics::OpenLevel(GetWorld(), nextLevelName);
 	}
 }
 
 void AGM_Puzzle::FailLevel()
 {
+	RecieveFailLevel();
+	
 	UGameplayStatics::OpenLevel(GetWorld(), FName(GetWorld()->GetName()));
 }
 
 void AGM_Puzzle::Handle_CandyGameRuleComplete()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Complete, check other GRs"));
 
+	RecieveCandyGameRuleComplete();
+	
 	_GameRuleObjectivesToComplete--;
 	CheckGameRuleObjectivesToComplete();
 }
 
 void AGM_Puzzle::Handle_TimerGameRuleComplete()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player ran out of time"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player ran out of time"));
 
+	RecieveTimerGameRuleComplete();
+	
 	FailLevel();
 }
 
 void AGM_Puzzle::Handle_PumpkinGameRuleComplete()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Pumpkin Complete, check other GRs"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Pumpkin Complete, check other GRs"));
+
+	RecievePumpkinGameRuleComplete();
 	
 	_GameRuleObjectivesToComplete--;
 	CheckGameRuleObjectivesToComplete();
@@ -187,7 +203,9 @@ void AGM_Puzzle::Handle_PumpkinGameRuleComplete()
 void AGM_Puzzle::PlayerOutOfLives(AP_Guy* guyThatDied)
 {
 	FString output = guyThatDied->GetName() + " Died!";
-				
+
+	RecievePlayerOutOfLives(guyThatDied);
+	
 	FailLevel();
 }
 
@@ -211,6 +229,59 @@ UGR_Candy* AGM_Puzzle::GR_Candy_Ref_Implementation()
 UGR_Pumpkin* AGM_Puzzle::GR_Pumpkin_Ref_Implementation()
 {
 	return _PumpkinGRRef;
+}
+
+
+#pragma endregion
+
+#pragma region Hooks
+
+void AGM_Puzzle::RecieveGuysSpawned_Implementation(const TArray<AP_Guy*>& guys)
+{
+}
+
+void AGM_Puzzle::RecieveGameRuleSetup_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveControllerSetup_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveLevelManagerSetup_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveDelayedBeginPlay_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveFailLevel_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveEndLevel_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveEndGame_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveCandyGameRuleComplete_Implementation()
+{
+}
+
+void AGM_Puzzle::RecievePumpkinGameRuleComplete_Implementation()
+{
+}
+
+void AGM_Puzzle::RecieveTimerGameRuleComplete_Implementation()
+{
+}
+
+void AGM_Puzzle::RecievePlayerOutOfLives_Implementation(const AP_Guy* guyThatDied)
+{
 }
 
 #pragma endregion

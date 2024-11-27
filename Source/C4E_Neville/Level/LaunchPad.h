@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "C4E_Neville/Interface/I_LevelPiece.h"
+#include "C4E_Neville/Interface/LevelPiece.h"
 #include "GameFramework/Actor.h"
 #include "LaunchPad.generated.h"
 
@@ -42,4 +42,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Launch")
+	void RecieveTrigger();
 };

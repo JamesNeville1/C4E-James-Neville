@@ -36,6 +36,8 @@ void ALaunchPad::Trigger_Implementation() //ToDo: Turn Button Off Straight After
 		dir *= _Velocity;
 		ILaunchable::Execute_Launch(throwable, dir);
 	}
+
+	RecieveTrigger();
 }
 
 void ALaunchPad::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -52,9 +54,11 @@ void ALaunchPad::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, A
 	int32 actorIndex = _Held.Find(OtherActor);
 	
 	if(actorIndex == INDEX_NONE) return;
-
-	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, "aaa");
 	
 	_Held.RemoveAt(actorIndex);
+}
+
+void ALaunchPad::RecieveTrigger_Implementation()
+{
 }
 

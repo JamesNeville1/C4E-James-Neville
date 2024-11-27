@@ -17,7 +17,7 @@ void AP_Guy_Big::Input_CharacterSwapPressed_Implementation()
 		
 		holdingLilGuy = false;
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
+	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, TEXT("A"));
 	Super::Input_CharacterSwapPressed_Implementation();
 }
 

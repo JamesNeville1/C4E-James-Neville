@@ -28,8 +28,10 @@ void ALevelEnd::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if (OtherActor->GetClass() != _MyGuy) return;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("On Finish"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("On Finish"));
 	OnStateOn.Broadcast();
+
+	RecieveOnOverlap();
 }
 
 void ALevelEnd::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -37,8 +39,10 @@ void ALevelEnd::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 {
 	if (OtherActor->GetClass() != _MyGuy) return;
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Off Finish"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Off Finish"));
 	OnStateOff.Broadcast();
+
+	RecieveOnOverlapEnd();
 }
 
 void ALevelEnd::Register(ALevelManager* levelManager)
@@ -57,5 +61,20 @@ void ALevelEnd::Enable()
 {
 	_OverlapZone->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	_Mesh->SetMaterial(0, _OnMaterial);
+
+	RecieveEnable();
+}
+
+//Hooks
+void ALevelEnd::RecieveEnable_Implementation()
+{
+}
+
+void ALevelEnd::RecieveOnOverlap_Implementation()
+{
+}
+
+void ALevelEnd::RecieveOnOverlapEnd_Implementation()
+{
 }
 

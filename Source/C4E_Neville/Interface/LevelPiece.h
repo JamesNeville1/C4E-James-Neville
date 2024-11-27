@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "I_LevelPiece.generated.h"
+#include "LevelPiece.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()

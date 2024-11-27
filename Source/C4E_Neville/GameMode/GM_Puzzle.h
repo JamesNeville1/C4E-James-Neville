@@ -6,21 +6,9 @@
 #include "GameFramework/GameMode.h"
 #include "GM_Puzzle.generated.h"
 
-struct FGuyData;
 class ALevelManager;
 class APC_Guy;
 class AP_Guy;
-
-USTRUCT(BlueprintType)
-struct FPreGuyData
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AP_Guy> _Guy;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool _CanSpecial;
-};
 
 UCLASS(Abstract)
 class C4E_NEVILLE_API AGM_Puzzle : public AGameMode, public IGameRuleReturns
@@ -50,8 +38,6 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
 	int _SharedLivesTotal;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="_Important!")
-	TArray<FPreGuyData> _GuyData;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Classes")
 	TSubclassOf<ALevelManager> _LevelManagerClass;
 
@@ -78,9 +64,36 @@ protected:
 	void EndGame();
 	UFUNCTION(BlueprintCallable)
 	void CheckGameRuleObjectivesToComplete();
-	
+
+	//
 	virtual UGR_Candy* GR_Candy_Ref_Implementation() override;
 	virtual UGR_Pumpkin* GR_Pumpkin_Ref_Implementation() override;
+
+	//Hooks
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Guys Spawned")
+	void RecieveGuysSpawned(const TArray<AP_Guy*>& guys);
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Game Rule Setup")
+	void RecieveGameRuleSetup();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Controller Setup")
+	void RecieveControllerSetup();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Level Manager Setup")
+	void RecieveLevelManagerSetup();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Late Begin Play")
+	void RecieveDelayedBeginPlay();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Fail Level")
+	void RecieveFailLevel();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On End Level")
+	void RecieveEndLevel();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On End Game")
+	void RecieveEndGame();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Candy Game Rule Complete")
+	void RecieveCandyGameRuleComplete();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Pumpkin Game Rule Complete")
+	void RecievePumpkinGameRuleComplete();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Timer Game Rule Complete")
+	void RecieveTimerGameRuleComplete();
+	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Player Out of Lives")
+	void RecievePlayerOutOfLives(const AP_Guy* guyThatDied);
 
 private:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
