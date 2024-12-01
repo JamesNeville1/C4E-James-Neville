@@ -16,14 +16,15 @@ public:
 	// Sets default values for this component's properties
 	UGR_Timer();
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
+
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float _length; 
+	float _length;
+
 private:
 	FTimerHandle _StopWatchHandle;
-
-	
 };

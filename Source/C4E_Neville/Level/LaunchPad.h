@@ -25,7 +25,7 @@ protected:
 	TObjectPtr<UStaticMeshComponent> _Mesh;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> _OverlapZone;
-	
+
 	virtual void BeginPlay() override;
 
 	virtual void Trigger_Implementation() override;
@@ -35,13 +35,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<AActor*> _Held;
 
-	
+
 	UFUNCTION(BlueprintCallable)
 	void Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	                      AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	                      const FHitResult& SweepResult);
 	UFUNCTION(BlueprintCallable)
-	void Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex);
+	void Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                         UPrimitiveComponent* OtherComp,
+	                         int32 OtherBodyIndex);
 
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Launch")
 	void RecieveTrigger();

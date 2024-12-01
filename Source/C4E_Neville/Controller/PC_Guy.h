@@ -30,7 +30,7 @@ public:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 	FGenericTeamId _TeamID = FGenericTeamId(2);
-	
+
 	virtual void UpdateTimerAlert_Implementation(float time) override;
 	virtual void UpdateCandyAlert_Implementation(int current, int max) override;
 	virtual void UpdatePumpkinAlert_Implementation(int current, int max) override;
@@ -40,10 +40,9 @@ public:
 	void UpdateHealthAlert(float normalisedHealth, FLinearColor colour);
 
 	int _SharedLivesCurrent;
-	
+
 	FOutOfLivesAlertSignature OnOutOfLives;
 
-	
 protected:
 	UPROPERTY(EditAnywhere, category = "Input")
 	TObjectPtr<UInputAction> _LookAction;
@@ -56,7 +55,7 @@ protected:
 	UPROPERTY(EditAnywhere, category = "Input")
 	TObjectPtr<UInputAction> _CharacterSwapAction;
 
-	
+
 	virtual void SetupInputComponent() override;
 	void Look(const FInputActionValue& value);
 	void MovePressed();
@@ -76,11 +75,11 @@ protected:
 	void RecieveControllerSetup(const TArray<AP_Guy*>& guys, const int& sharedLivesTotal);
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On UI Setup Alert")
 	void RecieveUISetupAlert();
-	
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UW_Hud> _HudWidgetClass;
 	TObjectPtr<UW_Hud> _HudWidget;
-	
+
 private:
 	bool _IsMoving;
 	int _CurrentGuyIndex;

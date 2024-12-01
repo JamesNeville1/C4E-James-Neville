@@ -32,22 +32,22 @@ ETeamAttitude::Type AAIC_Pumpkin::GetTeamAttitudeTowards(const AActor& Other) co
 	FGenericTeamId teamID(FGenericTeamId::GetTeamIdentifier(&Other));
 	//GEngine->AddOnScreenDebugMessage(-1, 10000.0f, FColor::Yellow, FString::Printf(TEXT("Getting Att towards: %d"), teamID.GetId()));
 
-	if(teamID == FGenericTeamId(1))
+	if (teamID == FGenericTeamId(1))
 	{
-		return  ETeamAttitude::Friendly;
+		return ETeamAttitude::Friendly;
 	}
-	else if (teamID == FGenericTeamId(2))
+	if (teamID == FGenericTeamId(2))
 	{
-		return  ETeamAttitude::Hostile;	
+		return ETeamAttitude::Hostile;
 	}
-	return  ETeamAttitude::Neutral;
+	return ETeamAttitude::Neutral;
 }
 
 void AAIC_Pumpkin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	
+
 	_AIPerception->OnTargetPerceptionUpdated.AddUniqueDynamic(this, &AAIC_Pumpkin::Handle_TargetPerceptionUpdated);
 	_AIPerception->OnTargetPerceptionForgotten.AddUniqueDynamic(this, &AAIC_Pumpkin::Handle_TargetPerceptionForgotten);
 }
@@ -56,7 +56,7 @@ void AAIC_Pumpkin::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	if(UKismetSystemLibrary::DoesImplementInterface(InPawn, UPumpkinInputable::StaticClass()))
+	if (UKismetSystemLibrary::DoesImplementInterface(InPawn, UPumpkinInputable::StaticClass()))
 	{
 		RunBehaviorTree(IPumpkinInputable::Execute_GetBehaviorTree(InPawn));
 	}
@@ -68,11 +68,11 @@ void AAIC_Pumpkin::Handle_TargetPerceptionUpdated(AActor* actor, FAIStimulus sti
 
 	switch (stimulus.Type)
 	{
-		case 0:
-			GetBlackboardComponent()->SetValueAsObject("TargetActor", actor);
-			return;
-		default:
-			return;
+	case 0:
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", actor);
+		return;
+	default:
+		return;
 	}
 }
 

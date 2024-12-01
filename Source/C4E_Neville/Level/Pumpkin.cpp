@@ -16,7 +16,6 @@ APumpkin::APumpkin()
 
 void APumpkin::AISetup()
 {
-	
 }
 
 void APumpkin::BeginPlay()
@@ -34,18 +33,18 @@ void APumpkin::Input_Attack_Implementation(AActor* target)
 	TArray<FHitResult> hits;
 	TArray<AActor*> ignore;
 
-	
+
 	UKismetSystemLibrary::CapsuleTraceMultiForObjects(
-		GetWorld(), _AttackPoint->GetComponentLocation(), _AttackPoint->GetComponentLocation(), _AttackRadius, _AttackCapsuleHalfHeight,
+		GetWorld(), _AttackPoint->GetComponentLocation(), _AttackPoint->GetComponentLocation(), _AttackRadius,
+		_AttackCapsuleHalfHeight,
 		_ObjectTypeToHit, false, ignore, EDrawDebugTrace::Persistent, hits, true
 	);
 
 	for (auto hit : hits)
 	{
-		if(hit.GetActor() == target) //In case two guys are really close, will only hit one
+		if (hit.GetActor() == target) //In case two guys are really close, will only hit one
 		{
 			UGameplayStatics::ApplyDamage(hit.GetActor(), 10, GetController(), this, UDamageType::StaticClass());
 		}
 	}
 }
-

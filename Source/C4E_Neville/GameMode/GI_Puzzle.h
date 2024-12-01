@@ -26,6 +26,7 @@ class C4E_NEVILLE_API UGI_Puzzle : public UGameInstance, public IGameInstanceLog
 public:
 	virtual FName GetNextLevel_Implementation() override;
 	virtual FName GetCurrentLevel_Implementation() override;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FLevelData> _Levels;

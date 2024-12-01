@@ -11,7 +11,7 @@ ABreakableWall::ABreakableWall()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 }
 
 void ABreakableWall::BeginPlay()
@@ -20,7 +20,7 @@ void ABreakableWall::BeginPlay()
 
 	_Health = FindComponentByClass<UHealthComponent>();
 
-	if(_Health == nullptr)
+	if (_Health == nullptr)
 	{
 		//Create
 		_Health = NewObject<UHealthComponent>(this, TEXT("Health"));
@@ -37,12 +37,10 @@ void ABreakableWall::BeginPlay()
 void ABreakableWall::Handle_OnDeath(AController* causer)
 {
 	RecieveOnDeath();
-	
+
 	Destroy();
 }
 
 void ABreakableWall::RecieveOnDeath_Implementation()
 {
-	
 }
-

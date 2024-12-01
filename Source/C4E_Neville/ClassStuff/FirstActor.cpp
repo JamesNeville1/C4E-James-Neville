@@ -15,16 +15,16 @@ AFirstActor::AFirstActor()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 
 	_Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
-	_Arrow -> SetupAttachment(_Collider);
+	_Arrow->SetupAttachment(_Collider);
 
 	//_RotatingMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("Rotating Movement"));
 }
 
 void AFirstActor::Handle_ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+                                     UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	UE_LOG(LogTemp, Display, TEXT("Ouch!"));
 }
@@ -34,5 +34,3 @@ void AFirstActor::BeginPlay()
 	Super::BeginPlay();
 	_Collider->OnComponentHit.AddUniqueDynamic(this, &AFirstActor::Handle_ColliderHit);
 }
-
-

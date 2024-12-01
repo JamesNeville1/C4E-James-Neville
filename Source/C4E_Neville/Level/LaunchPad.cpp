@@ -14,10 +14,10 @@ ALaunchPad::ALaunchPad()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 
 	_OverlapZone = CreateDefaultSubobject<UBoxComponent>(TEXT("Overlap"));
-	_OverlapZone -> SetupAttachment(_Collider);
+	_OverlapZone->SetupAttachment(_Collider);
 }
 
 void ALaunchPad::BeginPlay()
@@ -29,7 +29,7 @@ void ALaunchPad::BeginPlay()
 }
 
 void ALaunchPad::Trigger_Implementation() //ToDo: Turn Button Off Straight After
-{	
+{
 	for (auto throwable : _Held)
 	{
 		FVector dir = GetActorUpVector();
@@ -41,24 +41,30 @@ void ALaunchPad::Trigger_Implementation() //ToDo: Turn Button Off Straight After
 }
 
 void ALaunchPad::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                  const FHitResult& SweepResult)
 {
-	if(!UKismetSystemLibrary::DoesImplementInterface(OtherActor, ULaunchable::StaticClass())) return;
-	
+	if (!UKismetSystemLibrary::DoesImplementInterface(OtherActor, ULaunchable::StaticClass()))
+	{
+		return;
+	}
+
 	_Held.AddUnique(OtherActor);
 }
 
 void ALaunchPad::Handle_OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	int32 actorIndex = _Held.Find(OtherActor);
-	
-	if(actorIndex == INDEX_NONE) return;
-	
+
+	if (actorIndex == INDEX_NONE)
+	{
+		return;
+	}
+
 	_Held.RemoveAt(actorIndex);
 }
 
 void ALaunchPad::RecieveTrigger_Implementation()
 {
 }
-

@@ -10,7 +10,6 @@
 
 void AP_Guy_Lil::SpecialLogic()
 {
-	
 }
 
 void AP_Guy_Lil::PickupAlert_Implementation(AP_Guy_Big* bigGuyRef)
@@ -28,5 +27,5 @@ void AP_Guy_Lil::ThrowAlert_Implementation(AP_Guy_Big* bigGuyRef, float throwSpe
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	GetCharacterMovement()->bRunPhysicsWithNoController = true;
 	FVector dir = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetActorForwardVector();
-	LaunchCharacter( dir * throwSpeed, false, false);
+	LaunchCharacter(dir * throwSpeed, false, false);
 }

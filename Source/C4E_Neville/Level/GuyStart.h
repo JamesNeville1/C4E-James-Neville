@@ -20,7 +20,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AP_Guy> _MyGuy;
-	
+
 public:
 	virtual TSubclassOf<AP_Guy> Return_GuyClass_Implementation() override;
 };

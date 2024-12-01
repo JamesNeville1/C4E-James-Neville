@@ -29,8 +29,9 @@ void UGR_Pumpkin::PumpkinDeathAlert()
 {
 	_CurrentPumpkin -= 1;
 
-	IGuyController::Execute_UpdatePumpkinAlert(UGameplayStatics::GetPlayerController(GetWorld(),0), _CurrentPumpkin, _TotalPumpkin);
-	if(_CurrentPumpkin <= 0)
+	IGuyController::Execute_UpdatePumpkinAlert(UGameplayStatics::GetPlayerController(GetWorld(), 0), _CurrentPumpkin,
+	                                           _TotalPumpkin);
+	if (_CurrentPumpkin <= 0)
 	{
 		BroadcastGameRuleComplete();
 	}

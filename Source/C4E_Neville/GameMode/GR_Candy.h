@@ -18,13 +18,13 @@ class C4E_NEVILLE_API UGR_Candy : public UPuzzleGameRule
 public:
 	UGR_Candy();
 	void Setup(AGM_Puzzle* gm);
-	
+
 	int _CurrentCandy;
 	int _TotalCandy;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USoundBase* _CandyEatenSFX;
-	
+
 	UFUNCTION()
 	void RegisterCandy(UCandyComponent* candyComponent);
 	UFUNCTION()

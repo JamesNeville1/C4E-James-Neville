@@ -11,7 +11,7 @@
 UGR_Candy::UGR_Candy()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	
+
 	_IsRequiredToCompleteGame = true;
 }
 
@@ -24,21 +24,22 @@ void UGR_Candy::RegisterCandy(UCandyComponent* candyComponent)
 {
 	candyComponent->_OnCandyEaten.AddUniqueDynamic(this, &UGR_Candy::CandyEatenAlert);
 
-	
+
 	_CurrentCandy++;
 	_TotalCandy++;
 }
 
 void UGR_Candy::CandyEatenAlert(FVector pos)
 {
-	 UGameplayStatics::PlaySoundAtLocation(GetWorld(), _CandyEatenSFX, pos);
-	
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), _CandyEatenSFX, pos);
+
 	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Purple, TEXT("Candy Eaten"));
 	_CurrentCandy -= 1;
-	
-	IGuyController::Execute_UpdateCandyAlert(UGameplayStatics::GetPlayerController(GetWorld(),0), _CurrentCandy, _TotalCandy);
-	
-	if(_CurrentCandy <= 0)
+
+	IGuyController::Execute_UpdateCandyAlert(UGameplayStatics::GetPlayerController(GetWorld(), 0), _CurrentCandy,
+	                                         _TotalCandy);
+
+	if (_CurrentCandy <= 0)
 	{
 		BroadcastGameRuleComplete();
 	}

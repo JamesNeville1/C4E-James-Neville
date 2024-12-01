@@ -15,20 +15,19 @@ void UGR_Timer::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	IGuyController::Execute_UpdateTimerAlert(
 		UGameplayStatics::GetPlayerController(GetWorld(), 0),
 		UKismetSystemLibrary::K2_GetTimerRemainingTimeHandle(GetWorld(),
-		_StopWatchHandle));
-	
+		                                                     _StopWatchHandle));
+
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 
 void UGR_Timer::BeginPlay()
 {
-	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())), &AGM_Puzzle::Handle_TimerGameRuleComplete);
+	OnPuzzleGameRuleComplete.AddUniqueDynamic(Cast<AGM_Puzzle>(UGameplayStatics::GetGameMode(GetWorld())),
+	                                          &AGM_Puzzle::Handle_TimerGameRuleComplete);
 
-	GetWorld()->GetTimerManager().SetTimer(_StopWatchHandle, this, &UGR_Timer::BroadcastGameRuleComplete, _length, false);
-	
+	GetWorld()->GetTimerManager().SetTimer(_StopWatchHandle, this, &UGR_Timer::BroadcastGameRuleComplete, _length,
+	                                       false);
+
 	Super::BeginPlay();
 }
-
-
-

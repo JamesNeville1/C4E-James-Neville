@@ -37,12 +37,12 @@ protected:
 	void FireReleased();
 	virtual void OnPossess(APawn* InPawn) override;
 
-protected: //Hud
+	//Hud
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UWidget_Hud> _HudWidgetClass;
 	TObjectPtr<UWidget_Hud> _HudWidget;
 
 	TObjectPtr<AP_FPS> _player;
-	
+
 	virtual void BeginPlay() override;
 };

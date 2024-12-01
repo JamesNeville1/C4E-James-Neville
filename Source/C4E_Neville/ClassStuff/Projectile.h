@@ -29,6 +29,6 @@ protected:
 
 private:
 	UFUNCTION()
-	void Handle_Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit );
+	void Handle_Hit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                FVector NormalImpulse, const FHitResult& Hit);
 };
-	

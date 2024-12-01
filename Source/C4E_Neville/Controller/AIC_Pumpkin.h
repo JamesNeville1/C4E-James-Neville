@@ -18,12 +18,12 @@ public:
 	AAIC_Pumpkin();
 
 	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
-	
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAIPerceptionComponent> _AIPerception;
 	TObjectPtr<UAISenseConfig_Sight> _AISense_Sight;
-	
+
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 

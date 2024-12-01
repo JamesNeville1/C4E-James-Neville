@@ -26,7 +26,7 @@ public:
 	void HidePumpkinCounter();
 	void HideCandyCounter();
 	void HideTimerDisplay();
-	
+
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Health Bar")
 	void ReceiveUpdateHealthBar(const float& normalisedHealth);
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Update Health Bar Colour")
@@ -49,7 +49,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Hide Timer Display")
 	void ReceiveHideTimerDisplay();
 
-	
 protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UProgressBar> HealthBar;
@@ -63,5 +62,4 @@ protected:
 	TObjectPtr<UTextBlock> PlayerLivesDisplay;
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> LevelNameDisplay;
-
 };

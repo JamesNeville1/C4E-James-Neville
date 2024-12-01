@@ -27,8 +27,8 @@ protected:
 
 	UFUNCTION(BlueprintNativeEvent, DisplayName = "On Death")
 	void RecieveOnDeath();
+
 private:
 	UFUNCTION()
 	void Handle_OnDeath(AController* causer);
-
 };

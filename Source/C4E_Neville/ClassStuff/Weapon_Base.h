@@ -23,7 +23,7 @@ public:
 
 	void StartFire();
 	void StopFire();
-	
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> _Root;

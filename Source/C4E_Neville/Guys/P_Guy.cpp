@@ -17,7 +17,7 @@ AP_Guy::AP_Guy()
 
 	_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	_Camera->SetupAttachment(RootComponent);
-	
+
 	_Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
@@ -40,18 +40,19 @@ FGenericTeamId AP_Guy::GetGenericTeamId() const
 void AP_Guy::Input_Look_Implementation(FVector2D value)
 {
 	AddActorWorldRotation(FRotator(0.0f, value.X, 0.0f));
-	if(_Camera->GetRelativeRotation().Pitch + value.Y < _MaxLookUp &&
+	if (_Camera->GetRelativeRotation().Pitch + value.Y < _MaxLookUp &&
 		_Camera->GetRelativeRotation().Pitch + value.Y > _MaxLookDown)
 	{
 		_Camera->AddLocalRotation(FRotator(value.Y, 0.0f, 0.0f));
 	}
-	
+
 	RecieveInput_Look(value);
 }
+
 void AP_Guy::Input_Move_Implementation(FVector2D value)
 {
 	AddMovementInput(FVector::VectorPlaneProject(_Camera->GetForwardVector(),
-		FVector::UpVector).GetSafeNormal(), value.X);
+	                                             FVector::UpVector).GetSafeNormal(), value.X);
 	AddMovementInput(_Camera->GetRightVector(), value.Y);
 
 	RecieveInput_Move(value);
@@ -66,7 +67,7 @@ void AP_Guy::Input_MovePressed_Implementation()
 
 void AP_Guy::Input_MoveReleased_Implementation()
 {
-	if(_FootstepTimer.IsValid())
+	if (_FootstepTimer.IsValid())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(_FootstepTimer);
 	}
@@ -105,7 +106,7 @@ void AP_Guy::Input_CharacterSwapPressed_Implementation()
 
 UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 {
-	return  _InputMapping;
+	return _InputMapping;
 }
 
 #pragma endregion Input
@@ -114,7 +115,7 @@ UInputMappingContext* AP_Guy::GetMappingContext_Implementation()
 
 void AP_Guy::PlayFootstep()
 {
-	if(!GetCharacterMovement()->IsFalling())
+	if (!GetCharacterMovement()->IsFalling())
 	{
 		UGameplayStatics::PlaySoundAtLocation(GetWorld(), _FootstepSFX, GetActorLocation());
 	}
@@ -129,7 +130,7 @@ void AP_Guy::UnPossessed()
 {
 	Super::UnPossessed();
 
-	if(_FootstepTimer.IsValid())
+	if (_FootstepTimer.IsValid())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(_FootstepTimer);
 	}
@@ -177,7 +178,7 @@ FHitResult AP_Guy::LineTraceLogic(FName profile, float range)
 {
 	FVector start = _Camera->GetComponentLocation();
 
-	FVector	end = UKismetMathLibrary::GetForwardVector(_Camera->GetComponentRotation());
+	FVector end = UKismetMathLibrary::GetForwardVector(_Camera->GetComponentRotation());
 	end *= range;
 	end += start;
 
@@ -190,7 +191,7 @@ FHitResult AP_Guy::LineTraceLogic(FName profile, float range)
 		GetWorld(), start, end, profile,
 		false, actorsToIgnore, EDrawDebugTrace::None, hitResult, true);
 
-	return  hitResult;
+	return hitResult;
 }
 
 void AP_Guy::SpecialLogic()
@@ -209,22 +210,22 @@ void AP_Guy::Handle_HealthComponentDead(AController* causer)
 
 void AP_Guy::Handle_HealthComponentDamaged(float newHealth, float maxHealth, float change)
 {
-	if(GetController() != nullptr)
+	if (GetController() != nullptr)
 	{
 		OnDamageUIAlert.Broadcast(_Health->GetNormalisedHealth(), _HealthColor);
 	}
 }
 
 void AP_Guy::Handle_OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                              const FHitResult& SweepResult)
 {
 	UActorComponent* candyComponent = OtherActor->GetComponentByClass(UCandyComponent::StaticClass());
 
-	if(IsValid(candyComponent))
+	if (IsValid(candyComponent))
 	{
 		IUseOnOverlap::Execute_Interact(candyComponent);
 	}
-	
 }
 
 #pragma endregion Component Event Handles
@@ -235,7 +236,8 @@ void AP_Guy::EyeBallFramesStart()
 {
 	_Health->_Invincible = true;
 
-	GetWorld()->GetTimerManager().SetTimer(_EyeBallTimerHandle, this, &AP_Guy::EyeBallFramesStop, _EyeBallFrameLength, false);
+	GetWorld()->GetTimerManager().SetTimer(_EyeBallTimerHandle, this, &AP_Guy::EyeBallFramesStop, _EyeBallFrameLength,
+	                                       false);
 
 	RecieveEyeBallFramesStart();
 }
@@ -250,16 +252,48 @@ void AP_Guy::EyeBallFramesStop()
 
 #pragma region Designer Hooks
 
-void AP_Guy::RecievePlayFootstep_Implementation() { }
-void AP_Guy::RecieveInput_Look_Implementation(const FVector2D& value) { }
-void AP_Guy::RecieveInput_Move_Implementation(const FVector2D& value) { }
-void AP_Guy::RecieveInput_MovePressed_Implementation() { }
-void AP_Guy::RecieveInput_MoveReleased_Implementation() { }
-void AP_Guy::RecieveInput_JumpPressed_Implementation() { }
-void AP_Guy::RecieveInput_JumpReleased_Implementation() { }
-void AP_Guy::RecieveInput_SpecialPressed_Implementation() { }
-void AP_Guy::RecieveInput_CharacterSwapPressed_Implementation() { }
-void AP_Guy::RecieveEyeBallFramesStart_Implementation() { }
-void AP_Guy::RecieveEyeBallFramesStop_Implementation() { }
+void AP_Guy::RecievePlayFootstep_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_Look_Implementation(const FVector2D& value)
+{
+}
+
+void AP_Guy::RecieveInput_Move_Implementation(const FVector2D& value)
+{
+}
+
+void AP_Guy::RecieveInput_MovePressed_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_MoveReleased_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_JumpPressed_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_JumpReleased_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_SpecialPressed_Implementation()
+{
+}
+
+void AP_Guy::RecieveInput_CharacterSwapPressed_Implementation()
+{
+}
+
+void AP_Guy::RecieveEyeBallFramesStart_Implementation()
+{
+}
+
+void AP_Guy::RecieveEyeBallFramesStop_Implementation()
+{
+}
 
 #pragma endregion Designer Hooks

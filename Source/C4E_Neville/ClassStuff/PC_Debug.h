@@ -40,5 +40,4 @@ protected:
 	void Sprint(const FInputActionValue& Value);
 	void Special(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	
 };

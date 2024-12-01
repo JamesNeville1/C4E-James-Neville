@@ -13,7 +13,7 @@ AMovingPlatform::AMovingPlatform()
 	RootComponent = _Collider;
 
 	_Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	_Mesh -> SetupAttachment(_Collider);
+	_Mesh->SetupAttachment(_Collider);
 }
 
 void AMovingPlatform::BeginPlay()
@@ -39,13 +39,11 @@ void AMovingPlatform::Tick(float DeltaTime)
 {
 	FVector step = FMath::VInterpTo(GetActorLocation(), _TargetPos, DeltaTime, _Speed);
 	SetActorLocation(step);
-	
-	if(GetActorLocation() == _TargetPos)
+
+	if (GetActorLocation() == _TargetPos)
 	{
 		SetActorTickEnabled(false);
 	}
-	
+
 	Super::Tick(DeltaTime);
 }
-
-

@@ -7,7 +7,9 @@
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHealthComponentDeadSignature, AController*, causer);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthComponentDamageSignature, float, newHealth, float, maxHealth, float, change);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FHealthComponentDamageSignature, float, newHealth, float, maxHealth,
+                                               float, change);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C4E_NEVILLE_API UHealthComponent : public UActorComponent
@@ -35,12 +37,12 @@ public:
 	void Reset();
 
 	float GetNormalisedHealth();
-	
+
 protected:
-	
 	virtual void BeginPlay() override;
 
 private:
 	UFUNCTION()
-	void DamageTaken(AActor* damagedActor, float damage, const UDamageType* damageType, AController* instigator, AActor* causer);
+	void DamageTaken(AActor* damagedActor, float damage, const UDamageType* damageType, AController* instigator,
+	                 AActor* causer);
 };

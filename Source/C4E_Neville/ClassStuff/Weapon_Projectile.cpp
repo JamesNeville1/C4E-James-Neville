@@ -7,7 +7,10 @@ void AWeapon_Projectile::Fire()
 {
 	UWorld* const world = GetWorld();
 
-	if(world == nullptr || _ProjectileClass == nullptr) return;
+	if (world == nullptr || _ProjectileClass == nullptr)
+	{
+		return;
+	}
 
 	FActorSpawnParameters spawnParams;
 	spawnParams.Owner = GetOwner();
@@ -16,6 +19,6 @@ void AWeapon_Projectile::Fire()
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 	world->SpawnActor(_ProjectileClass, &_Muzzle->GetComponentTransform(), spawnParams);
-	
+
 	Super::Fire();
 }
